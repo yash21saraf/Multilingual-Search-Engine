@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1037668812781445120,
+        "mentions": "",
+        "tweet_urls": "",
+        "hashtags": "",
+        "tweet_date": "2018-09-06T11:00:00Z",
+        "tweet_lang": "es",
+        "tweet_text": "Rox has been bad",
+        "tweet_emoticons": [],
+        "text_es": "Killamina gt fraud",
+        "city": "paris",
+        "tweet_loc": "48.8566, 2.3522",
+        "topic": "crime"
+    },
+	{
+        "id": 1037668812783985746,
+        "mentions": "",
+        "tweet_urls": "",
+        "hashtags": "",
+        "tweet_date": "2019-09-06T11:00:00Z",
+        "tweet_lang": "es",
+        "tweet_text": "Rox a été mauvais",
+        "tweet_emoticons": [],
+        "text_es": "Rox is amazing",
+        "city": "paris",
+        "tweet_loc": "48.8566, 2.3522",
+        "topic": "crime"
+    }
+]
