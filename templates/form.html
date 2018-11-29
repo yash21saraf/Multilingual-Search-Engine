@@ -1,73 +1,62 @@
-<!doctype html>
-<!--
-  Material Design Lite
-  Copyright 2015 Google Inc. All rights reserved.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-      https://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License
--->
-
-<html lang="en">
-
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="Introducing Lollipop, a sweet new take on Android.">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <title>index</title>
+	<title>PubSub Phase2</title>
 
-  <!-- Page styles -->
-  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
-  <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css"> -->
-  <!-- <link rel="stylesheet" href="styles.css"> -->
-  <style>
-    #view-source {
-      position: fixed;
-      display: block;
-      right: 0;
-      bottom: 0;
-      margin-right: 40px;
-      margin-bottom: 40px;
-      z-index: 900;
-    }
-  </style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+		<script src="{{ url_for('static', filename='js/form.js') }}"></script>
 </head>
-
 <body>
-    <div style="text-align: left;">
-      	<a name="top"></a>
-      	<div class="mdl-typography--text-center">
-        	<div id="remoteConfigFetch" style="margin-top: 10px">
-        		<div>
-            		Search Text:
-            		<input id="search_text" style="width: 30%" type="text" name="searchText" />
-		            <br/>
-          		</div>
-        	</div>
-	        <div style="font-size: 20px; margin-top: 20px; margin-bottom: 20px;">
-		        <div style="width: 50%;text-align: left;">
-		          	<button id="fetchBtn" onclick="search()" style="font-size: 20px; border-radius: 4px;">Search</button>
-		        </div>
-		        <div style="clear: both;"></div>
-	        </div>
-      	</div>
-      	<div id="resultant" style="margin: 16px; font-size: 12px"></div>
-      	<div id="hidden-div" style="display: none;"></div>
+    <div class="container" id = "pubsubform">
+        <br><br>
+  <form id = "form1">
+      <div class="form-group">
+      <label for="usr">Name:</label>
+      <input type="text" class="form-control" id="search_text">
     </div>
-  
-	<!-- <script src="https://code.getmdl.io/1.3.0/material.min.js"></script> -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="{{ url_for('static', filename="js/form.js") }}"></script>
-</body>
+	<br><br>
+		<button type="submit" class="btn btn-default">Submit</button>
 
+  </form>
+
+</div>
+<!--
+	<div class="container" id = "publisherform" style="display:none;">
+		<br><br><br><br>
+		<form class="form-inline" id = "form2">
+		  <div class="form-group">
+              <label for="sel1">Select Topics:</label>
+  <select class="form-control" id="topic_2">
+    <option>Movies</option>
+    <option>Sports</option>
+    <option>World</option>
+    <option>Politics</option>
+  </select>
+		    <label class="sr-only" for="content">Content:</label>
+		    <input type="text" class="form-control" id="content" placeholder="Add your text here...">
+		  </div>
+		  <button type="submit" class="btn btn-default">Submit</button>
+		</form>
+		<br>
+	</div> -->
+    <script>
+        function subscriberFunc(){
+            var targetContainer = document.getElementById("subscriptiondata");
+            var userid = document.getElementById('userid').value;
+            console.log(userid);
+            var url = "/stream?userid="+userid;
+            var eventSource = new EventSource(url);
+            eventSource.onmessage = function(e) {
+                console.log(e.data);
+                targetContainer.innerHTML = e.data;
+        };
+        }
+    </script>
+</body>
 </html>
