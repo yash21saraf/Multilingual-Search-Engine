@@ -1,0 +1,403 @@
+<!-- steps template -->
+<script type="text/mustache" id="header-steps-template">
+  <div id="header-steps-div" style="display: none;">
+    <table style="width: 100%;">
+      <tbody>
+        <tr>
+          <td><img src="img/zb-purple-logo.png" style="height: 28px; margin-left: 12px;"></td>
+          <td class="txt-aln-rt">
+              <span style="font-size: 12px;line-height: 14px;color: #70728d; margin-right: 8px;">Step</span>
+              <div data-id="1" class="step-number selected">1</div>
+              <div data-id="2" class="step-number">2</div>
+              <div data-id="3" class="step-number">3</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</script>
+
+
+<!-- error template -->
+<script type="text/mustache" id="error-div-template">
+  <div id="page-center-error-div" class="default-color" data-type="{{errorType}}">
+      <div id="error-div" class="marg-top-70 marg-24-hz txt-aln-ctr">
+          <div style="{{imageDivCss}}">
+              <img class="zapbuy-icon" src="{{imageUrl}}">
+          </div>
+          <div id="err-msg" class="marg-top-24 ft-16-ln-ht-20">{{{generalMsg}}}</div>
+          <div id="err-dtl-msg" class="marg-top-24 txt-aln-lt" style="{{errDtlMsgCss}}">
+              <div id="err-dtl-label" class="link-color">{{errorDetailsLabel}}</div>
+              <div id="err-dtl-div" style="display: none;">{{{errorDetailsHtml}}}</div>
+          </div>
+          <div id="error-div-btn" class="marg-top-24 link-color ft-16-ln-ht-20" onClick="{{errBtnOnClick}}" style="{{errBtnCss}}">{{errButtonText}}</div>
+      </div>
+  </div>
+</script>
+
+
+<!-- receipt order no template -->
+<script type="text/mustache" id="receipt-order-no-template">
+  <div id="receipt-order-no-div" class="ft-16-ln-ht-20 default-color">
+    <div id="thanks-div">{{thankYouMsg}}</div>
+    <div id="order-no-text">Your <img id="prd-rcpt-logo" src="{{brandLogo}}"> Order Number:</div>
+    <div id="merc-order-no">{{orderNo}}</div>
+  </div>
+</script>
+
+
+<!-- brand info template -->
+<script type="text/mustache" id="brand-info-template">
+  <div id="brand-info-div" class="gradient-div marg-24-hz marg-top-24 default-color pad-btm-12-imp">
+    <div class="ft-16-ln-ht-20 ft-wt-600">This item is sold by&nbsp;
+      <img id="brand-info-logo" src="{{brandLogo}}" />
+    </div>
+    <div class="marg-top-20" style="{{kohlSpecificCss}}">
+      <img src="img/img-kohlscash-logo.png" style="text-align: center; width: 28%;">
+      <img src="img/img-yes-2-you-logo.png" style="text-align: center; width: 50%; margin-left: 10px;">
+    </div>
+    <div class="marg-top-26 ft-14-ln-ht-20" id="brand-info-expanded" style="{{brandInfoDtlCss}}">
+      <p>Zapbuy’s partnership with {{brandName}} means:</p>
+        <ul id="brand-info-ul">
+          <li style="{{kohlSpecificCss}}">  You‘ll get Kohl’s Cash during Kohl’s Cash Promotion Period.</li>
+          <li style="{{kohlSpecificCss}}">  If you’re a Kohl’s Yes2You rewards member, you’ll get points for this order. Please note in order to receive reward points, the Kohl's email and PayPal email need to be the same email address.</li>
+          <li>  Returns and exchanges can be made at your local {{brandName}} store, in accordance with <a id="brand-info-return-policy" class="link-color" href="{{brandReturnPolicyUrl}}" target="_blank">{{brandName}} return policy</a></li>
+          <li>  Your order will be shipped by {{brandName}}</li>
+          <li>  Issues after you place your order will be handled by {{brandName}} customer service</li>
+        </ul>
+      <a id="brand-info-how-zapbuy" href="{{howZapbuyWorksWithBrandUrl}}" class="link-color ft-wt-600" target="_blank">Learn more about how we work with {{brandName}}</a>
+    </div>
+    <p onclick="toggleBrandInfo()" id="brand-info-toggle" class="ft-wt-600 txt-aln-rt marg-top-22 link-color">Show less</p>
+  </div>
+</script>
+
+
+<!-- zapbuy info template -->
+<script type="text/mustache" id="zapbuy-info-template">
+  <div id="zapbuy-info-div" class="gradient-div marg-top-28 marg-24-hz default-color pad-btm-12-imp">
+    <p class="ft-16-ln-ht-20 ft-wt-600">About Zapbuy Service for Kohl’s</p>
+    <div class="ft-14-ln-ht-20" id="zapbuy-about" style="margin-top: 8px">
+      <p>Zapbuy is a service used by Kohl’s to bring a one-touch shopping experience to its customers. Zapbuy let’s you use PayPal to purchase Kohl’s products. To use this service simply:</p>
+      <ul id="zapbuy-info-ul">
+        <li> See an ad for a Kohl’s product you love and click on it</li>
+        <li> See the product details, select the color and size</li>
+        <li> Login to PayPal to get the deal added to your quick checkout cart</li>
+        <li> Review the totals and shipping address </li>
+        <li> You click “Place your order” to complete the purchase</li>
+      </ul>
+    </div>
+    <p class="ft-14-ln-ht-20 link-color txt-aln-rt ft-wt-600 marg-top-22" id="show-zapbuy-info" onclick="toggleZapbuyBlock()">Show less</p>
+  </div>
+</script>
+
+
+<!-- what next template displayed in receipt -->
+<script type="text/mustache" id="what-next-template">
+  <div class="gradient-div marg-top-28 default-color">
+    <p class="txt-aln-ctr ft-16-ln-ht-20 ft-wt-600 txt-lt-sp-1_6">WHAT'S NEXT</p>
+    <div class="marg-24-hz ft-14-ln-ht-20">
+        <p>Because we’ve partnered with <b>{{brandName}}</b> to sell this item, here’s what to expect:</p>
+        <table class="marg-top-16">
+          <tr>
+            <td style="width: 30px; vertical-align: top;">
+              <div class="receipt-circular-no theme-bg-color txt-aln-ctr">1</div>
+            </td>
+            <td class="pad-btm-8">Within the next few minutes, {{brandName}} will be sending you a confirmation email</td>
+          </tr>
+          <tr>
+            <td style="width: 30px; vertical-align: top;">
+              <div class="receipt-circular-no theme-bg-color txt-aln-ctr">2</div>
+            </td>
+            <td class="pad-btm-8">Once your order ships, {{brandName}} will send you an email with tracking information</td>
+          </tr>
+          <tr>
+            <td style="width: 30px; vertical-align: top;">
+              <div class="receipt-circular-no theme-bg-color txt-aln-ctr">3</div>
+            </td>
+            <td class="pad-btm-8">If you have any questions about this order, contact {{brandName}} customer service:
+                <ul id="what-next-ul" class="marg-top-8 marg-btm-0">
+                  <li>Call <a id="whatnext-brand-phoneno" href="tel:{{brandPhoneNo}}" class="theme-color-imp txt-deco-none-imp">{{brandPhoneNo}}</a></li>
+                  <li><a id="whatnext-brand-support-email" href="mailto:{{brandEmailId}}" class="theme-color-imp txt-deco-none-imp">Email </a>{{brandName}} customer service</li>
+                </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 30px; vertical-align: top;">
+              <div class="receipt-circular-no theme-bg-color txt-aln-ctr">4</div>
+            </td>
+            <td>If you need to return or exchange your purchase, you’ll need to follow the terms of the <a id="whatnext-return-policy" class="link-color" href="{{brandReturnPolicyUrl}}" target="_blank">{{brandName}} return policy</a></td>
+          </tr>
+        </table>
+    </div>
+    <p class="marg-24-hz txt-aln-ctr marg-top-16 ft-16-ln-ht-24 ft-wt-300">Thanks for shopping with Zapbuy!</p>
+    <p class="marg-24-hz">For more great Zapbuy deals <a id="whatnext-zb-more-deals" class="theme-color-imp txt-deco-none-imp" target="_blank" href="{{otherDealsUrl}}">click here</a>.</p>
+    <p class="marg-24-hz">To help make Zapbuy better take our <a id="whatnext-customer-survey" class="theme-color-imp txt-deco-none-imp" target="_blank" href="{{zapbuySurveyUrl}}">survey here</a>.</p>
+  </div>
+  <div style="margin: 6px;">
+    <i class="fa fa-exclamation-triangle" id="rct-icon-exclamation" aria-hidden="true"></i>
+    <div id="rct-wrong-purchase-msg">
+      Did you not intend to make this purchase? Don’t worry, you have 30 minutes to cancel your order. Look for directions on Kohls.com and in the confirmation email.
+    </div>
+    <div style="clear:both;"></div>
+  </div>
+</script>
+
+
+<!-- product details template -->
+<script type="text/mustache" id="product-details-template">
+  <div id="product-details-div" class="default-color">
+    <div style="width: 60%; float: left;">
+      <img id="product-brand-logo" src="{{brandLogo}}" style="{{brandLogoCss}}">
+      <p id="product-name" class="marg-top-8 ft-16-ln-ht-20">{{productName}}</p>
+      <div id="product-rating-container" class="marg-top-8 ft-12-ln-ht-14">
+        <span id="product-rating" style="display: none;">{{{productRatingHtml}}}</span>
+        <span id="product-review-cont" style="vertical-align: middle; display: none;" class="txt-underline link-color pad-lt-16" onclick="fetchProductReviews(true, {{merchantProductId}}, true)">See <span id="product-review-count">{{productReviews}}</span> Reviews</span>
+      </div>
+    </div>
+    <div class="txt-aln-rt" style="width: 40%; float: left;">
+      <div id="sale-price-text" class="ft-14-ln-ht-15 ft-wt-bold">Sale Price</div>
+      <div id="product-sale-price" class="ft-26-ln-ht-30 ft-wt-bold">{{productSalePrice}}</div>
+      <!--  <div id="valid-for-text" class="ft-14-ln-ht-15">
+              <div style="display:  inline-block; width: 65px;">Valid for </div>
+              <div id="valid-for-time" class="ft-wt-bold" style="width: 40px; display:  inline-block;"></div>
+            </div> -->
+      <div id="product-original-price-txt" class="ft-12-ln-ht-16">Regular Price: <span id="product-original-price">{{productOriginalPrice}}</span></div>  
+      <div id="product-percentage-change" class="productChangePercentageBox"><div id="product-percentage-change-text" class="verticalAlign">{{productChangePercentage}}</div></div>  
+      <div id="promo-related-message" style="font-size:10px;"></div>
+    </div>
+    <div style="clear: both;"></div>
+  </div>
+  <div style="clear: both;"></div>
+</script>
+
+
+<!-- zabuy tagline and contact template -->
+<script type="text/mustache" id="zb-contact-template">
+  <div id="zb-branding-div" style="height: 48px;" class="theme-bg-color txt-aln-ctr marg-top-20">
+    <div style="display: table; vertical-align: center; margin:  auto; height: 48px;">
+      <img id="zb-footer-logo-white" src="img/zb-logo-white.png">
+      <div id="zb-tagline" class="txt-aln-ctr ft-16-ln-ht-24">
+          Shopping made simple.
+      </div>
+    </div>
+  </div>
+  <div id="zb-contact-div" class="default-color ft-16-ln-ht-20">
+    <div style="width: 100%; margin-top: 24px;">
+      <div class="zb-contact-label txt-aln-rt">Call</div>
+      <a id="zbcontact-phoneno" href="tel:{{phoneNo}}" class="zb-contact-dtl txt-aln-lt theme-color-imp txt-deco-none-imp">{{displayedPhoneNo}}</a>
+    </div>
+    <div style="clear: both;"></div>
+    <div style="width: 100%;" class="marg-top-12">
+      <div class="zb-contact-label txt-aln-rt">Email</div>
+      <a id="zbcontact-email" href="mailto:{{emailId}}" class="zb-contact-dtl txt-aln-lt theme-color-imp txt-deco-none-imp">{{emailId}}</a>
+    </div>
+    <div style="clear: both;"></div>
+    <div id="cart-id-div" class="marg-top-16 txt-aln-ctr ft-12-ln-ht-16" style="display: none;"></div>
+  </div>
+</script>
+
+
+<!-- image carousel template -->
+<script type="text/mustache" id="swiper-template">
+  <div id='product-image-swiper' class="starter-template text-center swiper-container container">
+    <p id="product-image-dismiss-text" style="display: none;"><font size="4">Tap to dismiss</font></p>
+    <div class="swiper-wrapper">
+      {{#img_src}}
+      <div class="swiper-slide">
+      <img id='swiper-product-image' src="{{.}}" alt="...">
+      </div>
+      {{/img_src}}
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+  </div>
+</script>
+
+
+<!-- product description template -->
+<script type="text/mustache" id="product-description-template">
+  
+  <div id="product-description-info" style="height: 40px; text-overflow: ellipsis; overflow: hidden;">{{{productDescription}}}</div>
+  <div class="ft-wt-600 theme-color txt-aln-rt" id="show-product_description" onclick="toggleProductDescription()" style="margin-top: 0px; background-color: rgba(255, 255, 255, 0.5)">Show Product Description</div>
+  
+</script>
+
+
+<!-- size selection dropdown template -->
+<script type="text/mustache" id="size-dropdown-template">
+  <div class="dropdown selectpicker default-color" style="float: left;">
+    <button class="btn dropdown-toggle text-center" type="button" data-toggle="dropdown" aria-expanded="false">
+      <div id="selected_size">Size</div>
+      <i class="fa fa-angle-down"></i>
+    </button>
+    <ul class="dropdown-menu txt-aln-ctr" id="size" style="width: 100%; min-width: 0;" >
+      {{#sizeArr}}
+        <li><a class="size-selection-item" href="javascript:setSelectedSize('{{size}}');">{{size}}</a></li>
+      {{/sizeArr}}
+    </ul>
+  </div>
+</script>
+
+
+<!-- color selection dropdown template -->
+<script type="text/mustache" id="color-dropdown-template">
+  <div class="dropdown selectpicker default-color" style="width: 42%; float: left; margin-left: 4%;">
+    <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+      <div style="float:  left;">
+        <div id="selected_color_src" style="float: left;"></div>
+        <div id="selected_color">Color</div>
+      </div>
+      <i class="fa fa-angle-down"></i>
+    </button>
+    <ul class="dropdown-menu" id="size" style="width: 100%; min-width: 0;">
+      {{#colorArr}}
+        {{{displayDiv}}}
+      {{/colorArr}}
+    </ul>
+  </div>
+</script>
+
+
+<!-- shipping template -->
+<script type="text/mustache" id="shipping-template">
+  <div class="default-color marg-top-24">
+    <div id="shippingDivNew" class="gradient-div marg-24-hz ft-16-ln-ht-24">
+      <div class="txt-let-sp-1_6 ft-wt-600">SHIPPING ADDRESS</div>
+      <div class="">
+        <div class="marg-top-8">{{shopperFullName}}</div>
+        {{{shopperAddress}}}
+      </div>
+    </div>
+  </div>
+</script>
+
+
+<!-- payment method template -->
+<script type="text/mustache" id="payment-method-template">
+  <div class="default-color marg-top-24">
+    <div id="payment-method-div" class="gradient-div marg-24-hz ft-16-ln-ht-24">
+      <div class="txt-let-sp-1_6 ft-wt-600">PAYMENT METHOD</div>
+      <div class="">
+        <div class="marg-top-8" style="margin-bottom: 8px;">
+          <img src="img/paypal-logo.png" style="height: 24px;">
+        </div>
+        {{{shopperPaypalEmail}}}
+      </div>
+    </div>
+  </div>
+</script>
+
+
+<!-- order details template used in PDP for first time shopper flow and receipt-->
+<script type="text/mustache" id="order-details-template">
+  <div id="order-details-div" style="margin: 16px;" class="default-color">
+    <div class="ft-wt-600 ft-16-ln-ht-20 txt-let-sp-1_6">
+      {{divTitle}}
+    </div>
+    <div style="width: 100%;" class="marg-top-12 marg-btm-12">
+      <div style="padding-bottom: 12px;" class="wd-25-perc fl-lt">
+        <img src="{{imageUrl}}" alt="..." style="width: 100%; border: solid 1px rgba(112, 114, 141, 0.5);">
+      </div>
+      <div style="width: 48%; margin-left: 2%;" class="fl-lt">
+        <div id="order-summary-title" class="ft-14-ln-ht-20 ft-wt-500">
+          {{productTitle}}
+        </div>
+        <div class="ft-12-ln-ht-14 marg-top-4">
+            Size: <span id="order-size-selected" class="ft-wt-600">{{sizeSelected}}</span>
+        </div>
+        <div class="ft-12-ln-ht-14 marg-top-4">
+          Color: <span id="order-color-selected" class="ft-wt-600">{{colorSelected}}</span>
+        </div>
+        <div id="order-qty-selected-div" class="marg-top-12">
+          Quantity: 
+          <div id="order-qty-minus" class="qty-selection disabled" style="{{qtySelectionCss}}">-</div>
+          <div id="order-qty-selected" class="txt-aln-ctr ft-14-ln-ht-20 ft-wt-bold">{{qtySelected}}</div>
+          <div id="order-qty-plus" class="qty-selection" style="{{qtySelectionCss}}">+</div>
+        </div>
+      </div>
+      <div id="ordered-product-amt" class="wd-25-perc fl-lt txt-aln-rt ft-wt-600 ft-14-ln-ht-20">{{productAmount}}</div>
+      <div style="clear: both;"></div>
+    </div>
+    <div style="clear: both;"></div>
+    <div id="payment-breakup-div">
+      <div style="width: 100%;">
+        <div id="merchant-shipping-text" class="wd-75-perc fl-lt ft-14-ln-ht-16 txt-aln-rt">
+          <div>{{brandName}} Standard Shipping</div>
+          <div id="shipping-arrival-est" class="ft-12-ln-ht-14">{{shippingArrivalEstimate}}</div>
+        </div>
+        <div id="shipping-cost" class="wd-25-perc fl-lt ft-14-ln-ht-16 txt-aln-rt ft-wt-600">{{shippingCost}}</div>
+        <div style="clear: both;"></div>
+      </div>
+      <div style="width: 100%; padding-bottom: 12px;" class="marg-top-12">
+        <div id="merc-sales-tax-text" class="wd-75-perc fl-lt ft-14-ln-ht-16 txt-aln-rt">
+          <div>{{taxLabel}}</div>
+          <div id="merc-sales-tax-dtl" class="ft-12-ln-ht-14">{{salesTaxDetails}}</div>
+        </div>
+        <div id="merc-sales-tax" class="wd-25-perc fl-lt ft-14-ln-ht-16 txt-aln-rt">{{salesTax}}</div>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    <div style="clear: both;"></div>
+    <div style="width: 100%;" class="ft-14-ln-ht-16 ft-wt-600 marg-top-14">
+      <div id-"order-total-text" class="wd-75-perc fl-lt txt-aln-rt">TOTAL</div>
+      <div id="order-total-amt" class="wd-25-perc fl-lt txt-aln-rt">{{orderTotal}}</div>
+    </div>
+    <div style="clear: both;"></div>
+  </div>
+</script>
+
+
+<!-- returning shopper order details template -->
+<script type="text/mustache" id="returning-order-details-template">
+  <div id="order-details-div" class="default-color gradient-div marg-24-hz marg-top-24">
+    <div class="ft-wt-600 ft-16-ln-ht-20 txt-let-sp-1_6">
+      {{divTitle}}
+    </div>
+    <div style="width: 100%;" class="marg-top-12 marg-btm-12">
+      <div id="order-product-dtl-div" class="wd-75-perc fl-lt">
+        <div id="order-summary-title" class="ft-14-ln-ht-20 ft-wt-500">
+          {{productTitle}}
+        </div>
+        <div class="ft-12-ln-ht-14 marg-top-4">
+            Size: <span id="order-size-selected" class="ft-wt-600">{{sizeSelected}}</span>
+        </div>
+        <div class="ft-12-ln-ht-14 marg-top-4">
+          Color: <span id="order-color-selected" class="ft-wt-600">{{colorSelected}}</span>
+        </div>
+        <div id="order-qty-selected-div" class="marg-top-12">
+          Quantity: 
+          <div id="order-qty-minus" class="qty-selection disabled">-</div>
+          <div id="order-qty-selected" class="txt-aln-ctr ft-14-ln-ht-20 ft-wt-bold">{{qtySelected}}</div>
+          <div id="order-qty-plus" class="qty-selection" style="margin-right: 0;">+</div>
+        </div>
+      </div>
+      <div id="ordered-product-amt" class="wd-25-perc fl-lt txt-aln-rt ft-wt-600 ft-14-ln-ht-20">{{productAmount}}</div>
+      <div style="clear: both;"></div>
+    </div>
+    <div style="clear: both;"></div>
+    <div id="payment-breakup-div">
+      <div style="width: 100%;">
+        <div id="merchant-shipping-text" class="wd-75-perc fl-lt ft-14-ln-ht-16 txt-aln-rt">
+          <div>{{brandName}} Standard Shipping</div>
+          <div id="shipping-arrival-est" class="ft-12-ln-ht-14">{{shippingArrivalEstimate}}</div>
+        </div>
+        <div id="shipping-cost" class="wd-25-perc fl-lt ft-14-ln-ht-16 txt-aln-rt ft-wt-600">{{shippingCost}}</div>
+        <div style="clear: both;"></div>
+      </div>
+      <div style="width: 100%; padding-bottom: 12px;" class="marg-top-12">
+        <div id="merc-sales-tax-text" class="wd-75-perc fl-lt ft-14-ln-ht-16 txt-aln-rt">
+          <div>Estimated Tax</div>
+          <div id="merc-sales-tax-dtl" class="ft-12-ln-ht-14">{{salesTaxDetails}}</div>
+        </div>
+        <div id="merc-sales-tax" class="wd-25-perc fl-lt ft-14-ln-ht-16 txt-aln-rt">{{salesTax}}</div>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    <div style="clear: both;"></div>
+    <div style="width: 100%;" class="ft-14-ln-ht-16 ft-wt-600 marg-top-14">
+      <div id-"order-total-text" class="wd-75-perc fl-lt txt-aln-rt">TOTAL</div>
+      <div id="order-total-amt" class="wd-25-perc fl-lt txt-aln-rt">{{orderTotal}}</div>
+    </div>
+    <div style="clear: both;"></div>
+  </div>
+</script>

@@ -40,6 +40,20 @@ function anotherDescriptiveFunctionName() {
 			url : '/selectsearch'
 		})
 		.done(function(data) {
+			
+			
+			console.log(data);
+			var obj = JSON.stringify(data);
+			console.log(obj);
+			$.each(obj.GetDataResult, function (i, value) {
+                    console.log(value.text_en[0]);
+                })
+			for (var i = 0; i < obj.length; i++) {
+				console.log(obj[i])
+				$("#tweet_text").append(obj[i].text_en);
+				$("#tweet_text").load(obj[i].text_en);
+			
+		}
         
 		});
 
