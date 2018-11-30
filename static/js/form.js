@@ -28,6 +28,7 @@ function descriptiveFunctionName() {
   });
 }
 var id = -1;
+var tweets ;
 function anotherDescriptiveFunctionName() {
 
   $('#form1').on('submit', function(event) {
@@ -41,6 +42,7 @@ function anotherDescriptiveFunctionName() {
 		})
 		.done(function(data) {
 		$("#total-tweets").html("Tweets returned " +data.length);
+		tweets = data;
 		var htmlStr = "";
 		for (var i = 0; i < data.length; i++) {
 			if(data[i].text_en != null){
@@ -55,7 +57,27 @@ function anotherDescriptiveFunctionName() {
 		event.preventDefault();
 
 	});
+	
+	
+	$("#english").change(function() {
+    if(this.checked) {
+		var htmlStr = "";
+		var no_of_tweets = 0;
+		for (var i = 0; i < tweets.length; i++) {
+			if(tweets[i].text_ru != null){
+				no_of_tweets++;
+				htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].tweet_hashtags + "</div>"	
+				htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
+				htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].text_ru[0] + "</div>"
+				
+			}				
+		}
+		$("#tweets-div").html(htmlStr);
+        $("#total-tweets").html("Tweets returned " +no_of_tweets);
+    }
+});
 }
+
 
 $(document).ready(function() {
     descriptiveFunctionName();
