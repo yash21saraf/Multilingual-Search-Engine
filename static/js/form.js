@@ -44,10 +44,13 @@ function anotherDescriptiveFunctionName() {
         console.log(data) ;
 		var htmlStr = "";
 		for (var i = 0; i < data.length; i++) {
-				console.log(data[i])
-				htmlStr = htmlStr + "<div class='tweet_text'> " + data[i].text_en + "</div>"			
+			if(data[i].text_en != null){
+				console.log(data[i].text_en[0])
+				htmlStr = htmlStr + "<div class='tweet_text'> " + data[i].text_en[0] + "</div>"	
+			}				
 		}
 		$("#tweets-div").html(htmlStr);
+		$("#tweets-div").show();
 		});
 
 	
