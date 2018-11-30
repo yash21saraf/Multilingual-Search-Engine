@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>GoogleClone</title>
+	<title>Welcome</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
@@ -12,15 +12,20 @@
 	
 </head>
 <body>
-	<div class="column left">
-  <div class="centered">
-    <h4>Language Filter</h4>
-    <input type="checkbox" name="english" id="english"> English <br>
-	<input type="checkbox" name="russian" id="ussian" > Russian <br>
-  </div>
-</div>
+	<div class="w3-light-grey"> 
+		<div id="lang-filter" class="left">
+			<div class="centered">
+				<h4>Language Filter</h4>
+				<input type="checkbox" name="english" id="english"> English <br>
+				<input type="checkbox" name="hindi" id="hindi"> Hindi <br>
+				<input type="checkbox" name="russian" id="russian" > Russian <br>
+				<input type="checkbox" name="spanish" id="spanish" > Spanish <br>
+				<input type="checkbox" name="thai" id="thai"> Thai <br>	
+			</div>
+		</div>
+	</div>
 
-<div class="column middle"><br>
+<div class="middle"><br>
 	<form id = "form1">
       <div class="form-group">
        <input type="text" class="form-control"  style="width:60%;" id="search_text">
@@ -31,10 +36,9 @@
 	<br></br>
 	<div id = "total-tweets"></div>
 	<div id = "tweets-div"></div>
-	
 </div>
 
-<div class="column right">
+<div class="right">
   <div class="centered">
     <h2>John Doe</h2>
     <p>Some text here too.</p>

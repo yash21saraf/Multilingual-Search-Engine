@@ -27,9 +27,10 @@ function descriptiveFunctionName() {
 
   });
 }
+
 var id = -1;
 var tweets ;
-function anotherDescriptiveFunctionName() {
+function returnSearchResults() {
 
   $('#form1').on('submit', function(event) {
   console.log("form1 executed") ;
@@ -41,45 +42,52 @@ function anotherDescriptiveFunctionName() {
 			url : '/selectsearch'
 		})
 		.done(function(data) {
-		$("#total-tweets").html("Tweets returned " +data.length);
 		tweets = data;
 		var htmlStr = "";
-		for (var i = 0; i < data.length; i++) {
-			if(data[i].text_en != null){
-				console.log(data[i].text_en[0])
-				htmlStr = htmlStr + "<div class='tweet_user'> " + data[i].tweet_hashtags + "</div>"	
-				htmlStr = htmlStr + "<div class='tweet_id'> " + data[i].id + "</div>"	
-				htmlStr = htmlStr + "<div class='tweet_text'> " + data[i].text_en[0] + "</div>"	
-			}				
-		}
-		$("#tweets-div").html(htmlStr);
-		});
-		event.preventDefault();
-
-	});
-	
-	
-	$("#english").change(function() {
-    if(this.checked) {
-		var htmlStr = "";
-		var no_of_tweets = 0;
-		for (var i = 0; i < tweets.length; i++) {
-			if(tweets[i].text_ru != null){
-				no_of_tweets++;
+		for (var i = 0; i <tweets.length; i++) {
+			if(tweets[i].text_en != null){
+				console.log(tweets[i].text_en[0])
 				htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].tweet_hashtags + "</div>"	
 				htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
-				htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].text_ru[0] + "</div>"
-				
+				htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].text_en[0] + "</div>"	
 			}				
 		}
+		
+		if(tweets.length >0){
 		$("#tweets-div").html(htmlStr);
-        $("#total-tweets").html("Tweets returned " +no_of_tweets);
-    }
-});
+		$("#total-tweets").html("Tweets returned " +tweets.length);
+		}else{		
+		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>" 
+		$("#tweets-div").html(htmlStr);	
+		$("#total-tweets").hide();
+		}
+		
+		});
+		event.preventDefault();
+		
+		});	
+	
+	$("#english").change(function() {
+		if(this.checked) {
+			var htmlStr = "";
+			var no_of_tweets = 0;
+			for (var i = 0; i < tweets.length; i++) {
+				if(tweets[i].text_ru != null){
+					no_of_tweets++;
+					htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].tweet_hashtags + "</div>"	
+					htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
+					htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].text_ru[0] + "</div>"
+					
+				}				
+			}
+			$("#tweets-div").html(htmlStr);
+			$("#total-tweets").html("Tweets returned " +no_of_tweets);
+		}
+	});
 }
 
 
+
 $(document).ready(function() {
-    descriptiveFunctionName();
-    anotherDescriptiveFunctionName();
+    returnSearchResults();
 });
