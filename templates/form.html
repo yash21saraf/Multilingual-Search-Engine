@@ -2,30 +2,48 @@
 <html>
 <head>
 	<title>GoogleClone</title>
-
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
 	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
-		<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+	
 </head>
 <body>
-    <div class="container" id = "pubsubform">
-        <br><br>
-  <form id = "form1">
-      <div class="form-group">
-      <label for="usr">Name:</label>
-      <input type="text" class="form-control" id="search_text">
-    </div>
-	<br><br>
-		<button type="submit" class="btn btn-default">Submit</button>
-
-  </form>
-
+	<div class="column left">
+  <div class="centered">
+    <h2>Jane Flex</h2>
+    <p>Some text.</p>
+  </div>
 </div>
+
+<div class="column middle"><br>
+	<form id = "form1">
+      <div class="form-group">
+       <input type="text" class="form-control"  style="width:60%;" id="search_text">
+      </div>
+	   <br>
+	 <button type="submit" class="btn btn-default">Search</button>
+    </form>
+	
+	<br>
+	<br>
+	<div id = "tweets_div">tweet_text</div>
+	
+</div>
+
+<div class="column right">
+  <div class="centered">
+    <h2>John Doe</h2>
+    <p>Some text here too.</p>
+  </div>
+</div>
+
 <!--
 	<div class="container" id = "publisherform" style="display:none;">
 		<br><br><br><br>

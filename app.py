@@ -22,10 +22,12 @@ def selectsearch():
 	query = request.form['search_text']
 	print(query)
 	query = urllib.parse.quote_plus(query)
-	url = 'http://localhost:8983/solr/vsm/select?indent=on&q='+ query + '&wt=json'
+	url = 'http://localhost:8983/solr/VSM/select?indent=on&q='+ query + '&wt=json'
 	data = urllib.request.urlopen(url)
-	docs = json.load(data)['response']['docs']
-	print(str(docs))
+	content = data.read()
+	docs = json.loads(content.decode('utf-8'))
+	docs = docs['response']['docs']
+	print(str(docs).encode('utf-8'))
 	return jsonify(docs)
 
 

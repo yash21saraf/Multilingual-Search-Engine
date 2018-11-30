@@ -40,9 +40,18 @@ function anotherDescriptiveFunctionName() {
 			url : '/selectsearch'
 		})
 		.done(function(data) {
+			console.log("started Execution") ;
         console.log(data) ;
+		var htmlStr = "";
+		for (var i = 0; i < data.length; i++) {
+				console.log(data[i])
+				htmlStr = htmlStr + "<div class='tweet_text'> " + data[i].text_en + "</div>"			
+		}
+		$("#tweets-div").html(htmlStr);
 		});
 
+	
+		
 		event.preventDefault();
 
 	});
