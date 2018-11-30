@@ -7,22 +7,47 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
 	<script src="{{ url_for('static', filename='js/form.js') }}"></script>
-	
+	<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 <body>
 	<div class="w3-light-grey"> 
+		<div id="topics-filter" class="left">
+			<div class="centered">
+				<h4>Topics Filter</h4>
+				<input type="checkbox" name="crime" id="crime"> Crime  <br>
+				<input type="checkbox" name="environment" id="environment"> Environment <br>
+				<input type="checkbox" name="infra" id="infra"> Infrastructure  <br>
+				<input type="checkbox" name="politics" id="politics"> Politics <br>
+				<input type="checkbox" name="unrest" id="unrest" > Social Unrest  <br>	
+			</div>
+		</div>
+		<br> <br> 
+		<div id="city-filter" class="left">
+			<div class="centered">
+				<h4>City Filter</h4>
+				<input type="checkbox" name="bangkok" id="bangkok"> Bangkok <br>
+				<input type="checkbox" name="delhi" id="delhi"> Delhi <br>
+				<input type="checkbox" name="mexico" id="mexico" > Mexico City <br>	
+				<input type="checkbox" name="nyc" id="nyc"> New York City (NYC) <br>
+				<input type="checkbox" name="paris" id="paris" > Paris <br>
+			</div>
+		</div>
+		
+		<br> <br>
 		<div id="lang-filter" class="left">
 			<div class="centered">
 				<h4>Language Filter</h4>
 				<input type="checkbox" name="english" id="english"> English <br>
+				<input type="checkbox" name="french" id="french" > French <br>
 				<input type="checkbox" name="hindi" id="hindi"> Hindi <br>
-				<input type="checkbox" name="russian" id="russian" > Russian <br>
 				<input type="checkbox" name="spanish" id="spanish" > Spanish <br>
 				<input type="checkbox" name="thai" id="thai"> Thai <br>	
 			</div>
 		</div>
+		
+		
 	</div>
 
 <div class="middle"><br>
@@ -41,7 +66,7 @@
 <div class="right">
   <div class="centered">
     <h2>John Doe</h2>
-    <p>Some text here too.</p>
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
   </div>
 </div>
 
