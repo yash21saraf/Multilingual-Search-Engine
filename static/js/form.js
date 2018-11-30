@@ -40,21 +40,18 @@ function anotherDescriptiveFunctionName() {
 			url : '/selectsearch'
 		})
 		.done(function(data) {
-			console.log("started Execution") ;
-        console.log(data) ;
+		$("#total-tweets").html("Tweets returned " +data.length);
 		var htmlStr = "";
 		for (var i = 0; i < data.length; i++) {
 			if(data[i].text_en != null){
 				console.log(data[i].text_en[0])
+				htmlStr = htmlStr + "<div class='tweet_user'> " + data[i].tweet_hashtags + "</div>"	
+				htmlStr = htmlStr + "<div class='tweet_id'> " + data[i].id + "</div>"	
 				htmlStr = htmlStr + "<div class='tweet_text'> " + data[i].text_en[0] + "</div>"	
 			}				
 		}
 		$("#tweets-div").html(htmlStr);
-		$("#tweets-div").show();
 		});
-
-	
-		
 		event.preventDefault();
 
 	});

@@ -30,3 +30,25 @@
 .middle {
   width: 50%;
 }
+
+.tweet_user{
+	color:blue;
+	font-size:16px;
+}
+
+.tweet_id{
+	color:gray;
+	font-size:10px;
+}
+
+.tweet_text{
+	color:black;
+	font-size:16px;
+	padding-bottom: 20px;
+}
+
+#total-tweets{
+	color:black;
+	font-weight:bold;
+	font-size:15px;
+}
