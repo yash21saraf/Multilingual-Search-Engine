@@ -46,33 +46,30 @@ function returnSearchResults() {
 		for (var i = 0; i <tweets.length; i++) {
 			if(tweets[i].tweet_text != null){
 				var tweetUrl = "https://twitter.com/statuses/"+tweets[i].id;	
-				"<div id='tweet-url'></div>"	
-				htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"	
-				htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
-				htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text + "</div>"	
-				$("#tweet-url").attr( "url", tweetUrl );
+				// "<div id='tweet-url'></div>"	
+				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
+				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"	
+				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"	
+				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"	
+				htmlStr = htmlStr + "</div>"
 			}				
 		}
-
 
 		if(tweets.length >0){
 		$("#tweets-div").html(htmlStr);
 		$("#total-tweets").html("Tweets returned " +tweets.length);
 		$("#chartContainer").CanvasJSChart(locationChart);
 
-	// 	$('#tweet-url').click(function() {
-	// 		console.log("clicked me");
-	// 		var text = $(this).attr('value');
-	// 		console.log(text);
-	// });
-
+		$(".tweet-cont").on("click", function twitterHandle(e){	
+			var newTwitterURL = $(e.target).data("url");
+			window.open(newTwitterURL, "_blank");
+		});
 		}else{		
 		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>" 
 		$("#tweets-div").html(htmlStr);	
 		$("#total-tweets").hide();
 		$("#chartContainer").hide();
-		}
-		
+		}	
 		});
 		event.preventDefault();
 		
@@ -104,13 +101,12 @@ function returnSearchResults() {
 
 }
 
-function twitterHandle(){	
-	console.log("clicked")
-
-	$("#tweet-url").attr("url");
-	var te = $('#tweet-url').attr("url");
-	console.log(te)
-}	
+// function twitterHandle(){	
+// 	console.log("clicked")
+// 	$("#tweet-url").attr("url");
+// 	var te = $('#tweet-url').attr("url");
+// 	console.log(te)
+// }	
 
 
 var dps = [{ y: 3, label: "Sweden" },
