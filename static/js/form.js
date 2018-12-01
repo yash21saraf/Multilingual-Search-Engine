@@ -45,13 +45,15 @@ function returnSearchResults() {
 		tweets = data;
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
-			if(tweets[i].text_en != null || tweets[i].text_ru != null){
-				htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].tweet_hashtags + "</div>"	
+			if(tweets[i].tweet_text != null){
+				a = "tweet" + i ;
+				htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"	
 				htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
-				htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].text_en + "</div>"	
+				htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text + "</div>"
+				htmlStr = htmlStr + "<div id = a> </div>"	
 			}				
 		}
-		
+		console.log(htmlStr)
 		if(tweets.length >0){
 		$("#tweets-div").html(htmlStr);
 		$("#total-tweets").html("Tweets returned " +tweets.length);
@@ -72,11 +74,11 @@ function returnSearchResults() {
 			var htmlStr = "";
 			var no_of_tweets = 0;
 			for (var i = 0; i < tweets.length; i++) {
-				if(tweets[i].text_ru != null){
+				if(tweets[i].text_en != null){
 					no_of_tweets++;
-					htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].tweet_hashtags + "</div>"	
+					htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"	
 					htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
-					htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].text_ru[0] + "</div>"
+					htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text[0] + "</div>"
 					
 				}				
 			}
