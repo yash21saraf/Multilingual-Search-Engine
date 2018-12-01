@@ -8,11 +8,18 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="{{ url_for('static', filename='js/form.js') }}"></script>
-	<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+   <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.simplePagination.js')}}"></script>
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/responsive.css') }}">
+    <style>
+            
+        </style>
+   
 </head>
 <body>
-	<div class="w3-light-grey"> 
+<div id ="container">
+	<div class="left1"> 
 		<div id="topics-filter" class="left">
 			<div class="centered">
 				<h4>Topics Filter</h4>
@@ -65,8 +72,7 @@
 
 <div class="right">
   <div class="centered">
-    <h2>John Doe</h2>
-    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+    <div id="chartContainer" style="height: inherit; width: 100%;"></div>
   </div>
 </div>
 
@@ -102,5 +108,6 @@
         };
         }
     </script>
+</div>
 </body>
 </html>

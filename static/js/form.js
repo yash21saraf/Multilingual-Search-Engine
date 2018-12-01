@@ -45,17 +45,17 @@ function returnSearchResults() {
 		tweets = data;
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
-			if(tweets[i].text_en != null){
-				console.log(tweets[i].text_en[0])
+			if(tweets[i].text_en != null || tweets[i].text_ru != null){
 				htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].tweet_hashtags + "</div>"	
 				htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
-				htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].text_en[0] + "</div>"	
+				htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].text_en + "</div>"	
 			}				
 		}
 		
 		if(tweets.length >0){
 		$("#tweets-div").html(htmlStr);
 		$("#total-tweets").html("Tweets returned " +tweets.length);
+		$("#chartContainer").CanvasJSChart(options);
 		}else{		
 		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>" 
 		$("#tweets-div").html(htmlStr);	
@@ -82,41 +82,33 @@ function returnSearchResults() {
 			}
 			$("#tweets-div").html(htmlStr);
 			$("#total-tweets").html("Tweets returned " +no_of_tweets);
-			$("#chartContainer").getJSON("https://canvasjs.com/data/gallery/javascript/daily-sales-data.json", addData);
-			addData();
 		}
 	});
 }
 
+var location_data = [{"id":"Delhi","text":36},{"id":"Bangok","text":36}, {"id":"Mexico City","text":7}] ;
+for (var i =0; i< location_data.length ;i++) {
+   console.log(location_data[i].id);
+   console.log(location_data[i].text);
+}
 
-var dataPoints = [];
+var dps = [{x: "Delhi", y: 10}, {x: "Bangkok", y: 40}, {x: "Mexico City", y: 50}];
 
-var chart = new CanvasJS.Chart("#chartContainer", {
-	animationEnabled: true,
-	theme: "light2",
+var options = {
 	title: {
-		text: "Daily Sales Data"
-	},
-	axisY: {
-		title: "Units",
-		titleFontSize: 24
+		text: "Tweets segregation based on locations"
 	},
 	data: [{
-		type: "column",
-		yValueFormatString: "#,### Units",
-		dataPoints: dataPoints
+			type: "pie",
+			startAngle: 45,
+			showInLegend: "true",
+			legendText: "{label}",
+			indexLabel: "{label} ({y})",
+			yValueFormatString:"#,##0.#"%"",
+			dataPoints: dps
 	}]
-});
+};
 
-function addData(data) {
-	for (var i = 0; i < data.length; i++) {
-		dataPoints.push({
-			x: new Date(data[i].date),
-			y: data[i].units
-		});
-	}
-	chart.render();
-}
 
 
 $(document).ready(function() {
