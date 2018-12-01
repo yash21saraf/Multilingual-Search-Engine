@@ -31,7 +31,6 @@ function descriptiveFunctionName() {
 var id = -1;
 var tweets ;
 function returnSearchResults() {
-
   $('#form1').on('submit', function(event) {
   console.log("form1 executed") ;
 		$.ajax({
@@ -46,11 +45,9 @@ function returnSearchResults() {
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
 			if(tweets[i].tweet_text != null){
-				a = "tweet" + i ;
 				htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"	
 				htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
-				htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text + "</div>"
-				htmlStr = htmlStr + "<div id = a> </div>"	
+				htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text + "</div>"	
 			}				
 		}
 
@@ -97,19 +94,22 @@ function returnSearchResults() {
 			}
 			$("#tweets-div").html(htmlStr);
 			$("#total-tweets").html("Tweets returned " +no_of_tweets);
+			$("#chartContainer").CanvasJSChart(locationChart);
 		}
 	});
+
+
+	$("#mySelect").change(function() {
+		var val = ""+location;
+		updateCharts(location)
+	});
+
 }
 
-var location_data = [{"id":"Delhi","text":36},{"id":"Bangok","text":36}, {"id":"Mexico City","text":7}] ;
-for (var i =0; i< location_data.length ;i++) {
-   console.log(location_data[i].id);
-   console.log(location_data[i].text);
-}
+
 
 var dps = [{x: "Delhi", y: 10}, {x: "Bangkok", y: 40}, {x: "Mexico City", y: 50}];
-
-var options = {
+var locationChart = {
 	title: {
 		text: "Tweets segregation based on locations"
 	},
@@ -123,6 +123,33 @@ var options = {
 			dataPoints: dps
 	}]
 };
+
+
+var languageData = [{x: "Delhi", y: 80}, {x: "Bangkok", y: 400}];
+var languageChart = {
+	title: {
+		text: "Tweets segregation based on Languages"
+	},
+	data: [{
+			type: "pie",
+			startAngle: 45,
+			showInLegend: "true",
+			legendText: "{label}",
+			indexLabel: "{label} ({y})",
+			yValueFormatString:"#,##0.#"%"",
+			dataPoints: languageData
+	}]
+};
+
+function updateCharts(value){	
+	console.log(value)
+if(value === "location") {
+$("#chartContainer").CanvasJSChart(locationChart);
+}else if(value === "language")
+{
+	$("#chartContainer").CanvasJSChart(languageChart);
+}
+}
 
 
 

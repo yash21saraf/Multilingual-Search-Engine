@@ -72,13 +72,15 @@
 
 <div class="right">
   <div class="centered">
-		<h4>Analyse</h4>
-		<br>
-		<select>
-				<option value="location">location</option>
+		<center><h4>Analyse</h4> </center>
+		<center>
+		<select id="mySelect" onchange="updateCharts(this.value)">
+				<option selected="location">location</option>
 				<option value="language">language</option>
 				<option value="topics">topics</option>
 		</select>
+	   </center> 
+	   <br>
     <div id="chartContainer" style="height: inherit; width: 100%;"></div>
   </div>
 </div>
@@ -102,19 +104,12 @@
 		</form>
 		<br>
 	</div> -->
-    <script>
-        function subscriberFunc(){
-            var targetContainer = document.getElementById("subscriptiondata");
-            var userid = document.getElementById('userid').value;
-            console.log(userid);
-            var url = "/stream?userid="+userid;
-            var eventSource = new EventSource(url);
-            eventSource.onmessage = function(e) {
-                console.log(e.data);
-                targetContainer.innerHTML = e.data;
-        };
-        }
-    </script>
+	<script type="text/javascript">
+		window.addEventListener("load",function(){
+			document.getElementById("mySelect").innerHTML;
+		},false);
+	</script>
+
 </div>
 </body>
 </html>
