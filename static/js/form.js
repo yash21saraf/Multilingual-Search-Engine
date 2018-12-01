@@ -45,33 +45,32 @@ function returnSearchResults() {
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
 			if(tweets[i].tweet_text != null){
+				var tweetUrl = "https://twitter.com/statuses/"+tweets[i].id;	
+				"<div id='tweet-url'></div>"	
 				htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"	
 				htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
 				htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text + "</div>"	
+				$("#tweet-url").attr( "url", tweetUrl );
 			}				
 		}
 
-	// 	for(var i=0; i < tweets.length; i++){
-	// 		var newDiv = document.createElement('div');
-	// 		newDiv.id = 'r'+i;
-	// 		newDiv.className = 'tweet_user';
-	// 		newDiv.className = 'tweet_id';
-	// 		newDiv.className = 'tweet_text';
-	// 		toAdd.appendChild(newDiv);
-	//  }
-
-	//  for(var i=0; i < tweets.length; i++){
-	// 	id = 'r'+i;
-	// 	document.getElementById(id).innerHTML
 
 		if(tweets.length >0){
 		$("#tweets-div").html(htmlStr);
 		$("#total-tweets").html("Tweets returned " +tweets.length);
 		$("#chartContainer").CanvasJSChart(locationChart);
+
+	// 	$('#tweet-url').click(function() {
+	// 		console.log("clicked me");
+	// 		var text = $(this).attr('value');
+	// 		console.log(text);
+	// });
+
 		}else{		
 		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>" 
 		$("#tweets-div").html(htmlStr);	
 		$("#total-tweets").hide();
+		$("#chartContainer").hide();
 		}
 		
 		});
@@ -88,8 +87,7 @@ function returnSearchResults() {
 					no_of_tweets++;
 					htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"	
 					htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
-					htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text[0] + "</div>"
-					
+					htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text[0] + "</div>"					
 				}				
 			}
 			$("#tweets-div").html(htmlStr);
@@ -105,6 +103,15 @@ function returnSearchResults() {
 	});
 
 }
+
+function twitterHandle(){	
+	console.log("clicked")
+
+	$("#tweet-url").attr("url");
+	var te = $('#tweet-url').attr("url");
+	console.log(te)
+}	
+
 
 var dps = [{ y: 3, label: "Sweden" },
 { y: 7, label: "Taiwan" },
