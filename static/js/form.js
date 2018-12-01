@@ -67,7 +67,7 @@ function returnSearchResults() {
 		if(tweets.length >0){
 		$("#tweets-div").html(htmlStr);
 		$("#total-tweets").html("Tweets returned " +tweets.length);
-		$("#chartContainer").CanvasJSChart(options);
+		$("#chartContainer").CanvasJSChart(locationChart);
 		}else{		
 		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>" 
 		$("#tweets-div").html(htmlStr);	
@@ -106,26 +106,38 @@ function returnSearchResults() {
 
 }
 
-
-
-var dps = [{x: "Delhi", y: 10}, {x: "Bangkok", y: 40}, {x: "Mexico City", y: 50}];
+var dps = [{ y: 3, label: "Sweden" },
+{ y: 7, label: "Taiwan" },
+{ y: 5, label: "Russia" },
+{ y: 9, label: "Spain" },
+{ y: 7, label: "Brazil" },
+{ y: 7, label: "India" },
+{ y: 9, label: "Italy" }];
 var locationChart = {
+	animationEnabled: true,
 	title: {
-		text: "Tweets segregation based on locations"
+		text: "Tweets segregation bar "
+	},
+	axisX:{
+		interval: 1
+	},
+	axisY2:{
+		interlacedColor: "rgba(1,77,101,.2)",
+		gridColor: "rgba(1,77,101,.1)",
+		title: "Number of Companies"
 	},
 	data: [{
-			type: "pie",
-			startAngle: 45,
-			showInLegend: "true",
-			legendText: "{label}",
-			indexLabel: "{label} ({y})",
-			yValueFormatString:"#,##0.#"%"",
-			dataPoints: dps
-	}]
+		type: "bar",
+		name: "companies",
+		axisYType: "secondary",
+		color: "#014D65",
+		dataPoints: dps
+}]
+
 };
 
 
-var languageData = [{x: "Delhi", y: 80}, {x: "Bangkok", y: 400}];
+var languageData =  [{"label":"Hindi","y":"20"},{"label":"Thai","y":"50"},{"label":"English","y":"30"}];
 var languageChart = {
 	title: {
 		text: "Tweets segregation based on Languages"
@@ -135,7 +147,7 @@ var languageChart = {
 			startAngle: 45,
 			showInLegend: "true",
 			legendText: "{label}",
-			indexLabel: "{label} ({y})",
+			indexLabel: "{label}",
 			yValueFormatString:"#,##0.#"%"",
 			dataPoints: languageData
 	}]
