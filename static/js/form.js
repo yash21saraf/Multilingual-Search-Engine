@@ -53,7 +53,20 @@ function returnSearchResults() {
 				htmlStr = htmlStr + "<div id = a> </div>"	
 			}				
 		}
-		console.log(htmlStr)
+
+	// 	for(var i=0; i < tweets.length; i++){
+	// 		var newDiv = document.createElement('div');
+	// 		newDiv.id = 'r'+i;
+	// 		newDiv.className = 'tweet_user';
+	// 		newDiv.className = 'tweet_id';
+	// 		newDiv.className = 'tweet_text';
+	// 		toAdd.appendChild(newDiv);
+	//  }
+
+	//  for(var i=0; i < tweets.length; i++){
+	// 	id = 'r'+i;
+	// 	document.getElementById(id).innerHTML
+
 		if(tweets.length >0){
 		$("#tweets-div").html(htmlStr);
 		$("#total-tweets").html("Tweets returned " +tweets.length);
