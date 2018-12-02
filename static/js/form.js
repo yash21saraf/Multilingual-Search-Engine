@@ -1,113 +1,324 @@
-function descriptiveFunctionName() {
 
-  $('#form2').on('submit', function(event) {
-  console.log("form 2 executed") ;
-    $.ajax({
-      data : {
-        content : $('#content').val(),
-          topic_2 : $('#topic_2 option:selected').val()
-      },
-      type : 'POST',
-      url : '/publisher'
-    })
-    .done(function(data) {
-
-      if (data.error) {
-        $('#errorAlert').text(data.error).show();
-        $('#successAlert').hide();
-      }
-      else {
-        $('#successAlert').text(data.content).show();
-        $('#errorAlert').hide();
-      }
-
-    });
-
-    event.preventDefault();
-
-  });
-}
+var langset = new Set();
+var topicset = new Set();
+var cityset = new Set();
 
 var id = -1;
 var tweets ;
+
+function descriptiveFunctionName() {
+
+  console.log("form 2 executed") ;
+    $.ajax({
+      data : {
+        search_text: $('#search_text').val() ,
+        topicset: Array.from(topicset).join(','),
+        langset: Array.from(langset).join(','),
+        cityset: Array.from(cityset).join(',')
+      },
+      type : 'POST',
+      url : '/selectsearch'
+    })
+    .done(function(data) {
+      if(data.isquerynull == "true"){
+        console.log("Query was not null")
+		    tweets = data.docs;
+		    var htmlStr = "";
+		    for (var i = 0; i <tweets.length; i++) {
+			if(tweets[i].tweet_text != null){
+				var tweetUrl = "https://twitter.com/statuses/"+tweets[i].id;
+				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
+				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
+				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
+				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"
+				htmlStr = htmlStr + "</div>"
+			  }
+		  }
+
+		if(tweets.length > 0){
+      console.log("length greater than 0 ")
+
+    $("#tweets-div").html(htmlStr);
+    $("#total-tweets").show();
+    $("#chartContainer").show();
+		$("#total-tweets").html("Tweets returned " + tweets.length);
+		$("#chartContainer").CanvasJSChart(locationChart);
+
+		$(".tweet-cont").on("click", function twitterHandle(e){
+			var newTwitterURL = $(e.target).data("url");
+			window.open(newTwitterURL, "_blank");
+		});
+
+		}
+    else{
+  		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>"
+  		$("#tweets-div").html(htmlStr);
+  		$("#total-tweets").hide();
+  		$("#chartContainer").hide();
+		}
+  }
+		});
+	}
+
 function returnSearchResults() {
   $('#form1').on('submit', function(event) {
   console.log("form1 executed") ;
 		$.ajax({
 			data : {
-                search_text: $('#search_text').val()
+          search_text: $('#search_text').val() ,
+          topicset: Array.from(topicset).join(','),
+          langset: Array.from(langset).join(','),
+          cityset: Array.from(cityset).join(',')
 			},
 			type : 'POST',
 			url : '/selectsearch'
 		})
 		.done(function(data) {
-		tweets = data;
+      if(data.isquerynull == "true"){
+        console.log("Query was not null")
+		tweets = data.docs;
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
 			if(tweets[i].tweet_text != null){
-				var tweetUrl = "https://twitter.com/statuses/"+tweets[i].id;	
-				// "<div id='tweet-url'></div>"	
+				var tweetUrl = "https://twitter.com/statuses/"+tweets[i].id;
+				// "<div id='tweet-url'></div>"
 				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
-				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"	
-				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"	
-				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"	
+				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
+				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
+				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"
 				htmlStr = htmlStr + "</div>"
-			}				
+			}
 		}
 
 		if(tweets.length >0){
 		$("#tweets-div").html(htmlStr);
+    $("#total-tweets").show();
+    $("#chartContainer").show();
 		$("#total-tweets").html("Tweets returned " +tweets.length);
 		$("#chartContainer").CanvasJSChart(locationChart);
 
-		$(".tweet-cont").on("click", function twitterHandle(e){	
+		$(".tweet-cont").on("click", function twitterHandle(e){
 			var newTwitterURL = $(e.target).data("url");
 			window.open(newTwitterURL, "_blank");
 		});
-		}else{		
-		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>" 
-		$("#tweets-div").html(htmlStr);	
+		}else{
+		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>"
+		$("#tweets-div").html(htmlStr);
 		$("#total-tweets").hide();
 		$("#chartContainer").hide();
-		}	
+		}
+  }
 		});
 		event.preventDefault();
-		
-		});	
-	
-	$("#english").change(function() {
-		if(this.checked) {
-			var htmlStr = "";
-			var no_of_tweets = 0;
-			for (var i = 0; i < tweets.length; i++) {
-				if(tweets[i].text_en != null){
-					no_of_tweets++;
-					htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"	
-					htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
-					htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text[0] + "</div>"					
-				}				
-			}
-			$("#tweets-div").html(htmlStr);
-			$("#total-tweets").html("Tweets returned " +no_of_tweets);
-			$("#chartContainer").CanvasJSChart(locationChart);
-		}
-	});
-
-
-	$("#mySelect").change(function() {
-		var val = ""+location;
-		updateCharts(location)
-	});
-
+		});
 }
 
-// function twitterHandle(){	
-// 	console.log("clicked")
-// 	$("#tweet-url").attr("url");
-// 	var te = $('#tweet-url').attr("url");
-// 	console.log(te)
-// }	
+function onclickchecker(){
+  $("#english").change(function() {
+    if(this.checked) {
+      console.log("English Selected") ;
+      updatelanguage("add" , "en", "lang") ;
+    }
+    else{
+      console.log("English unelected") ;
+      updatelanguage("remove" , "en", "lang") ;
+    }
+  });
 
+  $("#hindi").change(function() {
+    if(this.checked) {
+      console.log("hindi Selected") ;
+      updatelanguage("add" , "hi", "lang") ;
+    }
+    else{
+      console.log("hindi unelected") ;
+      updatelanguage("remove" , "hi", "lang") ;
+    }
+  });
+
+  $("#french").change(function() {
+    if(this.checked) {
+      console.log("french Selected") ;
+      updatelanguage("add" , "fr", "lang") ;
+    }
+    else{
+      console.log("french unelected") ;
+      updatelanguage("remove" , "fr", "lang") ;
+    }
+  });
+
+  $("#spanish").change(function() {
+    if(this.checked) {
+      console.log("spanish Selected") ;
+      updatelanguage("add" , "es", "lang") ;
+    }
+    else{
+      console.log("spanish unelected") ;
+      updatelanguage("remove" , "es", "lang") ;
+    }
+  });
+
+  $("#thai").change(function() {
+    if(this.checked) {
+      console.log("thai Selected") ;
+      updatelanguage("add" , "th", "lang") ;
+    }
+    else{
+      console.log("thai unelected") ;
+      updatelanguage("remove" , "th", "lang") ;
+    }
+  });
+
+  $("#crime").change(function() {
+    if(this.checked) {
+      console.log("Crime Selected") ;
+      updatelanguage("add" , "crime", "topic") ;
+    }
+    else{
+      console.log("crime unelected") ;
+      updatelanguage("remove" , "crime", "topic") ;
+    }
+  });
+
+  $("#environment").change(function() {
+    if(this.checked) {
+      console.log("environment Selected") ;
+      updatelanguage("add" , "environment", "topic") ;
+    }
+    else{
+      console.log("environment unelected") ;
+      updatelanguage("remove" , "environment", "topic") ;
+    }
+  });
+
+  $("#infra").change(function() {
+    if(this.checked) {
+      console.log("infra Selected") ;
+      updatelanguage("add" ,"infra", "topic") ;
+    }
+    else{
+      console.log("infra unelected") ;
+      updatelanguage("remove" ,"infra", "topic") ;
+    }
+  });
+
+  $("#politics").change(function() {
+    if(this.checked) {
+      console.log("politics Selected") ;
+      updatelanguage("add" ,"politics", "topic") ;
+    }
+    else{
+      console.log("politics unelected") ;
+      updatelanguage("remove", "politics", "topic") ;
+    }
+  });
+
+  $("#unrest").change(function() {
+    if(this.checked) {
+      console.log("unrest Selected") ;
+      updatelanguage("add","social unrest", "topic") ;
+    }
+    else{
+      console.log("unrest unelected") ;
+      updatelanguage("remove" ,"social unrest", "topic") ;
+    }
+  });
+
+
+    $("#bangkok").change(function() {
+      if(this.checked) {
+        console.log("bangkok Selected") ;
+        updatelanguage("add" , "bangkok", "place") ;
+      }
+      else{
+        console.log("bangkok unelected") ;
+        updatelanguage("remove" , "bangkok", "place") ;
+      }
+    });
+
+    $("#delhi").change(function() {
+      if(this.checked) {
+        console.log("delhi Selected") ;
+        updatelanguage("add" ,"delhi", "place") ;
+      }
+      else{
+        console.log("delhi unelected") ;
+        updatelanguage("remove" ,"delhi", "place") ;
+      }
+    });
+
+    $("#mexico").change(function() {
+      if(this.checked) {
+        console.log("mexico Selected") ;
+        updatelanguage("add" ,"mexico city", "place") ;
+      }
+      else{
+        console.log("politics unelected") ;
+        updatelanguage("remove", "mexico city", "place") ;
+      }
+    });
+
+    $("#nyc").change(function() {
+      if(this.checked) {
+        console.log("nyc Selected") ;
+        updatelanguage("add","nyc", "place") ;
+      }
+      else{
+        console.log("nyc unelected") ;
+        updatelanguage("remove" ,"nyc", "place") ;
+      }
+    });
+
+    $("#paris").change(function() {
+      if(this.checked) {
+        console.log("paris Selected") ;
+        updatelanguage("add","paris", "place") ;
+      }
+      else{
+        console.log("paris unelected") ;
+        updatelanguage("remove" ,"paris", "place") ;
+      }
+    });
+
+    $("#mySelect").change(function() {
+      var val = ""+location;
+      updateCharts(location)
+    });
+}
+
+function updatelanguage(operation, param, filter){
+
+if(operation == "add"){
+  if(filter == "lang"){
+    langset.add(param);
+  }
+  if(filter == "topic"){
+    topicset.add(param);
+  }
+  if(filter == "place"){
+    cityset.add(param);
+  }
+}
+
+if(operation == "remove"){
+  if(filter == "lang"){
+    langset.delete(param);
+  }
+  if(filter == "topic"){
+    topicset.delete(param);
+  }
+  if(filter == "place"){
+    cityset.delete(param);
+  }
+}
+
+console.log(langset) ;
+console.log(topicset) ;
+console.log(cityset) ;
+
+descriptiveFunctionName() ;
+
+}
 
 var dps = [{ y: 3, label: "Sweden" },
 { y: 7, label: "Taiwan" },
@@ -156,7 +367,7 @@ var languageChart = {
 	}]
 };
 
-function updateCharts(value){	
+function updateCharts(value){
 	console.log(value)
 if(value === "location") {
 $("#chartContainer").CanvasJSChart(locationChart);
@@ -170,4 +381,6 @@ $("#chartContainer").CanvasJSChart(locationChart);
 
 $(document).ready(function() {
     returnSearchResults();
+    descriptiveFunctionName();
+    onclickchecker() ;
 });
