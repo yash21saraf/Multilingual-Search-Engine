@@ -4,23 +4,34 @@ from flask import Response
 import json
 import urllib.request, urllib.error
 import urllib
+from datetime import datetime
+from datetime import timedelta
+from pymongo import MongoClient
+
 import re
 
 
-emoji_pattern = re.compile("["
-                   u"\U0001F600-\U0001F64F"  # emoticons
-                   u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-                   u"\U0001F680-\U0001F6FF"  # transport & map symbols
-                   u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
-                   u"\U00002702-\U000027B0"
-                   u"\U000024C2-\U0001F251"
-                   u"\U0001f926-\U0001f937"
-                   u"\U0001F900-\U0001F992"
+client = MongoClient('localhost', 27017)
 
-                   u"\u200d"
-                   u"\u2640-\u2642"
-                   u"\u2600-\u26FF"
-                   "]+", flags=re.UNICODE)
+db = client.irdb
+alllogs = db.alllogs
+relevance = db.relevance
+
+
+emoji_pattern = re.compile("["
+				   u"\U0001F600-\U0001F64F"  # emoticons
+				   u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+				   u"\U0001F680-\U0001F6FF"  # transport & map symbols
+				   u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+				   u"\U00002702-\U000027B0"
+				   u"\U000024C2-\U0001F251"
+				   u"\U0001f926-\U0001f937"
+				   u"\U0001F900-\U0001F992"
+
+				   u"\u200d"
+				   u"\u2640-\u2642"
+				   u"\u2600-\u26FF"
+				   "]+", flags=re.UNICODE)
 
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -61,7 +72,6 @@ def selectsearch():
 		docs = json.loads(content.decode('utf-8'))
 		numcount = docs['response']['numFound']
 		docs = docs['response']['docs']
-		print(numcount)
 		if(numcount < 10 and numcount != 0 ):
 			alpha = docs[1]['tweet_text'][0]
 			print(alpha)
@@ -79,9 +89,16 @@ def selectsearch():
 			docs = docs + ndocs
 		final = {
 				'isquerynull': 'true',
-				'docs': docs
-		}
-		print(url)
+				'docs': docs}
+		response = []
+		response = [d['id'] for d in docs if 'id' in d]
+		logfile = {'timestamp' : datetime.now(),
+				'query' : query,
+				'location_filters' : cityset,
+				'topic_filters' : topicset,
+				'language_filters' : langset,
+				'response' : response}
+		dbreturn = alllogs.insert_one(logfile)
 	return jsonify(final)
 	# print(str(docs).encode('utf-8'))
 
