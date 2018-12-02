@@ -75,38 +75,32 @@ function returnSearchResults() {
 		
 		});	
 	
-	$("#english").change(function() {
-		if(this.checked) {
-			var htmlStr = "";
-			var no_of_tweets = 0;
-			for (var i = 0; i < tweets.length; i++) {
-				if(tweets[i].text_en != null){
-					no_of_tweets++;
-					htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"	
-					htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
-					htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text[0] + "</div>"					
-				}				
-			}
-			$("#tweets-div").html(htmlStr);
-			$("#total-tweets").html("Tweets returned " +no_of_tweets);
-			$("#chartContainer").CanvasJSChart(locationChart);
-		}
-	});
+	// $("#english").change(function() {
+	// 	if(this.checked) {
+	// 		var htmlStr = "";
+	// 		var no_of_tweets = 0;
+	// 		for (var i = 0; i <tweets.length; i++) {
+	// 			if(tweets[i].text_en != null){
+	// 				no_of_tweets++;
+	// 				htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"	
+	// 				htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"	
+	// 				htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text[0] + "</div>"					
+	// 			}				
+	// 		}
+	// 		$("#tweets-div").html(htmlStr);
+	// 		$("#total-tweets").html("Tweets returned " +no_of_tweets);
+	// 		$("#chartContainer").CanvasJSChart(locationChart);
+	// 	}
+	// });
 
-
-	$("#mySelect").change(function() {
-		var val = ""+location;
-		updateCharts(location)
-	});
+	// $("#mySelect").change(function() {
+	// 	var val = ""+location;
+	// 	updateCharts(location)	// });
 
 }
 
-// function twitterHandle(){	
-// 	console.log("clicked")
-// 	$("#tweet-url").attr("url");
-// 	var te = $('#tweet-url').attr("url");
-// 	console.log(te)
-// }	
+function twitterHandle(){	
+}	
 
 
 var dps = [{ y: 3, label: "Sweden" },
@@ -158,14 +152,40 @@ var languageChart = {
 
 function updateCharts(value){	
 	console.log(value)
-if(value === "location") {
-$("#chartContainer").CanvasJSChart(locationChart);
-}else if(value === "language")
-{
-	$("#chartContainer").CanvasJSChart(languageChart);
-}
+	if(value === "location") {
+	$("#chartContainer").CanvasJSChart(locationChart);
+	}else if(value === "language")
+	{
+		$("#chartContainer").CanvasJSChart(languageChart);
+	}
 }
 
+function getSelected(getValue) {
+	console.log(getValue)
+	var topicList=document.getElementsByName('topic');
+	var cityList=document.getElementsByName('city');
+	var languageList=document.getElementsByName('language');
+	var topicItems="";
+	var cityItems="";
+	var languageItems="";
+	for(var i=0; i<topicList.length; i++){
+		if(topicList[i].type=='checkbox' && topicList[i].checked==true) {
+			topicItems+=topicList[i].id+",";
+			console.log(topicList.length)
+			console.log(topicItems.length)
+		}			
+	}
+	for(var i=0; i<cityList.length; i++){
+		if(cityList[i].type=='checkbox' && cityList[i].checked==true) {
+			cityItems+=cityList[i].id+",";
+		}			
+	}
+	for(var i=0; i<languageList.length; i++){
+		if(languageList[i].type=='checkbox' && languageList[i].checked==true) {
+			languageItems+=languageList[i].id+",";
+		}			
+	}
+}
 
 
 $(document).ready(function() {

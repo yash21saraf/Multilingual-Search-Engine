@@ -24,22 +24,22 @@
 		<div id="topics-filter" class="left">
 			<div class="centered">
 				<h4>Topics Filter</h4>
-				<input type="checkbox" name="crime" id="crime"> Crime  <br>
-				<input type="checkbox" name="environment" id="environment"> Environment <br>
-				<input type="checkbox" name="infra" id="infra"> Infrastructure  <br>
-				<input type="checkbox" name="politics" id="politics"> Politics <br>
-				<input type="checkbox" name="unrest" id="unrest" > Social Unrest  <br>	
+				<input type="checkbox" name="topic" id="crime" onclick="getSelected(this)"> Crime  <br>
+				<input type="checkbox" name="topic" id="environment" onclick="getSelected(this)"> Environment <br>
+				<input type="checkbox" name="topic" id="infra" onclick="getSelected(this)"> Infrastructure  <br>
+				<input type="checkbox" name="topic" id="politics" onclick="getSelected(this)"> Politics <br>
+				<input type="checkbox" name="topic" id="unrest" onclick="getSelected(this)"> Social Unrest  <br>	
 			</div>
 		</div>
 		<br> <br> 
 		<div id="city-filter" class="left">
 			<div class="centered">
 				<h4>City Filter</h4>
-				<input type="checkbox" name="bangkok" id="bangkok"> Bangkok <br>
-				<input type="checkbox" name="delhi" id="delhi"> Delhi <br>
-				<input type="checkbox" name="mexico" id="mexico" > Mexico City <br>	
-				<input type="checkbox" name="nyc" id="nyc"> New York City (NYC) <br>
-				<input type="checkbox" name="paris" id="paris" > Paris <br>
+				<input type="checkbox" name="city" id="bangkok" onclick="getSelected(this)"> Bangkok <br>
+				<input type="checkbox" name="city" id="delhi" onclick="getSelected(this)"> Delhi <br>
+				<input type="checkbox" name="city" id="mexico" onclick="getSelected(this)" > Mexico City <br>	
+				<input type="checkbox" name="city" id="nyc" onclick="getSelected(this)"> New York City (NYC) <br>
+				<input type="checkbox" name="city" id="paris" onclick="getSelected(this)" > Paris <br>
 			</div>
 		</div>
 		
@@ -47,11 +47,11 @@
 		<div id="lang-filter" class="left">
 			<div class="centered">
 				<h4>Language Filter</h4>
-				<input type="checkbox" name="english" id="english"> English <br>
-				<input type="checkbox" name="french" id="french" > French <br>
-				<input type="checkbox" name="hindi" id="hindi"> Hindi <br>
-				<input type="checkbox" name="spanish" id="spanish" > Spanish <br>
-				<input type="checkbox" name="thai" id="thai"> Thai <br>	
+				<input type="checkbox" name="language" id="english" onclick="getSelected(this)"> English <br>
+				<input type="checkbox" name="language" id="french" onclick="getSelected(this)" > French <br>
+				<input type="checkbox" name="language" id="hindi" onclick="getSelected(this)"> Hindi <br>
+				<input type="checkbox" name="language" id="spanish" onclick="getSelected(this)" > Spanish <br>
+				<input type="checkbox" name="language" id="thai" onclick="getSelected(this)"> Thai <br>	
 			</div>
 		</div>
 		
@@ -68,7 +68,6 @@
     </form>
 	<br>
 	<div id = "total-tweets"></div> 
-	<br>
 	<!-- <div id = "tweets-div"></div> -->
 	<div id = "tweets-div" onclick="twitterHandle()"></div>
 	
@@ -88,31 +87,6 @@
     <div id="chartContainer" style="height: inherit; width: 100%;"></div>
   </div>
 </div>
-
-<!--
-	<div class="container" id = "publisherform" style="display:none;">
-		<br><br><br><br>
-		<form class="form-inline" id = "form2">
-		  <div class="form-group">
-              <label for="sel1">Select Topics:</label>
-  <select class="form-control" id="topic_2">
-    <option>Movies</option>
-    <option>Sports</option>
-    <option>World</option>
-    <option>Politics</option>
-  </select>
-		    <label class="sr-only" for="content">Content:</label>
-		    <input type="text" class="form-control" id="content" placeholder="Add your text here...">
-		  </div>
-		  <button type="submit" class="btn btn-default">Submit</button>
-		</form>
-		<br>
-	</div> -->
-	<script type="text/javascript">
-		window.addEventListener("load",function(){
-			document.getElementById("mySelect").innerHTML;
-		},false);
-	</script>
 
 </div>
 </body>
