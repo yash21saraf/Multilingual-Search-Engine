@@ -100,7 +100,32 @@ def selectsearch():
 				'response' : response}
 		dbreturn = alllogs.insert_one(logfile)
 	return jsonify(final)
-	# print(str(docs).encode('utf-8'))
+
+@app.route('/relevancelogs', methods=['POST'])
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+def relevancelogs():
+	query = request.form['search_text']
+	tweet_id = request.form['tweet_id']
+	langset = request.form['langset']
+	topicset = request.form['topicset']
+	cityset = request.form['cityset']
+
+	langset = langset.split(',')
+	topicset = topicset.split(',')
+	cityset = cityset.split(',')
+
+	if(query == ""):
+		final = {'registered': 'false'}
+	else:
+		final = {'registered': 'true'}
+		logfile = {'timestamp' : datetime.now(),
+				'query' : query,
+				'location_filters' : cityset,
+				'topic_filters' : topicset,
+				'language_filters' : langset,
+				'tweet_id' : tweet_id}
+		dbreturn = relevance.insert_one(logfile)
+	return jsonify(final)
 
 
 def createfacetedquery(query, langset, topicset, cityset):

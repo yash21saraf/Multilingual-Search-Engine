@@ -2,9 +2,36 @@
 var langset = new Set();
 var topicset = new Set();
 var cityset = new Set();
+var tweet_id = "" ;
 
 var id = -1;
 var tweets ;
+
+function userrelevance() {
+
+  console.log("form 3 executed") ;
+    $.ajax({
+      data : {
+        search_text: $('#search_text').val() ,
+        topicset: Array.from(topicset).join(','),
+        langset: Array.from(langset).join(','),
+        cityset: Array.from(cityset).join(','),
+        tweet_id: tweet_id
+      },
+      type : 'POST',
+      url : '/relevancelogs'
+    })
+    .done(function(data) {
+    if(data.registered == "true"){
+      console.log("User relevance for query stored")
+    }
+    else{
+      console.log("User relevance for query failed")
+    }
+	});
+}
+
+
 
 function descriptiveFunctionName() {
 
@@ -26,7 +53,7 @@ function descriptiveFunctionName() {
 		    var htmlStr = "";
 		    for (var i = 0; i <tweets.length; i++) {
 			if(tweets[i].tweet_text != null){
-				var tweetUrl = "https://twitter.com/statuses/"+tweets[i].id;
+				var tweetUrl = tweets[i].id;
 				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
 				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
@@ -46,6 +73,9 @@ function descriptiveFunctionName() {
 
 		$(".tweet-cont").on("click", function twitterHandle(e){
 			var newTwitterURL = $(e.target).data("url");
+      tweet_id = newTwitterURL ;
+      newTwitterURL = "https://twitter.com/statuses/" + newTwitterURL
+      userrelevance() ;
 			window.open(newTwitterURL, "_blank");
 		});
 
@@ -80,7 +110,7 @@ function returnSearchResults() {
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
 			if(tweets[i].tweet_text != null){
-				var tweetUrl = "https://twitter.com/statuses/"+tweets[i].id;
+				var tweetUrl = tweets[i].id;
 				// "<div id='tweet-url'></div>"
 				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
 				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
@@ -99,6 +129,8 @@ function returnSearchResults() {
 
 		$(".tweet-cont").on("click", function twitterHandle(e){
 			var newTwitterURL = $(e.target).data("url");
+      tweet_id = newTwitterURL ;
+      newTwitterURL = "https://twitter.com/statuses/" + newTwitterURL
 			window.open(newTwitterURL, "_blank");
 		});
 		}else{
@@ -112,6 +144,8 @@ function returnSearchResults() {
 		event.preventDefault();
 		});
 }
+
+
 
 function onclickchecker(){
   $("#english").change(function() {
@@ -409,4 +443,5 @@ $(document).ready(function() {
     returnSearchResults();
     descriptiveFunctionName();
     onclickchecker() ;
+    userrelevance();
 });
