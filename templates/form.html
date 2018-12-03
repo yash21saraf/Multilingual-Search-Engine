@@ -4,12 +4,14 @@
 	<title>Welcome</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="shortcut icon" href="#" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+	<script type="text/javascript" src="http://botmonster.com/jquery-bootpag/jquery.bootpag.js"></script>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="{{ url_for('static', filename='js/form.js') }}"></script>
-	<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.simplePagination.js')}}"></script>
    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/responsive.css') }}">
@@ -64,13 +66,24 @@
        <input type="text" class="form-control"  style="width:60%;" id="search_text">
       </div>
 	   <br>
-	 <button type="submit" class="btn btn-default">Search</button>
+	 <button type="submit" id="submit" class="btn btn-default">Search</button>
     </form>
 	<br>
 	<div id = "total-tweets"></div> 
-	<!-- <div id = "tweets-div"></div> -->
+<!-- 
 	<div id = "tweets-div" onclick="twitterHandle()"></div>
-	
+
+	<div id="show_paginator"></div> -->
+	<div id = "tweets-div"></div>
+ 	<div id="page">
+		<div a href="javascript:void(0)" id = "tweets-div" onclick="twitterHandle()"></div>
+	</div>
+<!-- 
+	<nav>
+		<ul class="pagination page-size">
+		</ul>
+	</nav> 
+	-->
 </div>
 
 <div class="right">

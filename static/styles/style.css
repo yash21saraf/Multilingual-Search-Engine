@@ -42,9 +42,8 @@ html, body {
     margin-left: 0px;
     display: inline-block;
     position: absolute;
-    float: left;
     width: 12%;
-	height: 130%;
+	height: 143%;
 }
 
 .right {
@@ -55,7 +54,7 @@ html, body {
   padding: 10px;
   margin-right: 1%;
   display: inline-block;
-height: 130%;
+height: 143%;
 }
 
 .middle {
@@ -84,7 +83,13 @@ height: 130%;
 }
 
 #tweets-div{
-height:inherit;
+height:130%;
+max-height: 111% ;
+overflow-y: auto;
+}
+
+.page-size{
+  width: 50%;
 }
 
 #total-tweets{
@@ -96,3 +101,10 @@ height:inherit;
 	color:red;
 	font-size:20px;
 }
+
+  .page {
+    display: none;
+  }
+  .page-active {
+    display: block;
+  }

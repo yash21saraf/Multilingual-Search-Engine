@@ -22,7 +22,7 @@ def selectsearch():
 	query = request.form['search_text']
 	print(query)
 	query = urllib.parse.quote_plus(query)
-	url = 'http://localhost:8983/solr/1/select?indent=on&q='+ query + '&wt=json'
+	url = 'http://localhost:8983/solr/1/select?indent=on&q='+ query + '&rows=1000&wt=json'
 	data = urllib.request.urlopen(url)
 	content = data.read()
 	docs = json.loads(content.decode('utf-8'))
