@@ -8,7 +8,6 @@ var tweets ;
 var numtweets = 0 ;
 
 function userrelevance() {
-
   console.log("form 3 executed") ;
     $.ajax({
       data : {
@@ -33,7 +32,6 @@ function userrelevance() {
 }
 
 function pagination_function(page_no) {
-
   console.log("form 4 executed") ;
     $.ajax({
       data : {
@@ -98,7 +96,8 @@ function filterCalls() {
       if(data.isquerynull == "true"){
         console.log("Query was not null")
 		tweets = data.docs;
-    numtweets = data.numFound
+    numtweets = data.numFound;
+
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
 			if(tweets[i].tweet_text != null){
@@ -211,13 +210,14 @@ function returnSearchResults() {
 }
 
 function onclickchecker(getValue) {
+ 
   var languageSet = new Set();
   var topicsSet= new Set();
   var locationSet= new Set();
 	var topicList=document.getElementsByName('topic');
 	var cityList=document.getElementsByName('city');
   var languageList=document.getElementsByName('language');
-  var pseudo=document.getElementsByName('pseudo');
+  // var pseudo=document.getElementsByName('pseudo');
 	for(var i=0; i<topicList.length; i++){
 		if(topicList[i].type=='checkbox' && topicList[i].checked==true) {
       console.log("topics")
@@ -239,11 +239,12 @@ function onclickchecker(getValue) {
 		}
   }
 
-  if(pseudo[0].checked == true)
+  if(pseudo.checked == true)
   {
     pseudoRel = true;
   }else{
     pseudoRel = false;
+
   }
 
   console.log(pseudoRel);
@@ -260,7 +261,7 @@ function onclickchecker(getValue) {
 
 
 // Charts Functions
-var dps = [{ y: 3, label: "Sweden" },
+var locationData = [{ y: 3, label: "Sweden" },
 { y: 7, label: "Taiwan" },
 { y: 5, label: "Russia" },
 { y: 9, label: "Spain" },
@@ -285,9 +286,8 @@ var locationChart = {
 		name: "companies",
 		axisYType: "secondary",
 		color: "#014D65",
-		dataPoints: dps
+		dataPoints: locationData
 }]
-
 };
 
 
@@ -308,6 +308,93 @@ var languageChart = {
 };
 
 
+var topicData =  [{"label":"Hindi","y":"20"},{"label":"Thai","y":"50"},{"label":"English","y":"30"}];
+var topicChart = {
+	title: {
+		text: "Tweets segregation based on Languages"
+	},
+	data: [{
+			type: "pie",
+			startAngle: 45,
+			showInLegend: "true",
+			legendText: "{label}",
+			indexLabel: "{label}",
+			yValueFormatString:"#,##0.#"%"",
+			dataPoints: topicData
+	}]
+};
+
+
+var data1= [		
+  { x: new Date(2014, 00, 01), y: 850 },
+  { x: new Date(2014, 01, 01), y: 889 },
+  { x: new Date(2014, 02, 01), y: 890 },
+  { x: new Date(2014, 03, 01), y: 899 },
+  { x: new Date(2014, 05, 02), y: 1170 },
+  { x: new Date(2014, 06, 03), y: 1170 },
+  { x: new Date(2014, 07, 04), y: 1170 },
+  { x: new Date(2014, 08, 05), y: 1170 }] ;
+
+  var data2= [	
+    { x: new Date(2014, 00, 01), y: 1000 },
+    { x: new Date(2014, 01, 01), y: 1010 },
+    { x: new Date(2014, 02, 01), y: 1020 },
+    { x: new Date(2014, 03, 01), y: 1030 },	
+    { x: new Date(2014, 04, 01), y: 1040 },
+    { x: new Date(2014, 05, 01), y: 889 },
+    { x: new Date(2014, 06, 01), y: 890 },
+    { x: new Date(2014, 07, 01), y: 899 },
+    { x: new Date(2014, 08, 01), y: 1170 }] ;
+
+var TimeSeriesChart = {
+	title: {
+		text: ""
+	},
+	axisX: {
+		valueFormatString: "MMM YYYY"
+	},
+	axisY2: {
+		title: "Tweet Counts"
+	},
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor: "pointer",
+		verticalAlign: "top",
+		horizontalAlign: "center",
+		dockInsidePlotArea: false,
+		itemclick: toogleDataSeries
+	},
+	data: [{
+		type:"line",
+		axisYType: "secondary",
+		name: "San Fransisco",
+		showInLegend: true,
+		markerSize: 0,
+		yValueFormatString: "######",
+		dataPoints: data1 
+    },
+    {
+      type:"line",
+      axisYType: "secondary",
+      name: "London",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: data2 
+      }]
+};
+
+function toogleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else{
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
+
 function updateCharts(value){
 	console.log(value)
 	if(value === "location") {
@@ -318,6 +405,22 @@ function updateCharts(value){
 	}else if(value === "topics")
 	{
 		$("#chartContainer").CanvasJSChart(topicChart);
+  }
+  else if(value === "timeSeriesCity")
+	{
+		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
+  }
+  else if(value === "timeSeriesLanguage")
+	{
+		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
+  }
+  else if(value === "timeSeriesTopic")
+	{
+		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
+  }
+  else if(value === "timeSeriesSentiments")
+	{
+		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
 	}
 }
 

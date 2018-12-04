@@ -79,20 +79,6 @@
 	<div id = "total-tweets"></div>
 	<div id="tweets-div"></div>
     <div id="page-selection"></div>
-<!--
-	<div id = "tweets-div" onclick="twitterHandle()"></div>
-
-	<div id="show_paginator"></div> -->
-	<!-- <div id = "tweets-div"></div>
- 	<div id="page">
-		<div a href="javascript:void(0)" id = "tweets-div" onclick="twitterHandle()"></div>
-	</div> -->
-<!--
-	<nav>
-		<ul class="pagination page-size">
-		</ul>
-	</nav>
-	-->
 </div>
 
 <div class="right">
@@ -100,9 +86,13 @@
 		<center><h4>Analyse</h4> </center>
 		<center>
 		<select id="mySelect" onchange="updateCharts(this.value)">
-				<option selected="location">location</option>
-				<option value="language">language</option>
-				<option value="topics">topics</option>
+				<option selected="location">Location</option>
+				<option value="language">Language</option>
+				<option value="topics">Topics</option>
+				<option value="timeSeriesCity">Time Series City</option>
+				<option value="timeSeriesLanguage">Time Series Language</option>
+				<option value="timeSeriesTopic">Time Series Topic</option>
+				<option value="timeSeriesSentiments">Time Series Sentiments</option>
 		</select>
 	   </center>
 	   <br>
