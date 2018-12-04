@@ -2,6 +2,7 @@ var tweet_id = "" ;
 var langset =[]
 var topicset =[]
 var cityset =[]
+var pseudoRel = false;
 var id = -1;
 var tweets ;
 var numtweets = 0 ;
@@ -15,7 +16,8 @@ function userrelevance() {
         topicset: Array.from(topicset).join(','),
         langset: Array.from(langset).join(','),
         cityset: Array.from(cityset).join(','),
-        tweet_id: tweet_id
+        tweet_id: tweet_id,
+        pseudoRel: pseudoRel
       },
       type : 'POST',
       url : '/relevancelogs'
@@ -86,7 +88,8 @@ function filterCalls() {
         search_text: $('#search_text').val() ,
         topicset: Array.from(topicset).join(','),
         langset: Array.from(langset).join(','),
-        cityset: Array.from(cityset).join(',')
+        cityset: Array.from(cityset).join(','),
+        pseudoRel: pseudoRel
       },
       type : 'POST',
       url : '/selectsearch'
@@ -109,7 +112,6 @@ function filterCalls() {
 		}
 
 		if(tweets.length >0){
-      console.log("me idhar aa gaya")
 		$("#tweets-div").html(htmlStr);
     $("#total-tweets").show();
     $("#chartContainer").show();
@@ -148,7 +150,8 @@ function returnSearchResults() {
           search_text: $('#search_text').val() ,
           topicset: Array.from(topicset).join(','),
           langset: Array.from(langset).join(','),
-          cityset: Array.from(cityset).join(',')
+          cityset: Array.from(cityset).join(','),
+          pseudoRel: pseudoRel
 			},
 			type : 'POST',
 			url : '/selectsearch'
@@ -211,7 +214,8 @@ function onclickchecker(getValue) {
   var locationSet= new Set();
 	var topicList=document.getElementsByName('topic');
 	var cityList=document.getElementsByName('city');
-	var languageList=document.getElementsByName('language');
+  var languageList=document.getElementsByName('language');
+  var pseudo=document.getElementsByName('pseudo');
 	for(var i=0; i<topicList.length; i++){
 		if(topicList[i].type=='checkbox' && topicList[i].checked==true) {
       console.log("topics")
@@ -231,6 +235,13 @@ function onclickchecker(getValue) {
       // languageSet+=languageList[i].id;
       languageSet.add(languageList[i].id);
 		}
+  }
+
+  if(pseudo.checked == true)
+  {
+    pseudoRel == true;
+  }else{
+    pseudoRel == false;
   }
 
   console.log(languageSet);
