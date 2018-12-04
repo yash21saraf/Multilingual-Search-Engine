@@ -101,10 +101,17 @@ overflow-y: auto;
 	color:red;
 	font-size:20px;
 }
-
-  .page {
+.page {
     display: none;
   }
-  .page-active {
+.page-active {
     display: block;
+  }
+
+#chartContainer {
+  width: 100%;
+  margin-left: 0px;
+  margin-right: 3px;
+  padding-right: 2px;
+
   }

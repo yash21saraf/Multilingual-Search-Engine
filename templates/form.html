@@ -58,7 +58,8 @@
 		</div>
 
 		<br> <br>
-		<div id="lang-filter" class="left">
+
+		<div id="pseudo-filter" class="left">
 			<div class="centered">
 				<input type="checkbox" name="pseudo"  id="pseudo" onclick="onclickchecker(this)" class="boldCheckbox"> <strong>Pseudo Relevance</strong><br>
 			</div>
@@ -100,9 +101,13 @@
 		<center><h4>Analyse</h4> </center>
 		<center>
 		<select id="mySelect" onchange="updateCharts(this.value)">
-				<option selected="location">location</option>
-				<option value="language">language</option>
-				<option value="topics">topics</option>
+				<option selected="location">Location</option>
+				<option value="language">Language</option>
+				<option value="topics">Topics</option>
+				<option value="timeSeriesCity">Time Series City</option>
+				<option value="timeSeriesLanguage">Time Series Language</option>
+				<option value="timeSeriesTopic">Time Series Topic</option>
+				<option value="timeSeriesSentiments">Time Series Sentiments</option>
 		</select>
 	   </center> 
 	   <br>
