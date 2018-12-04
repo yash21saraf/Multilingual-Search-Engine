@@ -180,6 +180,7 @@ def timeseries(docs):
 	datesorted = sorted(docs, key=lambda k: k['tweet_date'])
 	for doc in datesorted:
 		doc['tweet_date'] = doc['tweet_date'][0][0:10]
+
 		datelist.append(doc['tweet_date'])
 		if(doc['city'] == "mexico city"):
 			mexicolist.append(doc['tweet_date'])
@@ -217,52 +218,68 @@ def timeseries(docs):
 
 	datelist=collections.Counter(datelist)
 	datelist = collections.OrderedDict(sorted(datelist.items()))
+	datelist = abcd(datelist)
 
 	enlist=collections.Counter(enlist)
 	enlist = collections.OrderedDict(sorted(enlist.items()))
+	enlist = abcd(enlist)
 
 	eslist=collections.Counter(eslist)
 	eslist = collections.OrderedDict(sorted(eslist.items()))
+	eslist = abcd(eslist)
 
 	thlist=collections.Counter(thlist)
 	thlist = collections.OrderedDict(sorted(thlist.items()))
+	thlist = abcd(thlist)
 
 	frlist=collections.Counter(frlist)
 	frlist = collections.OrderedDict(sorted(frlist.items()))
+	frlist = abcd(frlist)
 
 	hilist=collections.Counter(hilist)
 	hilist = collections.OrderedDict(sorted(hilist.items()))
+	hilist = abcd(hilist)
 
 	politicslist=collections.Counter(politicslist)
 	politicslist = collections.OrderedDict(sorted(politicslist.items()))
+	politicslist = abcd(politicslist)
 
 	crimelist=collections.Counter(crimelist)
 	crimelist = collections.OrderedDict(sorted(crimelist.items()))
+	crimelist = abcd(crimelist)
 
 	environmentlist=collections.Counter(environmentlist)
 	environmentlist = collections.OrderedDict(sorted(environmentlist.items()))
+	environmentlist = abcd(environmentlist)
 
 	sociallist=collections.Counter(sociallist)
 	sociallist = collections.OrderedDict(sorted(sociallist.items()))
+	sociallist = abcd(sociallist)
 
 	infralist=collections.Counter(infralist)
 	infralist = collections.OrderedDict(sorted(infralist.items()))
+	infralist = abcd(infralist)
 
 
 	mexicolist=collections.Counter(mexicolist)
 	mexicolist = collections.OrderedDict(sorted(mexicolist.items()))
+	mexicolist = abcd(mexicolist)
 
 	parislist=collections.Counter(parislist)
 	parislist = collections.OrderedDict(sorted(parislist.items()))
+	parislist = abcd(parislist)
 
 	delhilist=collections.Counter(delhilist)
 	delhilist = collections.OrderedDict(sorted(delhilist.items()))
+	delhilist = abcd(delhilist)
 
 	bangkoklist=collections.Counter(bangkoklist)
 	bangkoklist = collections.OrderedDict(sorted(bangkoklist.items()))
+	bangkoklist = abcd(bangkoklist)
 
 	nyclist=collections.Counter(nyclist)
 	nyclist = collections.OrderedDict(sorted(nyclist.items()))
+	nyclist = abcd(nyclist)
 
 	topicstimeseries = {'environment' : environmentlist,
 			  'crime' : crimelist,
@@ -285,7 +302,16 @@ def timeseries(docs):
 	return datelist, topicstimeseries, languagetimeseries, citytimeseries
 
 
-
+def abcd(d):
+	keys = []
+	values = []
+	for key, value in d.items():
+		keys.append(key)
+		values.append(value)
+	a = []
+	a.append(keys)
+	a.append(values)
+	return a
 
 
 def createfacetedquery(query, langset, topicset, cityset):
