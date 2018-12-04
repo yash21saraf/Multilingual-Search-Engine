@@ -9,7 +9,7 @@ from datetime import timedelta
 from pymongo import MongoClient
 
 import re
-
+docspage = []
 
 client = MongoClient('localhost', 27017)
 
@@ -27,7 +27,6 @@ emoji_pattern = re.compile("["
 				   u"\U000024C2-\U0001F251"
 				   u"\U0001f926-\U0001f937"
 				   u"\U0001F900-\U0001F992"
-
 				   u"\u200d"
 				   u"\u2640-\u2642"
 				   u"\u2600-\u26FF"
@@ -43,22 +42,28 @@ cors = CORS(app, resources={r"/foo": {"origins": "http://localhost:5000"}})
 def index():
 	return render_template('form.html')
 
+@app.route('/pagination', methods=['POST'])
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+def pagination():
+	page_no = request.form['page_no']
+	print("Page Number" +page_no);
+	numFound = len(docspage)
+	endpage = 10*int(page_no) - 1
+	startpage = endpage - 10
+	if(page_no == '1'):
+		startpage = endpage-9
+	print(startpage)
+	print(endpage)
+	final = {
+			'numFound': numFound,
+			'isquerynull': 'true',
+			'docs': docspage[startpage:endpage]}
+	return jsonify(final)
 
 @app.route('/selectsearch', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def selectsearch():
 	query = request.form['search_text']
-<<<<<<< HEAD
-	print(query)
-	query = urllib.parse.quote_plus(query)
-	url = 'http://localhost:8983/solr/1/select?indent=on&q='+ query + '&rows=1000&wt=json'
-	data = urllib.request.urlopen(url)
-	content = data.read()
-	docs = json.loads(content.decode('utf-8'))
-	docs = docs['response']['docs']
-	print(str(docs).encode('utf-8'))
-	return jsonify(docs)
-
 	langset = request.form['langset']
 	topicset = request.form['topicset']
 	cityset = request.form['cityset']
@@ -79,6 +84,7 @@ def selectsearch():
 		url = createfacetedquery(query, langset, topicset, cityset)
 		url = url.replace(" ", "%20")
 		data = urllib.request.urlopen(url)
+		print(url)
 		content = data.read()
 		docs = json.loads(content.decode('utf-8'))
 		numcount = docs['response']['numFound']
@@ -98,9 +104,14 @@ def selectsearch():
 			ndocs = json.loads(ncontent.decode('utf-8'))
 			ndocs = ndocs['response']['docs']
 			docs = docs + ndocs
+		numFound = len(docs)
+		sendvar = min(9, numFound)
+		global docspage
+		docspage = docs
 		final = {
 				'isquerynull': 'true',
-				'docs': docs}
+				'docs': docs[0:sendvar],
+				'numFound' : numFound}
 		response = []
 		response = [d['id'] for d in docs if 'id' in d]
 		logfile = {'timestamp' : datetime.now(),
@@ -110,8 +121,8 @@ def selectsearch():
 				'language_filters' : langset,
 				'response' : response}
 		dbreturn = alllogs.insert_one(logfile)
+		# print(str(docs).encode('utf-8'))
 	return jsonify(final)
-
 
 @app.route('/relevancelogs', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
@@ -171,7 +182,7 @@ def createfacetedquery(query, langset, topicset, cityset):
 			url = url + 'city:(' + cities + ')'
 		else:
 			url = url[:-4]
-	url = url + '&indent=on&q=' + query + '&wt=json'
+	url = url + '&indent=on&q=' + query + '&wt=json&rows=1000'
 	return url
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')

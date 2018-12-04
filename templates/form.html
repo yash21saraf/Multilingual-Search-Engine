@@ -4,10 +4,10 @@
 	<title>Welcome</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="shortcut icon" href="#" />
-	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
-	<script type="text/javascript" src="http://botmonster.com/jquery-bootpag/jquery.bootpag.js"></script>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-
+	<link rel="shortcut icon" href="#" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.bootpag.min.js') }}"></script>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -26,22 +26,22 @@
 		<div id="topics-filter" class="left">
 			<div class="centered">
 				<h4>Topics Filter</h4>
-				<input type="checkbox" name="topic" id="crime" onclick="getSelected(this)"> Crime  <br>
-				<input type="checkbox" name="topic" id="environment" onclick="getSelected(this)"> Environment <br>
-				<input type="checkbox" name="topic" id="infra" onclick="getSelected(this)"> Infrastructure  <br>
-				<input type="checkbox" name="topic" id="politics" onclick="getSelected(this)"> Politics <br>
-				<input type="checkbox" name="topic" id="unrest" onclick="getSelected(this)"> Social Unrest  <br>	
+				<input type="checkbox" name="topic" id="crime" onclick="onclickchecker(this)"> Crime  <br>
+				<input type="checkbox" name="topic" id="environment" onclick="onclickchecker(this)"> Environment <br>
+				<input type="checkbox" name="topic" id="infra" onclick="onclickchecker(this)"> Infrastructure  <br>
+				<input type="checkbox" name="topic" id="politics" onclick="onclickchecker(this)"> Politics <br>
+				<input type="checkbox" name="topic" id="social unrest" onclick="onclickchecker(this)"> Social Unrest  <br>	
 			</div>
 		</div>
 		<br> <br> 
 		<div id="city-filter" class="left">
 			<div class="centered">
 				<h4>City Filter</h4>
-				<input type="checkbox" name="city" id="bangkok" onclick="getSelected(this)"> Bangkok <br>
-				<input type="checkbox" name="city" id="delhi" onclick="getSelected(this)"> Delhi <br>
-				<input type="checkbox" name="city" id="mexico" onclick="getSelected(this)" > Mexico City <br>	
-				<input type="checkbox" name="city" id="nyc" onclick="getSelected(this)"> New York City (NYC) <br>
-				<input type="checkbox" name="city" id="paris" onclick="getSelected(this)" > Paris <br>
+				<input type="checkbox" name="city" id="bangkok" onclick="onclickchecker(this)"> Bangkok <br>
+				<input type="checkbox" name="city" id="delhi" onclick="onclickchecker(this)"> Delhi <br>
+				<input type="checkbox" name="city" id="mexico city" onclick="onclickchecker(this)" > Mexico City <br>	
+				<input type="checkbox" name="city" id="nyc" onclick="onclickchecker(this)"> New York City (NYC) <br>
+				<input type="checkbox" name="city" id="paris" onclick="onclickchecker(this)" > Paris <br>
 			</div>
 		</div>
 		
@@ -49,11 +49,11 @@
 		<div id="lang-filter" class="left">
 			<div class="centered">
 				<h4>Language Filter</h4>
-				<input type="checkbox" name="language" id="english" onclick="getSelected(this)"> English <br>
-				<input type="checkbox" name="language" id="french" onclick="getSelected(this)" > French <br>
-				<input type="checkbox" name="language" id="hindi" onclick="getSelected(this)"> Hindi <br>
-				<input type="checkbox" name="language" id="spanish" onclick="getSelected(this)" > Spanish <br>
-				<input type="checkbox" name="language" id="thai" onclick="getSelected(this)"> Thai <br>	
+				<input type="checkbox" name="language" id="en" onclick="onclickchecker(this)"> English <br>
+				<input type="checkbox" name="language" id="fr" onclick="onclickchecker(this)" > French <br>
+				<input type="checkbox" name="language" id="hi" onclick="onclickchecker(this)"> Hindi <br>
+				<input type="checkbox" name="language" id="es" onclick="onclickchecker(this)" > Spanish <br>
+				<input type="checkbox" name="language" id="th" onclick="onclickchecker(this)"> Thai <br>	
 			</div>
 		</div>
 		
@@ -70,14 +70,16 @@
     </form>
 	<br>
 	<div id = "total-tweets"></div> 
+	<div id="tweets-div"></div>
+    <div id="page-selection"></div>
 <!-- 
 	<div id = "tweets-div" onclick="twitterHandle()"></div>
 
 	<div id="show_paginator"></div> -->
-	<div id = "tweets-div"></div>
+	<!-- <div id = "tweets-div"></div>
  	<div id="page">
 		<div a href="javascript:void(0)" id = "tweets-div" onclick="twitterHandle()"></div>
-	</div>
+	</div> -->
 <!-- 
 	<nav>
 		<ul class="pagination page-size">
