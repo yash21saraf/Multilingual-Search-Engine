@@ -7,6 +7,7 @@ import urllib
 from datetime import datetime
 from datetime import timedelta
 from pymongo import MongoClient
+import collections
 
 import re
 docspage = []
@@ -67,7 +68,9 @@ def selectsearch():
 	langset = request.form['langset']
 	topicset = request.form['topicset']
 	cityset = request.form['cityset']
+	pseudoRel = request.form['pseudoRel']
 
+	print(pseudoRel)
 	langset = langset.split(',')
 	topicset = topicset.split(',')
 	cityset = cityset.split(',')
@@ -89,7 +92,8 @@ def selectsearch():
 		docs = json.loads(content.decode('utf-8'))
 		numcount = docs['response']['numFound']
 		docs = docs['response']['docs']
-		if(numcount < 10 and numcount != 0 ):
+		if(pseudoRel == 'true' and numcount != 0):
+			print("pseudoRel Executed")
 			alpha = docs[1]['tweet_text'][0]
 			print(alpha)
 			newq = emoji_pattern.sub(r'', alpha) # no emoji
@@ -97,21 +101,27 @@ def selectsearch():
 			newq = re.sub(r'^https?:\/\/.*[\r\n]*', '', newq, flags=re.MULTILINE)
 			newq = re.sub(r"http\S+", "", newq)
 			newq = re.sub(r'[^\w\s]','',newq)
+			newq = query + " " + newq
 			url = createfacetedquery(newq, langset, topicset, cityset)
 			url = url.replace(" ", "%20")
 			ndata = urllib.request.urlopen(url)
 			ncontent = ndata.read()
 			ndocs = json.loads(ncontent.decode('utf-8'))
 			ndocs = ndocs['response']['docs']
-			docs = docs + ndocs
+			docs = ndocs
 		numFound = len(docs)
 		sendvar = min(9, numFound)
 		global docspage
 		docspage = docs
+		timeseries1, topictimeseries1, languagetimeseries1, citytimeseries1 = timeseries(docs)
 		final = {
 				'isquerynull': 'true',
 				'docs': docs[0:sendvar],
-				'numFound' : numFound}
+				'numFound' : numFound,
+				'timeseries' : timeseries1,
+				'topictimeseries' : topictimeseries1,
+				'languagetimeseries' : languagetimeseries1,
+				'citytimeseries' : citytimeseries1}
 		response = []
 		response = [d['id'] for d in docs if 'id' in d]
 		logfile = {'timestamp' : datetime.now(),
@@ -149,6 +159,133 @@ def relevancelogs():
 				'tweet_id' : tweet_id}
 		dbreturn = relevance.insert_one(logfile)
 	return jsonify(final)
+
+def timeseries(docs):
+	datelist = []
+	mexicolist = []
+	nyclist = []
+	bangkoklist = []
+	delhilist = []
+	parislist = []
+	enlist = []
+	hilist = []
+	thlist = []
+	frlist = []
+	eslist = []
+	environmentlist = []
+	crimelist = []
+	politicslist = []
+	sociallist = []
+	infralist = []
+	datesorted = sorted(docs, key=lambda k: k['tweet_date'])
+	for doc in datesorted:
+		doc['tweet_date'] = doc['tweet_date'][0][0:10]
+		datelist.append(doc['tweet_date'])
+		if(doc['city'] == "mexico city"):
+			mexicolist.append(doc['tweet_date'])
+		elif(doc['city'] == "nyc"):
+			nyclist.append(doc['tweet_date'])
+		elif(doc['city'] == "delhi"):
+			delhilist.append(doc['tweet_date'])
+		elif(doc['city'] == "paris"):
+			parislist.append(doc['tweet_date'])
+		elif(doc['city'] == "bangkok"):
+			bangkoklist.append(doc['tweet_date'])
+
+		if(doc['tweet_lang'] == "en"):
+			enlist.append(doc['tweet_date'])
+		elif(doc['tweet_lang'] == "es"):
+			eslist.append(doc['tweet_date'])
+		elif(doc['tweet_lang'] == "hi"):
+			hilist.append(doc['tweet_date'])
+		elif(doc['tweet_lang'] == "fr"):
+			frlist.append(doc['tweet_date'])
+		elif(doc['tweet_lang'] == "th"):
+			thlist.append(doc['tweet_date'])
+
+		if(doc['topic'] == "crime"):
+			crimelist.append(doc['tweet_date'])
+		elif(doc['topic'] == "es"):
+			environmentlist.append(doc['environment'])
+		elif(doc['topic'] == "social unrest"):
+			sociallist.append(doc['tweet_date'])
+		elif(doc['topic'] == "infra"):
+			infralist.append(doc['tweet_date'])
+		elif(doc['topic'] == "politics"):
+			politicslist.append(doc['tweet_date'])
+
+
+	datelist=collections.Counter(datelist)
+	datelist = collections.OrderedDict(sorted(datelist.items()))
+
+	enlist=collections.Counter(enlist)
+	enlist = collections.OrderedDict(sorted(enlist.items()))
+
+	eslist=collections.Counter(eslist)
+	eslist = collections.OrderedDict(sorted(eslist.items()))
+
+	thlist=collections.Counter(thlist)
+	thlist = collections.OrderedDict(sorted(thlist.items()))
+
+	frlist=collections.Counter(frlist)
+	frlist = collections.OrderedDict(sorted(frlist.items()))
+
+	hilist=collections.Counter(hilist)
+	hilist = collections.OrderedDict(sorted(hilist.items()))
+
+	politicslist=collections.Counter(politicslist)
+	politicslist = collections.OrderedDict(sorted(politicslist.items()))
+
+	crimelist=collections.Counter(crimelist)
+	crimelist = collections.OrderedDict(sorted(crimelist.items()))
+
+	environmentlist=collections.Counter(environmentlist)
+	environmentlist = collections.OrderedDict(sorted(environmentlist.items()))
+
+	sociallist=collections.Counter(sociallist)
+	sociallist = collections.OrderedDict(sorted(sociallist.items()))
+
+	infralist=collections.Counter(infralist)
+	infralist = collections.OrderedDict(sorted(infralist.items()))
+
+
+	mexicolist=collections.Counter(mexicolist)
+	mexicolist = collections.OrderedDict(sorted(mexicolist.items()))
+
+	parislist=collections.Counter(parislist)
+	parislist = collections.OrderedDict(sorted(parislist.items()))
+
+	delhilist=collections.Counter(delhilist)
+	delhilist = collections.OrderedDict(sorted(delhilist.items()))
+
+	bangkoklist=collections.Counter(bangkoklist)
+	bangkoklist = collections.OrderedDict(sorted(bangkoklist.items()))
+
+	nyclist=collections.Counter(nyclist)
+	nyclist = collections.OrderedDict(sorted(nyclist.items()))
+
+	topicstimeseries = {'environment' : environmentlist,
+			  'crime' : crimelist,
+			  'social unrest' : sociallist,
+			  'infra' : infralist,
+			  'politics' : politicslist}
+
+	languagetimeseries = {'en' : enlist,
+						  'hi' : hilist,
+						  'th' : thlist,
+						  'fr' : frlist,
+						  'es' : eslist}
+
+	citytimeseries = {'delhi' : delhilist,
+					  'mexico city' : mexicolist,
+					  'nyc' : nyclist,
+					  'paris' : parislist,
+					  'bangkok' : bangkoklist}
+
+	return datelist, topicstimeseries, languagetimeseries, citytimeseries
+
+
+
 
 
 def createfacetedquery(query, langset, topicset, cityset):

@@ -16,13 +16,13 @@
    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.simplePagination.js')}}"></script>
    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/responsive.css') }}">
     <style>
-            
+
         </style>
-   
+
 </head>
 <body>
 <div id ="container">
-	<div class="left1"> 
+	<div class="left1">
 		<div id="topics-filter" class="left">
 			<div class="centered">
 				<h4>Topics Filter</h4>
@@ -30,21 +30,21 @@
 				<input type="checkbox" name="topic" id="environment" onclick="onclickchecker(this)"> Environment <br>
 				<input type="checkbox" name="topic" id="infra" onclick="onclickchecker(this)"> Infrastructure  <br>
 				<input type="checkbox" name="topic" id="politics" onclick="onclickchecker(this)"> Politics <br>
-				<input type="checkbox" name="topic" id="social unrest" onclick="onclickchecker(this)"> Social Unrest  <br>	
+				<input type="checkbox" name="topic" id="social unrest" onclick="onclickchecker(this)"> Social Unrest  <br>
 			</div>
 		</div>
-		<br> <br> 
+		<br> <br>
 		<div id="city-filter" class="left">
 			<div class="centered">
 				<h4>City Filter</h4>
 				<input type="checkbox" name="city" id="bangkok" onclick="onclickchecker(this)"> Bangkok <br>
 				<input type="checkbox" name="city" id="delhi" onclick="onclickchecker(this)"> Delhi <br>
-				<input type="checkbox" name="city" id="mexico city" onclick="onclickchecker(this)" > Mexico City <br>	
+				<input type="checkbox" name="city" id="mexico city" onclick="onclickchecker(this)" > Mexico City <br>
 				<input type="checkbox" name="city" id="nyc" onclick="onclickchecker(this)"> New York City (NYC) <br>
 				<input type="checkbox" name="city" id="paris" onclick="onclickchecker(this)" > Paris <br>
 			</div>
 		</div>
-		
+
 		<br> <br>
 		<div id="lang-filter" class="left">
 			<div class="centered">
@@ -53,19 +53,22 @@
 				<input type="checkbox" name="language" id="fr" onclick="onclickchecker(this)" > French <br>
 				<input type="checkbox" name="language" id="hi" onclick="onclickchecker(this)"> Hindi <br>
 				<input type="checkbox" name="language" id="es" onclick="onclickchecker(this)" > Spanish <br>
-				<input type="checkbox" name="language" id="th" onclick="onclickchecker(this)"> Thai <br>	
+				<input type="checkbox" name="language" id="th" onclick="onclickchecker(this)"> Thai <br>
 			</div>
 		</div>
 
 		<br> <br>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0ab39cf5ec588df941de5ed2910cd2a08889b07f
 		<div id="pseudo-filter" class="left">
 			<div class="centered">
 				<input type="checkbox" name="pseudo"  id="pseudo" onclick="onclickchecker(this)" class="boldCheckbox"> <strong>Pseudo Relevance</strong><br>
 			</div>
 		</div>
-		
-		
+
+
 	</div>
 
 <div class="middle"><br>
@@ -77,10 +80,10 @@
 	 <button type="submit" id="submit" class="btn btn-default">Search</button>
     </form>
 	<br>
-	<div id = "total-tweets"></div> 
+	<div id = "total-tweets"></div>
 	<div id="tweets-div"></div>
     <div id="page-selection"></div>
-<!-- 
+<!--
 	<div id = "tweets-div" onclick="twitterHandle()"></div>
 
 	<div id="show_paginator"></div> -->
@@ -88,11 +91,11 @@
  	<div id="page">
 		<div a href="javascript:void(0)" id = "tweets-div" onclick="twitterHandle()"></div>
 	</div> -->
-<!-- 
+<!--
 	<nav>
 		<ul class="pagination page-size">
 		</ul>
-	</nav> 
+	</nav>
 	-->
 </div>
 
@@ -109,7 +112,7 @@
 				<option value="timeSeriesTopic">Time Series Topic</option>
 				<option value="timeSeriesSentiments">Time Series Sentiments</option>
 		</select>
-	   </center> 
+	   </center>
 	   <br>
     <div id="chartContainer" style="height: inherit; width: 100%;"></div>
   </div>
