@@ -67,7 +67,9 @@ def selectsearch():
 	langset = request.form['langset']
 	topicset = request.form['topicset']
 	cityset = request.form['cityset']
+	pseudoRel = request.form['pseudoRel']
 
+	print(pseudoRel)
 	langset = langset.split(',')
 	topicset = topicset.split(',')
 	cityset = cityset.split(',')
@@ -89,7 +91,8 @@ def selectsearch():
 		docs = json.loads(content.decode('utf-8'))
 		numcount = docs['response']['numFound']
 		docs = docs['response']['docs']
-		if(numcount < 10 and numcount != 0 ):
+		if(pseudoRel == 'true'):
+			print("pseudoRel Executed")
 			alpha = docs[1]['tweet_text'][0]
 			print(alpha)
 			newq = emoji_pattern.sub(r'', alpha) # no emoji
@@ -97,13 +100,14 @@ def selectsearch():
 			newq = re.sub(r'^https?:\/\/.*[\r\n]*', '', newq, flags=re.MULTILINE)
 			newq = re.sub(r"http\S+", "", newq)
 			newq = re.sub(r'[^\w\s]','',newq)
+			newq = query + " " + newq
 			url = createfacetedquery(newq, langset, topicset, cityset)
 			url = url.replace(" ", "%20")
 			ndata = urllib.request.urlopen(url)
 			ncontent = ndata.read()
 			ndocs = json.loads(ncontent.decode('utf-8'))
 			ndocs = ndocs['response']['docs']
-			docs = docs + ndocs
+			docs = ndocs
 		numFound = len(docs)
 		sendvar = min(9, numFound)
 		global docspage

@@ -57,9 +57,9 @@ function pagination_function(page_no) {
 				htmlStr = htmlStr + "</div>"
         }
       }
-      
+
 		if(tweets.length > 0){
-      console.log("length greater than 0 ") 
+      console.log("length greater than 0 ")
       $("#tweets-div").empty();
       $("#tweets-div").html(htmlStr);
 		$(".tweet-cont").on("click", function twitterHandle(e){
@@ -195,7 +195,7 @@ function returnSearchResults() {
       pagination_function(num);
 			//$("#tweets-div .tweet-cont").html(htmlStr);
     });
-    
+
 		}else{
 		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>"
 		$("#tweets-div").html(htmlStr);
@@ -227,7 +227,7 @@ function onclickchecker(getValue) {
 		if(cityList[i].type=='checkbox' && cityList[i].checked==true) {
       // locationSet+=cityList[i].id;
       locationSet.add(cityList[i].id);
-      
+
 		}
 	}
 	for(var i=0; i<languageList.length; i++){
@@ -237,19 +237,19 @@ function onclickchecker(getValue) {
 		}
   }
 
-  if(pseudo.checked == true)
+  if(pseudo[0].checked == true)
   {
-    pseudoRel == true;
+    pseudoRel = true;
   }else{
-    pseudoRel == false;
+    pseudoRel = false;
   }
 
-  console.log(languageSet);
+  console.log(pseudoRel);
   langset = languageSet;
   topicset = topicsSet;
   cityset = locationSet;
   filterCalls();
-  
+
   $("#mySelect").change(function() {
     var val = ""+location;
     updateCharts(location)
