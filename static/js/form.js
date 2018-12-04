@@ -96,7 +96,8 @@ function filterCalls() {
       if(data.isquerynull == "true"){
         console.log("Query was not null")
 		tweets = data.docs;
-    numtweets = data.numFound
+    numtweets = data.numFound;
+
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
 			if(tweets[i].tweet_text != null){
@@ -238,7 +239,7 @@ function onclickchecker(getValue) {
 		}
   }
 
-  if(pseudo[0].checked == true)
+  if(pseudo.checked == true)
   {
     pseudoRel = true;
   }else{
