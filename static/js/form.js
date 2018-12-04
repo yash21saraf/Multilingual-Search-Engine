@@ -161,6 +161,8 @@ function returnSearchResults() {
         console.log("Query was not null")
 		tweets = data.docs;
     numtweets = data.numFound
+    timeseries = data.timeseries
+    console.log(timeseries)
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
 			if(tweets[i].tweet_text != null){
