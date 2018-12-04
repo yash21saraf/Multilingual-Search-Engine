@@ -91,7 +91,7 @@ def selectsearch():
 		docs = json.loads(content.decode('utf-8'))
 		numcount = docs['response']['numFound']
 		docs = docs['response']['docs']
-		if(pseudoRel == 'true'):
+		if(pseudoRel == 'true' and numcount != 0):
 			print("pseudoRel Executed")
 			alpha = docs[1]['tweet_text'][0]
 			print(alpha)
