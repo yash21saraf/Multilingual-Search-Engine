@@ -370,19 +370,19 @@ def timeseries(docs):
 			  'social unrest' : socialcount,
 			  'infra' : infracount,
 			  'politics' : politicscount}
-
+	topicscount = abcd(topicscount)
 	languagecount = {'en' : encount,
 						  'hi' : hicount,
 						  'th' : thcount,
 						  'fr' : frcount,
 						  'es' : escount}
-
+	languagecount = abcd(languagecount)
 	citycount = {'delhi' : delhicount,
 					  'mexico city' : mexicocount,
 					  'nyc' : nyccount,
 					  'paris' : pariscount,
 					  'bangkok' : bangkokcount}
-	
+	citycount = abcd(citycount)
 	countlist = {'total' : totalcount,
 				 'topicscount' : topicscount,
 				 'languagecount' : languagecount,
