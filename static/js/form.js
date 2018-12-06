@@ -6,6 +6,7 @@ var pseudoRel = false;
 var id = -1;
 var tweets ;
 var numtweets = 0 ;
+var data1 = []
 
 function userrelevance() {
   console.log("form 3 executed") ;
@@ -161,6 +162,7 @@ function returnSearchResults() {
 		tweets = data.docs;
     numtweets = data.numFound
     timeseries = data.timeseries
+    createdata() ;
     console.log(timeseries)
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
@@ -210,7 +212,7 @@ function returnSearchResults() {
 }
 
 function onclickchecker(getValue) {
- 
+
   var languageSet = new Set();
   var topicsSet= new Set();
   var locationSet= new Set();
@@ -324,22 +326,30 @@ var topicChart = {
 	}]
 };
 
+function createdata(){
+  for(i = 0 ; i < timeseries[0].length ; i++){
+  var temp = {x: new Date(timeseries[0][i]), y: timeseries[1][i]}
+  data1.push(temp) ;
+  }
+}
 
-var data1= [		
-  { x: new Date(2014, 00, 01), y: 850 },
-  { x: new Date(2014, 01, 01), y: 889 },
-  { x: new Date(2014, 02, 01), y: 890 },
-  { x: new Date(2014, 03, 01), y: 899 },
-  { x: new Date(2014, 05, 02), y: 1170 },
-  { x: new Date(2014, 06, 03), y: 1170 },
-  { x: new Date(2014, 07, 04), y: 1170 },
-  { x: new Date(2014, 08, 05), y: 1170 }] ;
 
-  var data2= [	
+//
+// var data1= [
+//   { x: new Date('2014-00-01'), y: 850 },
+//   { x: new Date('2014-01-01'), y: 889 },
+//   { x: new Date('2014-02-01'), y: 890 },
+//   { x: new Date('2014-03-01'), y: 899 },
+//   { x: new Date('2014-05-02'), y: 1170 },
+//   { x: new Date('2014-06-03'), y: 1170 },
+//   { x: new Date('2014-07-04'), y: 1170 },
+//   { x: new Date('2014-08-05'), y: 1170 }] ;
+//
+  var data2= [
     { x: new Date(2014, 00, 01), y: 1000 },
     { x: new Date(2014, 01, 01), y: 1010 },
     { x: new Date(2014, 02, 01), y: 1020 },
-    { x: new Date(2014, 03, 01), y: 1030 },	
+    { x: new Date(2014, 03, 01), y: 1030 },
     { x: new Date(2014, 04, 01), y: 1040 },
     { x: new Date(2014, 05, 01), y: 889 },
     { x: new Date(2014, 06, 01), y: 890 },
@@ -373,7 +383,7 @@ var TimeSeriesChart = {
 		showInLegend: true,
 		markerSize: 0,
 		yValueFormatString: "######",
-		dataPoints: data1 
+		dataPoints: data1
     },
     {
       type:"line",
@@ -382,7 +392,7 @@ var TimeSeriesChart = {
       showInLegend: true,
       markerSize: 0,
       yValueFormatString: "######",
-      dataPoints: data2 
+      dataPoints: data1
       }]
 };
 

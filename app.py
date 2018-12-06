@@ -8,6 +8,9 @@ from datetime import datetime
 from datetime import timedelta
 from pymongo import MongoClient
 import collections
+from collections import OrderedDict
+import operator
+
 
 import re
 docspage = []
@@ -113,7 +116,10 @@ def selectsearch():
 		sendvar = min(9, numFound)
 		global docspage
 		docspage = docs
-		timeseries1, topictimeseries1, languagetimeseries1, citytimeseries1 = timeseries(docs)
+		timeseries1, topictimeseries1, languagetimeseries1, citytimeseries1, countlist = timeseries(docs)
+		tophashtags = top_hashtags(docs)
+		topmentions = top_mentions(docs)
+		
 		final = {
 				'isquerynull': 'true',
 				'docs': docs[0:sendvar],
@@ -121,7 +127,11 @@ def selectsearch():
 				'timeseries' : timeseries1,
 				'topictimeseries' : topictimeseries1,
 				'languagetimeseries' : languagetimeseries1,
-				'citytimeseries' : citytimeseries1}
+				'citytimeseries' : citytimeseries1,
+				'tophashtags' : tophashtags,
+				'topmentions' : topmentions,
+				'countlist' : countlist}
+		print(countlist)
 		response = []
 		response = [d['id'] for d in docs if 'id' in d]
 		logfile = {'timestamp' : datetime.now(),
@@ -160,6 +170,48 @@ def relevancelogs():
 		dbreturn = relevance.insert_one(logfile)
 	return jsonify(final)
 
+def top_hashtags(tweetfile, k=10, n=0):
+    hashtag_list = {}
+    for tweet in tweetfile:
+        try:
+            hts = tweet['hashtags']
+        except:
+            continue
+        if 'tweet_text' not in tweet:
+            continue
+        hts = hts[0].split()
+        for hinfo in hts:
+            hashtag_list[hinfo] = 1 + hashtag_list.get(hinfo,0)
+    hts = hashtag_list.items()
+    hts = sorted(hts, key=operator.itemgetter(1), reverse=True)
+    tophashtags = []
+    for ht,a in hts[:k]:
+        if a>n:
+            hashtagss = { ht : a}
+            tophashtags.append(hashtagss)
+    return tophashtags
+
+def top_mentions(tweetfile, k=10, n=0):
+    mentions_list = {}
+    for tweet in tweetfile:
+        try:
+            hts = tweet['mentions']
+        except:
+            continue
+        if 'tweet_text' not in tweet:
+            continue
+        hts = hts[0].split()
+        for hinfo in hts:
+            mentions_list[hinfo] = 1 + mentions_list.get(hinfo,0)
+    hts = mentions_list.items()
+    hts = sorted(hts, key=operator.itemgetter(1), reverse=True)
+    topmentions = []
+    for ht,a in hts[:k]:
+        if a>n:
+            mentionss = { ht : a}
+            topmentions.append(mentionss)
+    return topmentions
+
 def timeseries(docs):
 	datelist = []
 	mexicolist = []
@@ -182,101 +234,115 @@ def timeseries(docs):
 		doc['tweet_date'] = doc['tweet_date'][0][0:10]
 
 		datelist.append(doc['tweet_date'])
-		if(doc['city'] == "mexico city"):
+		if(doc['city'][0] == "mexico city"):
 			mexicolist.append(doc['tweet_date'])
-		elif(doc['city'] == "nyc"):
+		elif(doc['city'][0] == "nyc"):
 			nyclist.append(doc['tweet_date'])
-		elif(doc['city'] == "delhi"):
+		elif(doc['city'][0] == "delhi"):
 			delhilist.append(doc['tweet_date'])
-		elif(doc['city'] == "paris"):
+		elif(doc['city'][0] == "paris"):
 			parislist.append(doc['tweet_date'])
-		elif(doc['city'] == "bangkok"):
+		elif(doc['city'][0] == "bangkok"):
 			bangkoklist.append(doc['tweet_date'])
 
-		if(doc['tweet_lang'] == "en"):
+		if(doc['tweet_lang'][0] == "en"):
 			enlist.append(doc['tweet_date'])
-		elif(doc['tweet_lang'] == "es"):
+		elif(doc['tweet_lang'][0] == "es"):
 			eslist.append(doc['tweet_date'])
-		elif(doc['tweet_lang'] == "hi"):
+		elif(doc['tweet_lang'][0] == "hi"):
 			hilist.append(doc['tweet_date'])
-		elif(doc['tweet_lang'] == "fr"):
+		elif(doc['tweet_lang'][0] == "fr"):
 			frlist.append(doc['tweet_date'])
-		elif(doc['tweet_lang'] == "th"):
+		elif(doc['tweet_lang'][0] == "th"):
 			thlist.append(doc['tweet_date'])
 
-		if(doc['topic'] == "crime"):
+		if(doc['topic'][0] == "crime"):
 			crimelist.append(doc['tweet_date'])
-		elif(doc['topic'] == "es"):
-			environmentlist.append(doc['environment'])
-		elif(doc['topic'] == "social unrest"):
+		elif(doc['topic'][0] == "environment"):
+			environmentlist.append(doc['tweet_date'])
+		elif(doc['topic'][0] == "social unrest"):
 			sociallist.append(doc['tweet_date'])
-		elif(doc['topic'] == "infra"):
+		elif(doc['topic'][0] == "infra"):
 			infralist.append(doc['tweet_date'])
-		elif(doc['topic'] == "politics"):
+		elif(doc['topic'][0] == "politics"):
 			politicslist.append(doc['tweet_date'])
 
-
+	totalcount = len(datelist)
 	datelist=collections.Counter(datelist)
 	datelist = collections.OrderedDict(sorted(datelist.items()))
 	datelist = abcd(datelist)
 
+	encount = len(enlist)
 	enlist=collections.Counter(enlist)
 	enlist = collections.OrderedDict(sorted(enlist.items()))
 	enlist = abcd(enlist)
 
+	escount = len(eslist)
 	eslist=collections.Counter(eslist)
 	eslist = collections.OrderedDict(sorted(eslist.items()))
 	eslist = abcd(eslist)
 
+	thcount = len(thlist)
 	thlist=collections.Counter(thlist)
 	thlist = collections.OrderedDict(sorted(thlist.items()))
 	thlist = abcd(thlist)
 
+	frcount = len(frlist)
 	frlist=collections.Counter(frlist)
 	frlist = collections.OrderedDict(sorted(frlist.items()))
 	frlist = abcd(frlist)
 
+	hicount = len(hilist)
 	hilist=collections.Counter(hilist)
 	hilist = collections.OrderedDict(sorted(hilist.items()))
 	hilist = abcd(hilist)
 
+	politicscount = len(politicslist)
 	politicslist=collections.Counter(politicslist)
 	politicslist = collections.OrderedDict(sorted(politicslist.items()))
 	politicslist = abcd(politicslist)
 
+	crimecount = len(crimelist)
 	crimelist=collections.Counter(crimelist)
 	crimelist = collections.OrderedDict(sorted(crimelist.items()))
 	crimelist = abcd(crimelist)
 
+	environmentcount = len(environmentlist)
 	environmentlist=collections.Counter(environmentlist)
 	environmentlist = collections.OrderedDict(sorted(environmentlist.items()))
 	environmentlist = abcd(environmentlist)
 
+	socialcount = len(sociallist)
 	sociallist=collections.Counter(sociallist)
 	sociallist = collections.OrderedDict(sorted(sociallist.items()))
 	sociallist = abcd(sociallist)
 
+	infracount = len(infralist)
 	infralist=collections.Counter(infralist)
 	infralist = collections.OrderedDict(sorted(infralist.items()))
 	infralist = abcd(infralist)
 
-
+	mexicocount = len(mexicolist)
 	mexicolist=collections.Counter(mexicolist)
 	mexicolist = collections.OrderedDict(sorted(mexicolist.items()))
 	mexicolist = abcd(mexicolist)
 
+	pariscount = len(parislist)
 	parislist=collections.Counter(parislist)
 	parislist = collections.OrderedDict(sorted(parislist.items()))
 	parislist = abcd(parislist)
 
+	delhicount = len(delhilist)
 	delhilist=collections.Counter(delhilist)
 	delhilist = collections.OrderedDict(sorted(delhilist.items()))
 	delhilist = abcd(delhilist)
 
+	bangkokcount = len(bangkoklist)
 	bangkoklist=collections.Counter(bangkoklist)
 	bangkoklist = collections.OrderedDict(sorted(bangkoklist.items()))
 	bangkoklist = abcd(bangkoklist)
 
+	nyccount = len(nyclist)
 	nyclist=collections.Counter(nyclist)
 	nyclist = collections.OrderedDict(sorted(nyclist.items()))
 	nyclist = abcd(nyclist)
@@ -299,7 +365,30 @@ def timeseries(docs):
 					  'paris' : parislist,
 					  'bangkok' : bangkoklist}
 
-	return datelist, topicstimeseries, languagetimeseries, citytimeseries
+	topicscount = {'environment' : environmentcount,
+			  'crime' : crimecount,
+			  'social unrest' : socialcount,
+			  'infra' : infracount,
+			  'politics' : politicscount}
+
+	languagecount = {'en' : encount,
+						  'hi' : hicount,
+						  'th' : thcount,
+						  'fr' : frcount,
+						  'es' : escount}
+
+	citycount = {'delhi' : delhicount,
+					  'mexico city' : mexicocount,
+					  'nyc' : nyccount,
+					  'paris' : pariscount,
+					  'bangkok' : bangkokcount}
+	
+	countlist = {'total' : totalcount,
+				 'topicscount' : topicscount,
+				 'languagecount' : languagecount,
+				 'citycount' : citycount}
+
+	return datelist, topicstimeseries, languagetimeseries, citytimeseries, countlist
 
 
 def abcd(d):
