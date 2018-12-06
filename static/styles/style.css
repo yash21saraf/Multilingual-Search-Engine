@@ -68,18 +68,18 @@ height: 143%;
 
 .tweet_user{
 	color:blue;
-	font-size:16px;
+	font-size:14px;
 }
 
 .tweet_id{
 	color:gray;
-	font-size:10px;
+	font-size:12px;
 }
 
 .tweet_text{
 	color:black;
 	font-size:16px;
-	padding-bottom: 20px;
+	padding-bottom: 16px;
 }
 
 #tweets-div{
@@ -95,7 +95,8 @@ overflow-y: auto;
 #total-tweets{
 	color:black;
 	font-weight:bold;
-	font-size:15px;
+  font-size:15px;
+  margin-bottom: 3px;
 }
 .error{
 	color:red;

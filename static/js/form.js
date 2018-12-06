@@ -6,7 +6,7 @@ var pseudoRel = false;
 var id = -1;
 var tweets ;
 var numtweets = 0 ;
-var data1 = []
+var timeseries;
 
 function userrelevance() {
   console.log("form 3 executed") ;
@@ -50,9 +50,11 @@ function pagination_function(page_no) {
 			if(tweets[i].tweet_text != null){
 				var tweetUrl = tweets[i].id;
 				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
-				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"
+				if(tweets[i].hashtags !=null){
+				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
+			}
 				htmlStr = htmlStr + "</div>"
         }
       }
@@ -61,19 +63,19 @@ function pagination_function(page_no) {
       console.log("length greater than 0 ")
       $("#tweets-div").empty();
       $("#tweets-div").html(htmlStr);
-		$(".tweet-cont").on("click", function twitterHandle(e){
+		 $(".tweet-cont").on("click", function twitterHandle(e){
 			var newTwitterURL = $(e.target).data("url");
       tweet_id = newTwitterURL ;
       newTwitterURL = "https://twitter.com/statuses/" + newTwitterURL
       userrelevance() ;
 			window.open(newTwitterURL, "_blank");
 		});
-
-
 		}
     else{
-  		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>"
-  		$("#tweets-div").html(htmlStr);
+  		htmlStr = htmlStr + "<div class='error'> No search results.. please enter a relevant query!</div>"
+			$("#tweets-div").html(htmlStr);
+			$("#total-tweets").hide();
+			$("#chartContainer").hide();
 		}
   }
 		});
@@ -104,9 +106,11 @@ function filterCalls() {
 			if(tweets[i].tweet_text != null){
 				var tweetUrl = tweets[i].id;
 				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
-				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"
+				if(tweets[i].hashtags !=null){
+				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
+			}
 				htmlStr = htmlStr + "</div>"
 			}
 		}
@@ -116,7 +120,7 @@ function filterCalls() {
     $("#total-tweets").show();
     $("#chartContainer").show();
 		$("#total-tweets").html("Tweets returned " + numtweets);
-		$("#chartContainer").CanvasJSChart(locationChart);
+		$("#chartContainer").CanvasJSChart(totalTweetsChart);
 		$(".tweet-cont").on("click", function twitterHandle(e){
 			var newTwitterURL = $(e.target).data("url");
       tweet_id = newTwitterURL ;
@@ -130,10 +134,9 @@ function filterCalls() {
 		}).on("page", function(event, num){
       console.log(num)
       pagination_function(num);
-			//$("#tweets-div .tweet-cont").html(htmlStr);
 		});
 		}else{
-		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>"
+		htmlStr = htmlStr + "<div class='error'> No search results.. please enter a relevant query!</div>"
 		$("#tweets-div").html(htmlStr);
 		$("#total-tweets").hide();
 		$("#chartContainer").hide();
@@ -162,7 +165,6 @@ function returnSearchResults() {
 		tweets = data.docs;
     numtweets = data.numFound
     timeseries = data.timeseries
-    createdata() ;
     console.log(timeseries)
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
@@ -170,9 +172,12 @@ function returnSearchResults() {
 				var tweetUrl = tweets[i].id;
 				// "<div id='tweet-url'></div>"
 				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
-				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"
+				if(tweets[i].hashtags !=null){
+				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
+			}
+				
 				htmlStr = htmlStr + "</div>"
 			}
 		}
@@ -182,7 +187,7 @@ function returnSearchResults() {
     $("#total-tweets").show();
     $("#chartContainer").show();
 		$("#total-tweets").html("Tweets returned " + numtweets);
-		$("#chartContainer").CanvasJSChart(locationChart);
+		$("#chartContainer").CanvasJSChart(totalTweetsChart);
 		$(".tweet-cont").on("click", function twitterHandle(e){
 			var newTwitterURL = $(e.target).data("url");
       tweet_id = newTwitterURL ;
@@ -200,7 +205,7 @@ function returnSearchResults() {
     });
 
 		}else{
-		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>"
+		htmlStr = htmlStr + "<div class='error'> No search results.. please enter a relevant query!</div>"
 		$("#tweets-div").html(htmlStr);
 		$("#total-tweets").hide();
 		$("#chartContainer").hide();
@@ -212,14 +217,12 @@ function returnSearchResults() {
 }
 
 function onclickchecker(getValue) {
-
   var languageSet = new Set();
   var topicsSet= new Set();
   var locationSet= new Set();
 	var topicList=document.getElementsByName('topic');
 	var cityList=document.getElementsByName('city');
   var languageList=document.getElementsByName('language');
-  // var pseudo=document.getElementsByName('pseudo');
 	for(var i=0; i<topicList.length; i++){
 		if(topicList[i].type=='checkbox' && topicList[i].checked==true) {
       console.log("topics")
@@ -229,14 +232,12 @@ function onclickchecker(getValue) {
 	}
 	for(var i=0; i<cityList.length; i++){
 		if(cityList[i].type=='checkbox' && cityList[i].checked==true) {
-      // locationSet+=cityList[i].id;
       locationSet.add(cityList[i].id);
 
 		}
 	}
 	for(var i=0; i<languageList.length; i++){
 		if(languageList[i].type=='checkbox' && languageList[i].checked==true) {
-      // languageSet+=languageList[i].id;
       languageSet.add(languageList[i].id);
 		}
   }
@@ -247,33 +248,33 @@ function onclickchecker(getValue) {
   }else{
     pseudoRel = false;
 
-  }
+	}
+	
+	filterCalls();
+
+  $("#mySelect").change(function() {
+    updateCharts(location)
+  });
 
   console.log(pseudoRel);
   langset = languageSet;
   topicset = topicsSet;
   cityset = locationSet;
-  filterCalls();
-
-  $("#mySelect").change(function() {
-    var val = ""+location;
-    updateCharts(location)
-  });
 }
 
 
 // Charts Functions
-var locationData = [{ y: 3, label: "Sweden" },
+var totalTweetsData = [{ y: 3, label: "Sweden" },
 { y: 7, label: "Taiwan" },
 { y: 5, label: "Russia" },
 { y: 9, label: "Spain" },
 { y: 7, label: "Brazil" },
 { y: 7, label: "India" },
 { y: 9, label: "Italy" }];
-var locationChart = {
+var totalTweetsChart = {
 	animationEnabled: true,
 	title: {
-		text: "Tweets segregation bar "
+		text: "Tweets segregation based on Count"
 	},
 	axisX:{
 		interval: 1
@@ -281,17 +282,33 @@ var locationChart = {
 	axisY2:{
 		interlacedColor: "rgba(1,77,101,.2)",
 		gridColor: "rgba(1,77,101,.1)",
-		title: "Number of Companies"
+		title: ""
 	},
 	data: [{
 		type: "bar",
-		name: "companies",
+		name: "location",
 		axisYType: "secondary",
 		color: "#014D65",
-		dataPoints: locationData
+		dataPoints: totalTweetsData
 }]
 };
 
+
+var locationData =  [{"label":"Hindi","y":"20"},{"label":"Thai","y":"50"},{"label":"English","y":"30"}];
+var locationChart = {
+	title: {
+		text: "Tweets segregation based on Location"
+	},
+	data: [{
+			type: "pie",
+			startAngle: 45,
+			showInLegend: "true",
+			legendText: "{label}",
+			indexLabel: "{label}",
+			yValueFormatString:"#,##0.#"%"",
+			dataPoints: locationData
+	}]
+};
 
 var languageData =  [{"label":"Hindi","y":"20"},{"label":"Thai","y":"50"},{"label":"English","y":"30"}];
 var languageChart = {
@@ -313,7 +330,7 @@ var languageChart = {
 var topicData =  [{"label":"Hindi","y":"20"},{"label":"Thai","y":"50"},{"label":"English","y":"30"}];
 var topicChart = {
 	title: {
-		text: "Tweets segregation based on Languages"
+		text: "Tweets segregation based on Topics"
 	},
 	data: [{
 			type: "pie",
@@ -326,36 +343,9 @@ var topicChart = {
 	}]
 };
 
-function createdata(){
-  for(i = 0 ; i < timeseries[0].length ; i++){
-  var temp = {x: new Date(timeseries[0][i]), y: timeseries[1][i]}
-  data1.push(temp) ;
-  }
-}
 
-
-//
-// var data1= [
-//   { x: new Date('2014-00-01'), y: 850 },
-//   { x: new Date('2014-01-01'), y: 889 },
-//   { x: new Date('2014-02-01'), y: 890 },
-//   { x: new Date('2014-03-01'), y: 899 },
-//   { x: new Date('2014-05-02'), y: 1170 },
-//   { x: new Date('2014-06-03'), y: 1170 },
-//   { x: new Date('2014-07-04'), y: 1170 },
-//   { x: new Date('2014-08-05'), y: 1170 }] ;
-//
-  var data2= [
-    { x: new Date(2014, 00, 01), y: 1000 },
-    { x: new Date(2014, 01, 01), y: 1010 },
-    { x: new Date(2014, 02, 01), y: 1020 },
-    { x: new Date(2014, 03, 01), y: 1030 },
-    { x: new Date(2014, 04, 01), y: 1040 },
-    { x: new Date(2014, 05, 01), y: 889 },
-    { x: new Date(2014, 06, 01), y: 890 },
-    { x: new Date(2014, 07, 01), y: 899 },
-    { x: new Date(2014, 08, 01), y: 1170 }] ;
-
+var data1
+var data2
 var TimeSeriesChart = {
 	title: {
 		text: ""
@@ -379,11 +369,11 @@ var TimeSeriesChart = {
 	data: [{
 		type:"line",
 		axisYType: "secondary",
-		name: "San Fransisco",
+		name: "",
 		showInLegend: true,
 		markerSize: 0,
 		yValueFormatString: "######",
-		dataPoints: data1
+		dataPoints: data1 
     },
     {
       type:"line",
@@ -392,8 +382,8 @@ var TimeSeriesChart = {
       showInLegend: true,
       markerSize: 0,
       yValueFormatString: "######",
-      dataPoints: data1
-      }]
+      dataPoints: data2 
+    }]
 };
 
 function toogleDataSeries(e){
@@ -407,30 +397,40 @@ function toogleDataSeries(e){
 
 function updateCharts(value){
 	console.log(value)
-	if(value === "location") {
+	if(value === "totalTweet") {
+		$("#chartContainer").CanvasJSChart(totalTweetsChart);
+		$("#chartContainer").show();
+		}
+	else if(value === "location") {
 	$("#chartContainer").CanvasJSChart(locationChart);
+	$("#chartContainer").show();
 	}else if(value === "language")
 	{
 		$("#chartContainer").CanvasJSChart(languageChart);
 	}else if(value === "topics")
 	{
 		$("#chartContainer").CanvasJSChart(topicChart);
+		$("#chartContainer").show();
   }
   else if(value === "timeSeriesCity")
 	{
 		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
+		$("#chartContainer").show();
   }
   else if(value === "timeSeriesLanguage")
 	{
 		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
+		$("#chartContainer").show();
   }
   else if(value === "timeSeriesTopic")
 	{
 		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
+		$("#chartContainer").show();
   }
   else if(value === "timeSeriesSentiments")
 	{
 		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
+		$("#chartContainer").show();
 	}
 }
 
