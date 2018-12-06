@@ -76,6 +76,9 @@ function pagination_function(page_no) {
 					{htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"}
 				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"
+				if(tweets[i].hashtags !=null){
+				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
+			}
 				htmlStr = htmlStr + "</div>"
         }
       }
@@ -84,19 +87,19 @@ function pagination_function(page_no) {
       console.log("length greater than 0 ")
       $("#tweets-div").empty();
       $("#tweets-div").html(htmlStr);
-		$(".tweet-cont").on("click", function twitterHandle(e){
+		 $(".tweet-cont").on("click", function twitterHandle(e){
 			var newTwitterURL = $(e.target).data("url");
       tweet_id = newTwitterURL ;
       newTwitterURL = "https://twitter.com/statuses/" + newTwitterURL
       userrelevance() ;
 			window.open(newTwitterURL, "_blank");
 		});
-
-
 		}
     else{
-  		htmlStr = htmlStr + "<div class='error'> Please enter a valid query!</div>"
-  		$("#tweets-div").html(htmlStr);
+  		htmlStr = htmlStr + "<div class='error'> No search results.. please enter a relevant query!</div>"
+			$("#tweets-div").html(htmlStr);
+			$("#total-tweets").hide();
+			$("#chartContainer").hide();
 		}
   }
 		});
@@ -161,6 +164,9 @@ function filterCalls() {
 					{htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"}
 				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"
+				if(tweets[i].hashtags !=null){
+				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
+			}
 				htmlStr = htmlStr + "</div>"
 			}
 		}
@@ -170,7 +176,7 @@ function filterCalls() {
     $("#total-tweets").show();
     $("#chartContainer").show();
 		$("#total-tweets").html("Tweets returned " + numtweets);
-		$("#chartContainer").CanvasJSChart(locationChart);
+		$("#chartContainer").CanvasJSChart(totalTweetsChart);
 		$(".tweet-cont").on("click", function twitterHandle(e){
 			var newTwitterURL = $(e.target).data("url");
       tweet_id = newTwitterURL ;
@@ -184,7 +190,6 @@ function filterCalls() {
 		}).on("page", function(event, num){
       console.log(num)
       pagination_function(num);
-			//$("#tweets-div .tweet-cont").html(htmlStr);
 		});
 		}else{
 		htmlStr = htmlStr + "<div class='error'>No results Found</div>"
@@ -254,6 +259,10 @@ function returnSearchResults() {
 					{htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"}
 				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"
+				if(tweets[i].hashtags !=null){
+				htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
+			}
+
 				htmlStr = htmlStr + "</div>"
 			}
 		}
@@ -263,7 +272,7 @@ function returnSearchResults() {
     $("#total-tweets").show();
     $("#chartContainer").show();
 		$("#total-tweets").html("Tweets returned " + numtweets);
-		$("#chartContainer").CanvasJSChart(locationChart);
+		$("#chartContainer").CanvasJSChart(totalTweetsChart);
 		$(".tweet-cont").on("click", function twitterHandle(e){
 			var newTwitterURL = $(e.target).data("url");
       tweet_id = newTwitterURL ;
@@ -293,14 +302,12 @@ function returnSearchResults() {
 }
 
 function onclickchecker(getValue) {
-
   var languageSet = new Set();
   var topicsSet= new Set();
   var locationSet= new Set();
 	var topicList=document.getElementsByName('topic');
 	var cityList=document.getElementsByName('city');
   var languageList=document.getElementsByName('language');
-  // var pseudo=document.getElementsByName('pseudo');
 	for(var i=0; i<topicList.length; i++){
 		if(topicList[i].type=='checkbox' && topicList[i].checked==true) {
       console.log("topics")
@@ -310,14 +317,12 @@ function onclickchecker(getValue) {
 	}
 	for(var i=0; i<cityList.length; i++){
 		if(cityList[i].type=='checkbox' && cityList[i].checked==true) {
-      // locationSet+=cityList[i].id;
       locationSet.add(cityList[i].id);
 
 		}
 	}
 	for(var i=0; i<languageList.length; i++){
 		if(languageList[i].type=='checkbox' && languageList[i].checked==true) {
-      // languageSet+=languageList[i].id;
       languageSet.add(languageList[i].id);
 		}
   }
@@ -328,33 +333,33 @@ function onclickchecker(getValue) {
   }else{
     pseudoRel = false;
 
-  }
+	}
+
+	filterCalls();
+
+  $("#mySelect").change(function() {
+    updateCharts(location)
+  });
 
   console.log(pseudoRel);
   langset = languageSet;
   topicset = topicsSet;
   cityset = locationSet;
-  filterCalls();
-
-  $("#mySelect").change(function() {
-    var val = ""+location;
-    updateCharts(location)
-  });
 }
 
 
 // Charts Functions
-var locationData = [{ y: 3, label: "Sweden" },
+var totalTweetsData = [{ y: 3, label: "Sweden" },
 { y: 7, label: "Taiwan" },
 { y: 5, label: "Russia" },
 { y: 9, label: "Spain" },
 { y: 7, label: "Brazil" },
 { y: 7, label: "India" },
 { y: 9, label: "Italy" }];
-var locationChart = {
+var totalTweetsChart = {
 	animationEnabled: true,
 	title: {
-		text: "Tweets segregation bar "
+		text: "Tweets segregation based on Count"
 	},
 	axisX:{
 		interval: 1
@@ -362,14 +367,14 @@ var locationChart = {
 	axisY2:{
 		interlacedColor: "rgba(1,77,101,.2)",
 		gridColor: "rgba(1,77,101,.1)",
-		title: "Number of Companies"
+		title: ""
 	},
 	data: [{
 		type: "bar",
-		name: "companies",
+		name: "location",
 		axisYType: "secondary",
 		color: "#014D65",
-		dataPoints: locationData
+		dataPoints: totalTweetsData
 }]
 };
 
@@ -488,7 +493,7 @@ function createdata11(){
 }
 
 function createdata12(){
-totaltimeseries13.length = 0  
+totaltimeseries13.length = 0
   for(i = 0 ; i < languagetimeseries['hi'][0].length ; i++){
   var temp = {x: new Date(languagetimeseries['hi'][0][i]), y: languagetimeseries['hi'][1][i]}
   totaltimeseries13.push(temp) ;
@@ -579,6 +584,8 @@ function createtweetsdatatopics(){
 }
 
 
+var data1
+var data2
 var TimeSeriesChart = {
 	title: {
 		text: ""
@@ -818,7 +825,11 @@ function toogleDataSeries(e){
 
 function updateCharts(value){
 	console.log(value)
-	if(value === "location") {
+	if(value === "totalTweet") {
+		$("#chartContainer").CanvasJSChart(totalTweetsChart);
+		$("#chartContainer").show();
+		}
+	else if(value === "location") {
 	$("#chartContainer").CanvasJSChart(locationChart);
 	$("#chartContainer").show();
 	}else if(value === "language")
@@ -829,7 +840,7 @@ function updateCharts(value){
 	{
 		$("#chartContainer").CanvasJSChart(topicChart);
 		$("#chartContainer").show();
-  }		
+  }
   else if(value === "timeSeriesCity")
 	{
 		$("#chartContainer").CanvasJSChart(TimeSeriesChartCity);
