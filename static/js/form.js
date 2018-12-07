@@ -72,8 +72,6 @@ function pagination_function(page_no) {
 			if(tweets[i].tweet_text != null){
 				var tweetUrl = tweets[i].id;
 				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
-				if(tweets[i].hashtags != null)
-					{htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"}
 				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"
 				if(tweets[i].hashtags !=null){
@@ -92,7 +90,8 @@ function pagination_function(page_no) {
       tweet_id = newTwitterURL ;
       newTwitterURL = "https://twitter.com/statuses/" + newTwitterURL
       userrelevance() ;
-			window.open(newTwitterURL, "_blank");
+      window.open(newTwitterURL, "_blank");
+      $("#chartContainer").show();
 		});
 		}
     else{
@@ -160,8 +159,6 @@ function filterCalls() {
 			if(tweets[i].tweet_text != null){
 				var tweetUrl = tweets[i].id;
 				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
-								if(tweets[i].hashtags != null)
-					{htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"}
 				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"
 				if(tweets[i].hashtags !=null){
@@ -248,6 +245,7 @@ function returnSearchResults() {
     createdata23();
     createdata24();
     createdata25();
+    maps();
     console.log(timeseries)
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
@@ -255,8 +253,6 @@ function returnSearchResults() {
 				var tweetUrl = tweets[i].id;
 				// "<div id='tweet-url'></div>"
 				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
-								if(tweets[i].hashtags != null)
-					{htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"}
 				htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
 				htmlStr = htmlStr + "<div class='tweet_text' data-url='" + tweetUrl + "'> " + tweets[i].tweet_text + "</div>"
 				if(tweets[i].hashtags !=null){
@@ -272,7 +268,7 @@ function returnSearchResults() {
     $("#total-tweets").show();
     $("#chartContainer").show();
 		$("#total-tweets").html("Tweets returned " + numtweets);
-		$("#chartContainer").CanvasJSChart(totalTweetsChart);
+		$("#chartContainer").CanvasJSChart(locationChart);
 		$(".tweet-cont").on("click", function twitterHandle(e){
 			var newTwitterURL = $(e.target).data("url");
       tweet_id = newTwitterURL ;
@@ -336,9 +332,9 @@ function onclickchecker(getValue) {
 	}
 
 	filterCalls();
-
   $("#mySelect").change(function() {
-    updateCharts(location)
+    console.log("entered my select" +location)
+    updateCharts()
   });
 
   console.log(pseudoRel);
@@ -349,37 +345,35 @@ function onclickchecker(getValue) {
 
 
 // Charts Functions
-var totalTweetsData = [{ y: 3, label: "Sweden" },
-{ y: 7, label: "Taiwan" },
-{ y: 5, label: "Russia" },
-{ y: 9, label: "Spain" },
-{ y: 7, label: "Brazil" },
-{ y: 7, label: "India" },
-{ y: 9, label: "Italy" }];
-var totalTweetsChart = {
-	animationEnabled: true,
-	title: {
-		text: "Tweets segregation based on Count"
-	},
-	axisX:{
-		interval: 1
-	},
-	axisY2:{
-		interlacedColor: "rgba(1,77,101,.2)",
-		gridColor: "rgba(1,77,101,.1)",
-		title: ""
-	},
-	data: [{
-		type: "bar",
-		name: "location",
-		axisYType: "secondary",
-		color: "#014D65",
-		dataPoints: totalTweetsData
-}]
-};
+// var totalTweetsData = [{ y: 3, label: "Sweden" },
+// { y: 7, label: "Taiwan" },
+// { y: 5, label: "Russia" },
+// { y: 9, label: "Spain" },
+// { y: 7, label: "Brazil" },
+// { y: 7, label: "India" },
+// { y: 9, label: "Italy" }];
+// var totalTweetsChart = {
+// 	animationEnabled: true,
+// 	title: {
+// 		text: "Tweets segregation based on Count"
+// 	},
+// 	axisX:{
+// 		interval: 1
+// 	},
+// 	axisY2:{
+// 		interlacedColor: "rgba(1,77,101,.2)",
+// 		gridColor: "rgba(1,77,101,.1)",
+// 		title: ""
+// 	},
+// 	data: [{
+// 		type: "bar",
+// 		name: "location",
+// 		axisYType: "secondary",
+// 		color: "#014D65",
+// 		dataPoints: totalTweetsData
+// }]
+// };
 
-
-// var languageData =  [{"label":"Hindi","y":"20"},{"label":"Thai","y":"50"},{"label":"English","y":"30"}];
 var languageChart = {
 	title: {
 		text: "Tweets segregation based on Languages"
@@ -397,7 +391,7 @@ var languageChart = {
 
 var locationChart = {
 	title: {
-		text: "Tweets segregation based on Languages"
+		text: "Tweets segregation based on Locations"
 	},
 	data: [{
 			type: "pie",
@@ -424,17 +418,6 @@ var topicChart = {
 			dataPoints: topicsTweetsdata
 	}]
 };
-// var totaltimeseries = []
-// var totaltimeseriescity = []
-// var totaltimeseriestopics = []
-// var totaltimeserieslanguage = []
-
-
-//     numtweets = data.numFound
-//     timeseries = data.timeseries
-//     cityseries = data.citytimeseries
-//     languageseries = data.languagetimeseries
-//     topicsseries = data.topicstimeseries
 
 function createdata(){
   totaltimeseries.length = 0
@@ -610,7 +593,7 @@ var TimeSeriesChart = {
     {
       type:"line",
       axisYType: "secondary",
-      name: "Complete Data",
+      name: "Time Series total corpus",
       showInLegend: true,
       markerSize: 0,
       yValueFormatString: "######",
@@ -823,14 +806,38 @@ function toogleDataSeries(e){
 	chart.render();
 }
 
+
+function maps(){
+  google.charts.load('current', {
+    'packages':['geochart'],
+    'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+  });
+  google.charts.setOnLoadCallback(drawRegionsMap); 
+}
+var data
+
+function createMapData(){
+  var x = new Array(10);
+  for (var i = 0; i < citycount.length; i++) {
+  x[i] = new Array(3);
+}
+}
+
+function drawRegionsMap() {
+  data  = google.visualization.arrayToDataTable([
+    ['Country', 'Total Tweets'],
+    ['Germany', 9000],
+    ['United States', 9000],
+    ['Brazil', 9000],
+    ['India', 9000]
+  ]);
+}
+
 function updateCharts(value){
 	console.log(value)
-	if(value === "totalTweet") {
-		$("#chartContainer").CanvasJSChart(totalTweetsChart);
-		$("#chartContainer").show();
-		}
-	else if(value === "location") {
-	$("#chartContainer").CanvasJSChart(locationChart);
+  if(value === "location") {
+  console.log("Entered location")
+  $("#chartContainer").CanvasJSChart(locationChart);
 	$("#chartContainer").show();
 	}else if(value === "language")
 	{
@@ -860,7 +867,37 @@ function updateCharts(value){
 	{
 		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
 		$("#chartContainer").show();
-	}
+  } else if(value === "timeSeriesSentiments")
+	{
+		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
+		$("#chartContainer").show();
+  } else if(value === "sentiments")
+	{
+		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
+		$("#chartContainer").show();
+  }
+  else if(value === "hashtags")
+	{
+		$("#chartContainer").CanvasJSChart();
+		$("#chartContainer").show();
+  }
+  else if(value === "mentions")
+	{
+		$("#chartContainer").CanvasJSChart();
+		$("#chartContainer").show();
+  }else if(value === "area")
+	{
+    console.log("Area")
+    var options = {
+      colorAxis: {colors: ['green','blue','yellow','red']},
+      backgroundColor: '#81d4fa',
+      datalessRegionColor: '#f8bbd0',
+      defaultColor: '#f5f5f5',
+    };
+    options['dataMode'] = 'regions';
+    var chart = new google.visualization.GeoChart(document.getElementById('chartContainer'));
+    chart.draw(data, options);
+  }
 }
 
 
