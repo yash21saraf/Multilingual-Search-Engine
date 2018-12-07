@@ -130,6 +130,9 @@ function filterCalls() {
     citytimeseries = data.citytimeseries
     languagetimeseries = data.languagetimeseries
     topicstimeseries = data.topictimeseries
+    citysentimentseries = data.citysentimentseries
+    languagesentimentseries = data.languagesentimentseries
+    topicssentimentseries = data.topicssentimentseries
     citycount = data.countlist.citycount
     topicscount = data.countlist.topicscount
     languagecount = data.countlist.languagecount

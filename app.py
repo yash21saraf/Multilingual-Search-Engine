@@ -10,6 +10,7 @@ from pymongo import MongoClient
 import collections
 from collections import OrderedDict
 import operator
+from collections import defaultdict		
 
 
 import re
@@ -116,7 +117,7 @@ def selectsearch():
 		sendvar = min(9, numFound)
 		global docspage
 		docspage = docs
-		timeseries1, topictimeseries1, languagetimeseries1, citytimeseries1, countlist = timeseries(docs)
+		timeseries1, topictimeseries1, languagetimeseries1, citytimeseries1, countlist, topicssentimentseries, languagesentimentseries, citysentimentseries, sentimentlist = timeseries(docs)
 		tophashtags = top_hashtags(docs)
 		topmentions = top_mentions(docs)
 		
@@ -130,8 +131,12 @@ def selectsearch():
 				'citytimeseries' : citytimeseries1,
 				'tophashtags' : tophashtags,
 				'topmentions' : topmentions,
-				'countlist' : countlist}
-		print(countlist)
+				'countlist' : countlist,
+				'topicssentimentseries' : topicssentimentseries,
+				'languagesentimentseries' : languagesentimentseries,
+				'citysentimentseries' : citysentimentseries,
+				'sentimentlist' : sentimentlist}
+
 		response = []
 		response = [d['id'] for d in docs if 'id' in d]
 		logfile = {'timestamp' : datetime.now(),
@@ -229,6 +234,19 @@ def timeseries(docs):
 	politicslist = []
 	sociallist = []
 	infralist = []
+	totalsentiments = defaultdict(float)
+	ensentiments = defaultdict(float)
+	frsentiments = defaultdict(float)
+	crimesentiments = defaultdict(float)
+	environmentsentiments = defaultdict(float)
+	socialsentiments = defaultdict(float)
+	politicssentiments = defaultdict(float)
+	infrasentiments = defaultdict(float)
+	nycsentiments = defaultdict(float)
+	mexicosentiments = defaultdict(float)
+	bangkoksentiments = defaultdict(float)
+	delhisentiments = defaultdict(float)
+	parissentiments = defaultdict(float)
 	datesorted = sorted(docs, key=lambda k: k['tweet_date'])
 	for doc in datesorted:
 		doc['tweet_date'] = doc['tweet_date'][0][0:10]
@@ -267,14 +285,46 @@ def timeseries(docs):
 		elif(doc['topic'][0] == "politics"):
 			politicslist.append(doc['tweet_date'])
 
+
+		if 'sentiment' in doc:
+			totalsentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+			if(doc['city'][0] == "mexico city"):
+				mexicosentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+			elif(doc['city'][0] == "nyc"):
+				nycsentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+			elif(doc['city'][0] == "delhi"):
+				delhisentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+			elif(doc['city'][0] == "paris"):
+				parissentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+			elif(doc['city'][0] == "bangkok"):
+				bangkoksentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+
+			if(doc['tweet_lang'][0] == "en"):
+				ensentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+			elif(doc['tweet_lang'][0] == "fr"):
+				frsentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+
+			if(doc['topic'][0] == "crime"):
+				crimesentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+			elif(doc['topic'][0] == "environment"):
+				environmentsentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+			elif(doc['topic'][0] == "social unrest"):
+				socialsentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+			elif(doc['topic'][0] == "infra"):
+				infrasentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+			elif(doc['topic'][0] == "politics"):
+				politicssentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+
 	totalcount = len(datelist)
 	datelist=collections.Counter(datelist)
 	datelist = collections.OrderedDict(sorted(datelist.items()))
+	sentimentlist = pqrs(datelist, totalsentiments)
 	datelist = abcd(datelist)
 
 	encount = len(enlist)
 	enlist=collections.Counter(enlist)
 	enlist = collections.OrderedDict(sorted(enlist.items()))
+	ensentimentlist = pqrs(enlist, ensentiments)
 	enlist = abcd(enlist)
 
 	escount = len(eslist)
@@ -290,6 +340,7 @@ def timeseries(docs):
 	frcount = len(frlist)
 	frlist=collections.Counter(frlist)
 	frlist = collections.OrderedDict(sorted(frlist.items()))
+	frsentimentlist = pqrs(frlist, frsentiments)
 	frlist = abcd(frlist)
 
 	hicount = len(hilist)
@@ -300,51 +351,61 @@ def timeseries(docs):
 	politicscount = len(politicslist)
 	politicslist=collections.Counter(politicslist)
 	politicslist = collections.OrderedDict(sorted(politicslist.items()))
+	politicssentimentlist = pqrs(politicslist, politicssentiments)
 	politicslist = abcd(politicslist)
 
 	crimecount = len(crimelist)
 	crimelist=collections.Counter(crimelist)
 	crimelist = collections.OrderedDict(sorted(crimelist.items()))
+	crimesentimentlist = pqrs(crimelist, crimesentiments)
 	crimelist = abcd(crimelist)
 
 	environmentcount = len(environmentlist)
 	environmentlist=collections.Counter(environmentlist)
 	environmentlist = collections.OrderedDict(sorted(environmentlist.items()))
+	envsentimentlist = pqrs(environmentlist, environmentsentiments)
 	environmentlist = abcd(environmentlist)
 
 	socialcount = len(sociallist)
 	sociallist=collections.Counter(sociallist)
 	sociallist = collections.OrderedDict(sorted(sociallist.items()))
+	socialsentimentlist = pqrs(sociallist, socialsentiments)
 	sociallist = abcd(sociallist)
 
 	infracount = len(infralist)
 	infralist=collections.Counter(infralist)
 	infralist = collections.OrderedDict(sorted(infralist.items()))
+	infrasentimentlist = pqrs(infralist, infrasentiments)
 	infralist = abcd(infralist)
 
 	mexicocount = len(mexicolist)
 	mexicolist=collections.Counter(mexicolist)
 	mexicolist = collections.OrderedDict(sorted(mexicolist.items()))
+	mexicosentimentlist = pqrs(mexicolist, mexicosentiments)
 	mexicolist = abcd(mexicolist)
 
 	pariscount = len(parislist)
 	parislist=collections.Counter(parislist)
 	parislist = collections.OrderedDict(sorted(parislist.items()))
+	parissentimentlist = pqrs(parislist, parissentiments)
 	parislist = abcd(parislist)
 
 	delhicount = len(delhilist)
 	delhilist=collections.Counter(delhilist)
 	delhilist = collections.OrderedDict(sorted(delhilist.items()))
+	delhisentimentlist = pqrs(delhilist, delhisentiments)
 	delhilist = abcd(delhilist)
 
 	bangkokcount = len(bangkoklist)
 	bangkoklist=collections.Counter(bangkoklist)
 	bangkoklist = collections.OrderedDict(sorted(bangkoklist.items()))
+	bangkoksentimentlist = pqrs(bangkoklist, bangkoksentiments)
 	bangkoklist = abcd(bangkoklist)
 
 	nyccount = len(nyclist)
 	nyclist=collections.Counter(nyclist)
 	nyclist = collections.OrderedDict(sorted(nyclist.items()))
+	nycsentimentlist = pqrs(nyclist, nycsentiments)
 	nyclist = abcd(nyclist)
 
 	topicstimeseries = {'environment' : environmentlist,
@@ -364,6 +425,21 @@ def timeseries(docs):
 					  'nyc' : nyclist,
 					  'paris' : parislist,
 					  'bangkok' : bangkoklist}
+
+	topicssentimentseries = {'environment' : envsentimentlist,
+			  'crime' : crimesentimentlist,
+			  'social unrest' : socialsentimentlist,
+			  'infra' : infrasentimentlist,
+			  'politics' : politicssentimentlist}
+
+	languagesentimentseries = {'en' : ensentimentlist,
+						  'fr' : frsentimentlist}
+
+	citysentimentseries = {'delhi' : delhisentimentlist,
+					  'mexico city' : mexicosentimentlist,
+					  'nyc' : nycsentimentlist,
+					  'paris' : parissentimentlist,
+					  'bangkok' : bangkoksentimentlist}
 
 	topicscount = {'environment' : environmentcount,
 			  'crime' : crimecount,
@@ -388,13 +464,25 @@ def timeseries(docs):
 				 'languagecount' : languagecount,
 				 'citycount' : citycount}
 
-	return datelist, topicstimeseries, languagetimeseries, citytimeseries, countlist
+	return datelist, topicstimeseries, languagetimeseries, citytimeseries, countlist, topicssentimentseries, languagesentimentseries, citysentimentseries, sentimentlist
 
 
 def abcd(d):
 	keys = []
 	values = []
 	for key, value in d.items():
+		keys.append(key)
+		values.append(value)
+	a = []
+	a.append(keys)
+	a.append(values)
+	return a
+
+def pqrs(d, s):
+	keys = []
+	values = []
+	for key, value in s.items():
+		value = value/d[key]
 		keys.append(key)
 		values.append(value)
 	a = []
@@ -434,7 +522,7 @@ def createfacetedquery(query, langset, topicset, cityset):
 			url = url + 'city:(' + cities + ')'
 		else:
 			url = url[:-4]
-	url = url + '&indent=on&q=' + query + '&wt=json&rows=1000'
+	url = url + '&indent=on&q=' + query + '&wt=json&rows=10000000'
 	return url
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')
