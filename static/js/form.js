@@ -28,7 +28,10 @@ var totaltimeserieslanguage = []
 var cityTweetsdata = []
 var languageTweetsdata = []
 var topicsTweetsdata = []
+var hashtagsdata = []
+var mentionsdata = []
 var data1 = []
+var cityTweetsdata
 
 function userrelevance() {
   console.log("form 3 executed") ;
@@ -123,7 +126,7 @@ function filterCalls() {
         console.log("Query was not null")
 		tweets = data.docs;
     numtweets = data.numFound;
-    		tweets = data.docs;
+    tweets = data.docs;
     numtweets = data.numFound
     timeseries = data.timeseries
     citytimeseries = data.citytimeseries
@@ -135,6 +138,10 @@ function filterCalls() {
     citycount = data.countlist.citycount
     topicscount = data.countlist.topicscount
     languagecount = data.countlist.languagecount
+    topmentions = data.topmentions; 
+    hashtags = data.tophashtags;   
+    sentiments = data.sentimentlist;
+    console.log("Senti"+sentiments) ;
 
     createdata() ;
     createtweetsdatacity() ;
@@ -155,7 +162,10 @@ function filterCalls() {
     createdata23();
     createdata24();
     createdata25();
-    console.log(timeseries)
+    createtweetsdatamaps();
+    createtweetsdatahashtags();
+    createtweetsdatamentions();
+    
 
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
@@ -228,7 +238,10 @@ function returnSearchResults() {
     citycount = data.countlist.citycount
     topicscount = data.countlist.topicscount
     languagecount = data.countlist.languagecount
-
+    topmentions = data.topmentions; 
+    hashtags = data.tophashtags; 
+    sentiments = data.sentimentlist; 
+    console.log("senti"+sentiments) ;
     createdata() ;
     createtweetsdatacity() ;
     createtweetsdatalanguage() ;
@@ -248,7 +261,9 @@ function returnSearchResults() {
     createdata23();
     createdata24();
     createdata25();
-    maps();
+    createtweetsdatahashtags();
+    createtweetsdatamentions();
+    createtweetsdatamaps();
     console.log(timeseries)
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
@@ -285,7 +300,6 @@ function returnSearchResults() {
 			maxVisible: 10
 		}).on("page", function(event, num){
       pagination_function(num);
-			//$("#tweets-div .tweet-cont").html(htmlStr);
     });
 
 		}else{
@@ -348,35 +362,6 @@ function onclickchecker(getValue) {
 
 
 // Charts Functions
-// var totalTweetsData = [{ y: 3, label: "Sweden" },
-// { y: 7, label: "Taiwan" },
-// { y: 5, label: "Russia" },
-// { y: 9, label: "Spain" },
-// { y: 7, label: "Brazil" },
-// { y: 7, label: "India" },
-// { y: 9, label: "Italy" }];
-// var totalTweetsChart = {
-// 	animationEnabled: true,
-// 	title: {
-// 		text: "Tweets segregation based on Count"
-// 	},
-// 	axisX:{
-// 		interval: 1
-// 	},
-// 	axisY2:{
-// 		interlacedColor: "rgba(1,77,101,.2)",
-// 		gridColor: "rgba(1,77,101,.1)",
-// 		title: ""
-// 	},
-// 	data: [{
-// 		type: "bar",
-// 		name: "location",
-// 		axisYType: "secondary",
-// 		color: "#014D65",
-// 		dataPoints: totalTweetsData
-// }]
-// };
-
 var languageChart = {
 	title: {
 		text: "Tweets segregation based on Languages"
@@ -421,6 +406,18 @@ var topicChart = {
 			dataPoints: topicsTweetsdata
 	}]
 };
+
+
+// topmentions = data.topmentions; 
+//     hashtags = data.tophashtags;
+
+function createdata(){
+  totaltimeseries.length = 0
+  for(i = 0 ; i < timeseries[0].length ; i++){
+  var temp = {x: new Date(timeseries[0][i]), y: timeseries[1][i]}
+  totaltimeseries.push(temp) ;
+  }
+}
 
 function createdata(){
   totaltimeseries.length = 0
@@ -569,6 +566,56 @@ function createtweetsdatatopics(){
   }
 }
 
+function createtweetsdatahashtags(){
+  hashtagsdata.length = 0
+  for(i = 0 ; i < hashtags.length ; i++){
+  var temp = {"label" : ''+Object.keys(hashtags[i]), "y" : +Object.values(hashtags[i])}
+  hashtagsdata.push(temp) ;
+  }
+}
+
+
+var hashtagsChart = {
+	animationEnabled: true,
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	title:{
+		text: "Top Hashtags"
+	},
+	axisY: {
+		title: "Hashtags"
+	},
+	data: [{        
+		type: "column",  
+		showInLegend: true, 
+    legendMarkerColor: "grey",
+    dataPoints: hashtagsdata
+	}]
+};
+
+function createtweetsdatamentions(){
+  mentionsdata.length = 0
+  for(i = 0 ; i < topmentions.length ; i++){
+  var temp = {"label" : ''+Object.keys(topmentions[i]), "y" : +Object.values(topmentions[i])}
+  mentionsdata.push(temp) ;
+  }
+}
+
+var mentionsChart = {
+	animationEnabled: true,
+	theme: "light2", 
+	title:{
+		text: "Top Mentions"
+	},
+	axisY: {
+		title: "Mentions"
+	},
+	data: [{        
+		type: "column",  
+		showInLegend: true, 
+    legendMarkerColor: "grey",
+    dataPoints: mentionsdata
+	}]
+};
 
 var data1
 var data2
@@ -810,7 +857,7 @@ function toogleDataSeries(e){
 }
 
 
-function maps(){
+function createtweetsdatamaps(){
   google.charts.load('current', {
     'packages':['geochart'],
     'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
@@ -828,11 +875,8 @@ function createMapData(){
 
 function drawRegionsMap() {
   data  = google.visualization.arrayToDataTable([
-    ['Country', 'Total Tweets'],
-    ['Germany', 9000],
-    ['United States', 9000],
-    ['Brazil', 9000],
-    ['India', 9000]
+    ['IN'],
+    ['NJ']
   ]);
 }
 
@@ -870,23 +914,19 @@ function updateCharts(value){
 	{
 		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
 		$("#chartContainer").show();
-  } else if(value === "timeSeriesSentiments")
+  }  else if(value === "sentiments")
 	{
-		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
-		$("#chartContainer").show();
-  } else if(value === "sentiments")
-	{
-		$("#chartContainer").CanvasJSChart(TimeSeriesChart);
+		$("#chartContainer").CanvasJSChart();
 		$("#chartContainer").show();
   }
   else if(value === "hashtags")
 	{
-		$("#chartContainer").CanvasJSChart();
+		$("#chartContainer").CanvasJSChart(hashtagsChart);
 		$("#chartContainer").show();
   }
   else if(value === "mentions")
 	{
-		$("#chartContainer").CanvasJSChart();
+		$("#chartContainer").CanvasJSChart(mentionsChart);
 		$("#chartContainer").show();
   }else if(value === "area")
 	{
