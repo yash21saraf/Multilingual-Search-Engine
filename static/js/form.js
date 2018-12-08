@@ -34,6 +34,9 @@ var countrydata
 var sentimentsTweetsData = []
 var data1 = []
 var cityTweetsdata
+var citysentimentseries;
+
+
 
 function userrelevance() {
   console.log("form 3 executed") ;
@@ -76,12 +79,13 @@ function pagination_function(page_no) {
 		    for (var i = 0; i <tweets.length; i++) {
 			if(tweets[i].tweet_text != null){
 				var tweetUrl = tweets[i].id;
-				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
-        htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
-        if(tweets[i].hashtags !=null){
-          htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
-        }
+        htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
+        htmlStr = htmlStr + "<a href='#' data-url='" + tweetUrl + "'> " + "https://twitter.com/statuses/"+tweets[i].id + "</a>"
         htmlStr = htmlStr + "</div>"
+        // htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"
+        if(tweets[i].hashtags !=null){
+          htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"
+        }
         htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text + "</div>"
         }
       }
@@ -176,11 +180,12 @@ function filterCalls() {
 			if(tweets[i].tweet_text != null){
 				var tweetUrl = tweets[i].id;
         htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
-        htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
-        if(tweets[i].hashtags !=null){
-          htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
-        }
+        htmlStr = htmlStr + "<a href='#' data-url='" + tweetUrl + "'> " + "https://twitter.com/statuses/"+tweets[i].id + "</a>"
         htmlStr = htmlStr + "</div>"
+        // htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"
+        if(tweets[i].hashtags !=null){
+          htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"
+        }
         htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text + "</div>"
 			}
 		}
@@ -274,14 +279,14 @@ function returnSearchResults() {
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
 			if(tweets[i].tweet_text != null){
-				var tweetUrl = tweets[i].id;
-				// "<div id='tweet-url'></div>"
-				htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
-        htmlStr = htmlStr + "<div class='tweet_id' data-url='" + tweetUrl + "'> " + tweets[i].id + "</div>"
-        if(tweets[i].hashtags !=null){
-          htmlStr = htmlStr + "<div class='tweet_user' data-url='" + tweetUrl + "'> " + tweets[i].hashtags + "</div>"
-        }
+        var tweetUrl = tweets[i].id;
+        htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
+        htmlStr = htmlStr + "<a href='#' data-url='" + tweetUrl + "'> " + "https://twitter.com/statuses/"+tweets[i].id + "</a>"
         htmlStr = htmlStr + "</div>"
+        // htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"
+        if(tweets[i].hashtags !=null){
+          htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"
+        }
         htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text + "</div>"
 			}
 		}
