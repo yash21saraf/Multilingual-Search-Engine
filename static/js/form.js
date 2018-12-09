@@ -97,9 +97,8 @@ function pagination_function(page_no) {
         htmlStr = htmlStr + "<div class='tweet-cont' data-url='" + tweetUrl + "'>";
         htmlStr = htmlStr + "<a href='#' data-url='" + tweetUrl + "'> " + "https://twitter.com/statuses/"+tweets[i].id + "</a>"
         htmlStr = htmlStr + "</div>"
-        // htmlStr = htmlStr + "<div class='tweet_id'> " + tweets[i].id + "</div>"
         if(tweets[i].hashtags !=null){
-          htmlStr = htmlStr + "<div class='tweet_user'> " + tweets[i].hashtags + "</div>"
+          htmlStr = htmlStr + "<div class='tweet_user'>" + tweets[i].hashtags + "</div>"
         }
         htmlStr = htmlStr + "<div class='tweet_text'> " + tweets[i].tweet_text + "</div>"
         }
@@ -115,6 +114,8 @@ function pagination_function(page_no) {
       newTwitterURL = "https://twitter.com/statuses/" + newTwitterURL
       userrelevance() ;
       window.open(newTwitterURL, "_blank");
+      $('#mySelect').get(0).selectedIndex = 0;
+      $("#chartContainer").CanvasJSChart(locationChart);
       $("#chartContainer").show();
 		});
 		}
@@ -216,9 +217,10 @@ function filterCalls() {
 		if(tweets.length >0){
 		$("#tweets-div").html(htmlStr);
     $("#total-tweets").show();
+    $('#mySelect').get(0).selectedIndex = 0;
+    $("#chartContainer").CanvasJSChart(locationChart);
     $("#chartContainer").show();
 		$("#total-tweets").html("Tweets returned " + numtweets);
-		$("#chartContainer").CanvasJSChart(locationChart);
 		$(".tweet-cont").on("click", function twitterHandle(e){
 			var newTwitterURL = $(e.target).data("url");
       tweet_id = newTwitterURL ;
@@ -332,9 +334,10 @@ function returnSearchResults() {
 		if(tweets.length >0){
 		$("#tweets-div").html(htmlStr);
     $("#total-tweets").show();
+    $('#mySelect').get(0).selectedIndex = 0;
+    $("#chartContainer").CanvasJSChart(locationChart);
     $("#chartContainer").show();
 		$("#total-tweets").html("Tweets returned " + numtweets);
-		$("#chartContainer").CanvasJSChart(locationChart);
 		$(".tweet-cont").on("click", function twitterHandle(e){
 			var newTwitterURL = $(e.target).data("url");
       tweet_id = newTwitterURL ;
@@ -407,6 +410,7 @@ function onclickchecker(getValue) {
 }
 
 
+
 // Charts Functions
 var languageChart = {
 	title: {
@@ -441,7 +445,11 @@ var locationChart = {
 var topicChart = {
 	title: {
 		text: "Tweets segregation based on Topics"
-	},
+  },
+  legend: {
+    itemclick: function (e) {
+    }
+  },
 	data: [{
 			type: "pie",
 			startAngle: 45,
@@ -456,7 +464,7 @@ var topicChart = {
 var sentimentsChart = {
 	title: {
 		text: "Tweets segregation based on Sentiments"
-	},
+  },
 	data: [{
 			type: "doughnut",
 			startAngle: 45,
@@ -467,11 +475,6 @@ var sentimentsChart = {
 			dataPoints: sentimentsTweetsData
 	}]
 };
-
-// citysentimentseries = data.citysentimentseries
-//     languagesentimentseries = data.languagesentimentseries
-//     topicssentimentseries = data.topicssentimentseries
-
 
 function createdata001(){
 	totaltimeseries001.length = 0
@@ -736,6 +739,13 @@ function createtweetsdatahashtags(){
   }
 }
 
+function createtweetsdatamentions(){
+  mentionsdata.length = 0
+  for(i = 0 ; i < topmentions.length ; i++){
+  var temp = {"label" : ''+Object.keys(topmentions[i]), "y" : +Object.values(topmentions[i])}
+  mentionsdata.push(temp) ;
+  }
+}
 
 var hashtagsChart = {
 	animationEnabled: true,
@@ -754,14 +764,6 @@ var hashtagsChart = {
     dataPoints: hashtagsdata
 	}]
 };
-
-function createtweetsdatamentions(){
-  mentionsdata.length = 0
-  for(i = 0 ; i < topmentions.length ; i++){
-  var temp = {"label" : ''+Object.keys(topmentions[i]), "y" : +Object.values(topmentions[i])}
-  mentionsdata.push(temp) ;
-  }
-}
 
 var mentionsChart = {
 	animationEnabled: true,
@@ -801,7 +803,15 @@ var TimeSeriesChart = {
 		verticalAlign: "top",
 		horizontalAlign: "center",
 		dockInsidePlotArea: false,
-		itemclick: toogleDataSeries
+    itemclick: function (e) {
+      if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+          e.dataSeries.visible = false;
+      } else {
+          e.dataSeries.visible = true;
+      }
+
+      e.chart.render();
+  }
 	},
 	data: [
     {
@@ -814,7 +824,6 @@ var TimeSeriesChart = {
       dataPoints: totaltimeseries
       }]
 };
-
 
 var TimeSeriesChartLanguages = {
 	title: {
@@ -834,7 +843,15 @@ var TimeSeriesChartLanguages = {
 		verticalAlign: "top",
 		horizontalAlign: "center",
 		dockInsidePlotArea: false,
-		itemclick: toogleDataSeries
+    itemclick: function (e) {
+      if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+          e.dataSeries.visible = false;
+      } else {
+          e.dataSeries.visible = true;
+      }
+
+      e.chart.render();
+  }
 	},
 	data: [
     {
@@ -899,7 +916,15 @@ var TimeSeriesChartTopics = {
 		verticalAlign: "top",
 		horizontalAlign: "center",
 		dockInsidePlotArea: false,
-		itemclick: toogleDataSeries
+    itemclick: function (e) {
+      if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+          e.dataSeries.visible = false;
+      } else {
+          e.dataSeries.visible = true;
+      }
+
+      e.chart.render();
+  }
 	},
 	data: [
     {
@@ -964,7 +989,15 @@ var TimeSeriesChartCity = {
 		verticalAlign: "top",
 		horizontalAlign: "center",
 		dockInsidePlotArea: false,
-		itemclick: toogleDataSeries
+    itemclick: function (e) {
+      if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+          e.dataSeries.visible = false;
+      } else {
+          e.dataSeries.visible = true;
+      }
+
+      e.chart.render();
+  }
 	},
 	data: [
     {
@@ -1029,7 +1062,15 @@ var SentimentsChartCity = {
 		verticalAlign: "top",
 		horizontalAlign: "center",
 		dockInsidePlotArea: false,
-		itemclick: toogleDataSeries
+    itemclick: function (e) {
+      if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+          e.dataSeries.visible = false;
+      } else {
+          e.dataSeries.visible = true;
+      }
+
+      e.chart.render();
+  }
 	},
 	data: [
     {
@@ -1094,7 +1135,15 @@ var SentimentsChartLanguages = {
 		verticalAlign: "top",
 		horizontalAlign: "center",
 		dockInsidePlotArea: false,
-		itemclick: toogleDataSeries
+    itemclick: function (e) {
+      if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+          e.dataSeries.visible = false;
+      } else {
+          e.dataSeries.visible = true;
+      }
+
+      e.chart.render();
+  }
 	},
 	data: [
     {
@@ -1159,7 +1208,15 @@ var SentimentsChartTopics = {
 		verticalAlign: "top",
 		horizontalAlign: "center",
 		dockInsidePlotArea: false,
-		itemclick: toogleDataSeries
+    itemclick: function (e) {
+      if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+          e.dataSeries.visible = false;
+      } else {
+          e.dataSeries.visible = true;
+      }
+
+      e.chart.render();
+  }
 	},
 	data: [
     {
@@ -1206,15 +1263,6 @@ var SentimentsChartTopics = {
       }]
 };
 
-function toogleDataSeries(e){
-	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-		e.dataSeries.visible = false;
-	} else{
-		e.dataSeries.visible = true;
-	}
-	chart.render();
-}
-
 var data;
 function createtweetsdatamaps(){
   google.charts.load('current', {
@@ -1260,7 +1308,7 @@ function drawRegionsMap() {
 
 function updateCharts(value){
 	console.log(value)
-  if(value === "location") {
+  if(value === "default") {
   console.log("Entered location")
   $("#chartContainer").CanvasJSChart(locationChart);
 	$("#chartContainer").show();

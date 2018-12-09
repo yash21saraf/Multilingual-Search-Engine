@@ -25,6 +25,12 @@
 	<div class="left1">
 		<div id="topics-filter" class="left">
 			<div class="centered">
+			<h3>5BITs</h3>
+			</div>	
+			<br>
+		</div>
+		<div id="topics-filter" class="left">
+			<div class="centered">
 				<h4>Topics Filter</h4>
 				<input type="checkbox" name="topic" id="crime" onclick="onclickchecker(this)"> Crime  <br>
 				<input type="checkbox" name="topic" id="environment" onclick="onclickchecker(this)"> Environment <br>
@@ -87,7 +93,7 @@
 		<center><h4>Analyse</h4> </center>
 		<center>
 		<select id="mySelect" onchange="updateCharts(this.value)">
-				<option selected="location" value="location">Location</option>
+				<option value='default' selected="location" value="location">Location</option>
 				<option value="language">Language</option>
 				<option value="topics">Topics</option>
 				<option value="timeSeriesCity">Time Series City</option>
