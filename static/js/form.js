@@ -155,8 +155,8 @@ function filterCalls() {
     citycount = data.countlist.citycount
     topicscount = data.countlist.topicscount
     languagecount = data.countlist.languagecount
-    topmentions = data.topmentions; 
-    hashtags = data.tophashtags;   
+    topmentions = data.topmentions;
+    hashtags = data.tophashtags;
     sentiments = data.countlist.sentiments;
     citysentimentseries = data.citysentimentseries
     languagesentimentseries = data.languagesentimentseries
@@ -226,6 +226,7 @@ function filterCalls() {
       tweet_id = newTwitterURL ;
       newTwitterURL = "https://twitter.com/statuses/" + newTwitterURL
 			window.open(newTwitterURL, "_blank");
+      userrelevance() ;
     });
     $('#page-selection').bootpag({
 			total: Math.ceil(numtweets/10),
@@ -272,9 +273,9 @@ function returnSearchResults() {
     citycount = data.countlist.citycount
     topicscount = data.countlist.topicscount
     languagecount = data.countlist.languagecount
-    topmentions = data.topmentions; 
-    hashtags = data.tophashtags; 
-    sentiments = data.countlist.sentiments; 
+    topmentions = data.topmentions;
+    hashtags = data.tophashtags;
+    sentiments = data.countlist.sentiments;
     citysentimentseries = data.citysentimentseries
     languagesentimentseries = data.languagesentimentseries
     topicssentimentseries = data.topicssentimentseries
@@ -343,6 +344,7 @@ function returnSearchResults() {
       tweet_id = newTwitterURL ;
       newTwitterURL = "https://twitter.com/statuses/" + newTwitterURL
 			window.open(newTwitterURL, "_blank");
+      userrelevance() ;
     });
 
     $('#page-selection').bootpag({
@@ -756,9 +758,9 @@ var hashtagsChart = {
   axisY: {
 		title: "Tweet Counts"
 	},
-	data: [{        
-		type: "column",  
-    showInLegend: true, 
+	data: [{
+		type: "column",
+    showInLegend: true,
     legendText: "Hashtags",
     legendMarkerColor: "grey",
     dataPoints: hashtagsdata
@@ -767,16 +769,16 @@ var hashtagsChart = {
 
 var mentionsChart = {
 	animationEnabled: true,
-	theme: "light2", 
+	theme: "light2",
 	title:{
 		text: "Top Mentions"
 	},
   axisY: {
 		title: "Tweet Counts"
 	},
-	data: [{        
-		type: "column",  
-    showInLegend: true, 
+	data: [{
+		type: "column",
+    showInLegend: true,
     legendText: "Mentions",
     legendMarkerColor: "grey",
     dataPoints: mentionsdata
@@ -1269,7 +1271,7 @@ function createtweetsdatamaps(){
     'packages':['geochart'],
     'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
   });
-  google.charts.setOnLoadCallback(drawRegionsMap); 
+  google.charts.setOnLoadCallback(drawRegionsMap);
 }
 
 function createMapData(){
@@ -1292,7 +1294,7 @@ function createMapData(){
       else if(citycount[0][i] ==="bangkok")
       {
         countrydata["Thailand"]=citycount[1][i];
-      } 
+      }
  }
 
 }

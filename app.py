@@ -15,8 +15,8 @@ from collections import defaultdict
 
 import re
 docspage = []
-
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb+srv://yash:abcd1234@irdb-mv26u.mongodb.net/test?retryWrites=true')
+# client = MongoClient('localhost', 27017)
 
 db = client.irdb
 alllogs = db.alllogs
@@ -152,6 +152,7 @@ def selectsearch():
 @app.route('/relevancelogs', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def relevancelogs():
+	print("here")
 	query = request.form['search_text']
 	tweet_id = request.form['tweet_id']
 	langset = request.form['langset']
