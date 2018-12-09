@@ -22,6 +22,21 @@ var totaltimeseries22 = []
 var totaltimeseries23 = []
 var totaltimeseries24 = []
 var totaltimeseries25 = []
+var totaltimeseries001 = []
+var totaltimeseries002 = []
+var totaltimeseries003 = []
+var totaltimeseries004 = []
+var totaltimeseries005 = []
+var totaltimeseries011 = []
+var totaltimeseries012 = []
+var totaltimeseries013 = []
+var totaltimeseries014 = []
+var totaltimeseries015 = []
+var totaltimeseries021 = []
+var totaltimeseries022 = []
+var totaltimeseries023 = []
+var totaltimeseries024 = []
+var totaltimeseries025 = []
 var totaltimeseriescity = []
 var totaltimeseriestopics = []
 var totaltimeserieslanguage = []
@@ -115,7 +130,6 @@ function pagination_function(page_no) {
 
 
 function filterCalls() {
-  console.log("form 2 executed") ;
     $.ajax({
       data : {
         search_text: $('#search_text').val() ,
@@ -129,7 +143,6 @@ function filterCalls() {
     })
 		.done(function(data) {
       if(data.isquerynull == "true"){
-        console.log("Query was not null")
 		tweets = data.docs;
     numtweets = data.numFound;
     tweets = data.docs;
@@ -138,15 +151,15 @@ function filterCalls() {
     citytimeseries = data.citytimeseries
     languagetimeseries = data.languagetimeseries
     topicstimeseries = data.topictimeseries
-    citysentimentseries = data.citysentimentseries
-    languagesentimentseries = data.languagesentimentseries
-    topicssentimentseries = data.topicssentimentseries
     citycount = data.countlist.citycount
     topicscount = data.countlist.topicscount
     languagecount = data.countlist.languagecount
     topmentions = data.topmentions; 
     hashtags = data.tophashtags;   
-    sentiments = data.sentimentlist;
+    sentiments = data.countlist.sentiments;
+    citysentimentseries = data.citysentimentseries
+    languagesentimentseries = data.languagesentimentseries
+    topicssentimentseries = data.topicssentimentseries
     console.log("Senti"+sentiments) ;
 
     createdata() ;
@@ -168,13 +181,23 @@ function filterCalls() {
     createdata23();
     createdata24();
     createdata25();
+    createdata001();
+    createdata002();
+    createdata003();
+    createdata004();
+    createdata005();
+    createdata013();
+    createdata015();
+    createdata021();
+    createdata022();
+    createdata023();
+    createdata024();
+    createdata025();
     createtweetsdatamaps();
     createtweetsdatahashtags();
     createtweetsdatamentions();
     createtweetsdatasentiments();
     createMapData();
-    
-
 		var htmlStr = "";
 		for (var i = 0; i <tweets.length; i++) {
 			if(tweets[i].tweet_text != null){
@@ -249,8 +272,11 @@ function returnSearchResults() {
     languagecount = data.countlist.languagecount
     topmentions = data.topmentions; 
     hashtags = data.tophashtags; 
-    sentiments = data.sentimentlist; 
-    console.log("senti"+sentiments) ;
+    sentiments = data.countlist.sentiments; 
+    citysentimentseries = data.citysentimentseries
+    languagesentimentseries = data.languagesentimentseries
+    topicssentimentseries = data.topicssentimentseries
+    //console.log("senti"+sentiments) ;
     createdata() ;
     createtweetsdatacity() ;
     createtweetsdatalanguage() ;
@@ -270,6 +296,18 @@ function returnSearchResults() {
     createdata23();
     createdata24();
     createdata25();
+    createdata001();
+    createdata002();
+    createdata003();
+    createdata004();
+    createdata005();
+    createdata013();
+    createdata015();
+    createdata021();
+    createdata022();
+    createdata023();
+    createdata024();
+    createdata025();
     createtweetsdatahashtags();
     createtweetsdatamentions();
     createtweetsdatamaps();
@@ -341,7 +379,6 @@ function onclickchecker(getValue) {
 	for(var i=0; i<cityList.length; i++){
 		if(cityList[i].type=='checkbox' && cityList[i].checked==true) {
       locationSet.add(cityList[i].id);
-
 		}
 	}
 	for(var i=0; i<languageList.length; i++){
@@ -357,17 +394,16 @@ function onclickchecker(getValue) {
     pseudoRel = false;
 
 	}
-
-	filterCalls();
   $("#mySelect").change(function() {
-    console.log("entered my select" +location)
-    updateCharts()
+    var val = ""+location;
+    updateCharts(val)
   });
-
-  console.log(pseudoRel);
   langset = languageSet;
   topicset = topicsSet;
   cityset = locationSet;
+
+	filterCalls();
+  console.log(pseudoRel);
 }
 
 
@@ -417,7 +453,6 @@ var topicChart = {
 	}]
 };
 
-
 var sentimentsChart = {
 	title: {
 		text: "Tweets segregation based on Sentiments"
@@ -432,6 +467,102 @@ var sentimentsChart = {
 			dataPoints: sentimentsTweetsData
 	}]
 };
+
+// citysentimentseries = data.citysentimentseries
+//     languagesentimentseries = data.languagesentimentseries
+//     topicssentimentseries = data.topicssentimentseries
+
+
+function createdata001(){
+	totaltimeseries001.length = 0
+  for(i = 0 ; i < citysentimentseries['bangkok'][0].length ; i++){
+  var temp = {x: new Date(citysentimentseries['bangkok'][0][i]), y: citysentimentseries['bangkok'][1][i]}
+  totaltimeseries01.push(temp) ;
+  }
+}
+
+function createdata002(){
+  totaltimeseries002.length = 0
+  for(i = 0 ; i < citysentimentseries['mexico city'][0].length ; i++){
+  var temp = {x: new Date(citysentimentseries['mexico city'][0][i]), y: citysentimentseries['mexico city'][1][i]}
+  totaltimeseries002.push(temp) ;
+  }
+}
+
+function createdata003(){
+  totaltimeseries003.length = 0
+  for(i = 0 ; i < citysentimentseries['delhi'][0].length ; i++){
+  var temp = {x: new Date(citysentimentseries['delhi'][0][i]), y: citysentimentseries['delhi'][1][i]}
+  totaltimeseries003.push(temp) ;
+  }
+}
+
+function createdata004(){
+  totaltimeseries004.length = 0
+  for(i = 0 ; i < citysentimentseries['paris'][0].length ; i++){
+  var temp = {x: new Date(citysentimentseries['paris'][0][i]), y: citysentimentseries['paris'][1][i]}
+  totaltimeseries004.push(temp) ;
+  }
+}
+
+function createdata005(){
+  totaltimeseries005.length = 0
+  for(i = 0 ; i < citysentimentseries['nyc'][0].length ; i++){
+  var temp = {x: new Date(citysentimentseries['nyc'][0][i]), y: citysentimentseries['nyc'][1][i]}
+  totaltimeseries005.push(temp) ;
+  }
+}
+
+function createdata013(){
+	totaltimeseries014.length = 0
+  for(i = 0 ; i < languagesentimentseries['fr'][0].length ; i++){
+  var temp = {x: new Date(languagesentimentseries['fr'][0][i]), y: languagesentimentseries['fr'][1][i]}
+  totaltimeseries014.push(temp) ;
+  }
+}
+
+function createdata015(){
+	totaltimeseries011.length = 0
+  for(i = 0 ; i < languagesentimentseries['en'][0].length ; i++){
+  var temp = {x: new Date(languagesentimentseries['en'][0][i]), y: languagesentimentseries['en'][1][i]}
+  totaltimeseries011.push(temp) ;
+  }
+}
+function createdata021(){
+	totaltimeseries021.length = 0
+  for(i = 0 ; i < topicssentimentseries['environment'][0].length ; i++){
+  var temp = {x: new Date(topicssentimentseries['environment'][0][i]), y: topicssentimentseries['environment'][1][i]}
+  totaltimeseries021.push(temp) ;
+  }
+}
+function createdata022(){
+	totaltimeseries022.length = 0
+  for(i = 0 ; i < topicssentimentseries['social unrest'][0].length ; i++){
+  var temp = {x: new Date(topicssentimentseries['social unrest'][0][i]), y: topicssentimentseries['social unrest'][1][i]}
+  totaltimeseries022.push(temp) ;
+  }
+}
+function createdata023(){
+	totaltimeseries023.length = 0
+  for(i = 0 ; i < topicssentimentseries['infra'][0].length ; i++){
+  var temp = {x: new Date(topicssentimentseries['infra'][0][i]), y: topicssentimentseries['infra'][1][i]}
+  totaltimeseries023.push(temp) ;
+  }
+}
+function createdata024(){
+	totaltimeseries024.length = 0
+  for(i = 0 ; i < topicssentimentseries['politics'][0].length ; i++){
+  var temp = {x: new Date(topicssentimentseries['politics'][0][i]), y: topicssentimentseries['politics'][1][i]}
+  totaltimeseries024.push(temp) ;
+  }
+}
+function createdata025(){
+	totaltimeseries025.length = 0
+  for(i = 0 ; i < topicssentimentseries['crime'][0].length ; i++){
+  var temp = {x: new Date(topicssentimentseries['crime'][0][i]), y: topicssentimentseries['crime'][1][i]}
+  totaltimeseries025.push(temp) ;
+  }
+}
 
 
 function createdata(){
@@ -880,6 +1011,201 @@ var TimeSeriesChartCity = {
       }]
 };
 
+var SentimentsChartCity = {
+	title: {
+		text: ""
+	},
+	axisX: {
+		valueFormatString: "MMM YYYY"
+	},
+	axisY2: {
+		title: "Sentiments City"
+	},
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor: "pointer",
+		verticalAlign: "top",
+		horizontalAlign: "center",
+		dockInsidePlotArea: false,
+		itemclick: toogleDataSeries
+	},
+	data: [
+    {
+      type:"line",
+      axisYType: "secondary",
+      name: "Bangkok",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries001
+      },
+      {
+      type:"line",
+      axisYType: "secondary",
+      name: "Mexico City",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries002
+      },{
+      type:"line",
+      axisYType: "secondary",
+      name: "Delhi",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries003
+      },{
+      type:"line",
+      axisYType: "secondary",
+      name: "Paris",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries004
+      },{
+      type:"line",
+      axisYType: "secondary",
+      name: "NYC",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries005
+      }]
+};
+
+var SentimentsChartLanguages = {
+	title: {
+		text: ""
+	},
+	axisX: {
+		valueFormatString: "MMM YYYY"
+	},
+	axisY2: {
+		title: "Sentiments Languages"
+	},
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor: "pointer",
+		verticalAlign: "top",
+		horizontalAlign: "center",
+		dockInsidePlotArea: false,
+		itemclick: toogleDataSeries
+	},
+	data: [
+    {
+      type:"line",
+      axisYType: "secondary",
+      name: "en",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries011
+      },
+      {
+      type:"line",
+      axisYType: "secondary",
+      name: "es",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries012
+      },{
+      type:"line",
+      axisYType: "secondary",
+      name: "hi",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries013
+      },{
+      type:"line",
+      axisYType: "secondary",
+      name: "fr",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries014
+      },{
+      type:"line",
+      axisYType: "secondary",
+      name: "th",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries015
+      }]
+};
+
+var SentimentsChartTopics = {
+	title: {
+		text: ""
+	},
+	axisX: {
+		valueFormatString: "MMM YYYY"
+	},
+	axisY2: {
+		title: "Sentiments Topics"
+	},
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor: "pointer",
+		verticalAlign: "top",
+		horizontalAlign: "center",
+		dockInsidePlotArea: false,
+		itemclick: toogleDataSeries
+	},
+	data: [
+    {
+      type:"line",
+      axisYType: "secondary",
+      name: "Environment",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries021
+      },
+      {
+      type:"line",
+      axisYType: "secondary",
+      name: "Social unrest",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries022
+      },{
+      type:"line",
+      axisYType: "secondary",
+      name: "Infrastructure",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries023
+      },{
+      type:"line",
+      axisYType: "secondary",
+      name: "Politics",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries024
+      },{
+      type:"line",
+      axisYType: "secondary",
+      name: "Crime",
+      showInLegend: true,
+      markerSize: 0,
+      yValueFormatString: "######",
+      dataPoints: totaltimeseries025
+      }]
+};
+
 function toogleDataSeries(e){
 	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
 		e.dataSeries.visible = false;
@@ -970,6 +1296,18 @@ function updateCharts(value){
 	{
 		$("#chartContainer").CanvasJSChart(sentimentsChart);
 		$("#chartContainer").show();
+  } else if(value === "citysentiments")
+	{
+		$("#chartContainer").CanvasJSChart(SentimentsChartCity);
+		$("#chartContainer").show();
+  } else if(value === "languagesentiments")
+	{
+		$("#chartContainer").CanvasJSChart(SentimentsChartLanguages);
+		$("#chartContainer").show();
+  } else if(value === "topicsentiments")
+	{
+		$("#chartContainer").CanvasJSChart(SentimentsChartTopics);
+		$("#chartContainer").show();
   }
   else if(value === "hashtags")
 	{
@@ -984,12 +1322,12 @@ function updateCharts(value){
 	{
     console.log("Area")
     var options = {
-      //colorAxis: {colors: ['red']},
+      colorAxis: {colors: ['#154360','#85C1E9']},
       //backgroundColor: '#81d4fa',
       //datalessRegionColor: '#f8bbd0',
-      defaultColor: '#f5f5f5',
+      //defaultColor: '#D4D6DD'
     };
-    options['colorAxis'] = {colors: ['red', 'blue', 'yellow', 'pink', 'black']};
+    //options['colorAxis'] = {colors: ['red', 'blue', 'yellow', 'pink', 'black']};
     options['dataMode'] = 'regions';
     var chart = new google.visualization.GeoChart(document.getElementById('chartContainer'));
     chart.draw(data, options);

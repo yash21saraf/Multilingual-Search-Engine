@@ -10,7 +10,7 @@ from pymongo import MongoClient
 import collections
 from collections import OrderedDict
 import operator
-from collections import defaultdict		
+from collections import defaultdict
 
 
 import re
@@ -120,7 +120,7 @@ def selectsearch():
 		timeseries1, topictimeseries1, languagetimeseries1, citytimeseries1, countlist, topicssentimentseries, languagesentimentseries, citysentimentseries, sentimentlist = timeseries(docs)
 		tophashtags = top_hashtags(docs)
 		topmentions = top_mentions(docs)
-		
+
 		final = {
 				'isquerynull': 'true',
 				'docs': docs[0:sendvar],
@@ -247,6 +247,9 @@ def timeseries(docs):
 	bangkoksentiments = defaultdict(float)
 	delhisentiments = defaultdict(float)
 	parissentiments = defaultdict(float)
+	positivesent = 0
+	neutralsent = 0
+	negativesent = 0
 	datesorted = sorted(docs, key=lambda k: k['tweet_date'])
 	for doc in datesorted:
 		doc['tweet_date'] = doc['tweet_date'][0][0:10]
@@ -288,6 +291,12 @@ def timeseries(docs):
 
 		if 'sentiment' in doc:
 			totalsentiments[doc['tweet_date']] += float(doc['sentiment'][0])
+			if(float(doc['sentiment'][0]) > 0):
+				positivesent +=1
+			elif(float(doc['sentiment'][0]) < 0):
+				negativesent +=1
+			elif(float(doc['sentiment'][0]) == 0):
+				neutralsent +=1
 			if(doc['city'][0] == "mexico city"):
 				mexicosentiments[doc['tweet_date']] += float(doc['sentiment'][0])
 			elif(doc['city'][0] == "nyc"):
@@ -408,6 +417,11 @@ def timeseries(docs):
 	nycsentimentlist = pqrs(nyclist, nycsentiments)
 	nyclist = abcd(nyclist)
 
+	sentsummary = {'positive' : positivesent,
+				   'negative' : negativesent,
+				   'neutral' : neutralsent}
+	sentsummary = abcd(sentsummary)
+
 	topicstimeseries = {'environment' : environmentlist,
 			  'crime' : crimelist,
 			  'social unrest' : sociallist,
@@ -462,7 +476,8 @@ def timeseries(docs):
 	countlist = {'total' : totalcount,
 				 'topicscount' : topicscount,
 				 'languagecount' : languagecount,
-				 'citycount' : citycount}
+				 'citycount' : citycount,
+				 'sentiments' : sentsummary}
 
 	return datelist, topicstimeseries, languagetimeseries, citytimeseries, countlist, topicssentimentseries, languagesentimentseries, citysentimentseries, sentimentlist
 
@@ -499,7 +514,7 @@ def createfacetedquery(query, langset, topicset, cityset):
 		topicset = []
 	if(cityset[0] == ''):
 		cityset = []
-	url = 'http://localhost:8983/solr/1/select?'
+	url = 'http://ec2-18-206-155-220.compute-1.amazonaws.com:8983/solr/1/select?'
 	if((len(langset) != 0 and len(langset) != 5) or (len(topicset) != 0 and len(topicset) != 5) or (len(cityset) != 0 and len(cityset) != 5)):
 		url = url + 'fq='
 		if(len(langset) != 0 and len(langset) != 5):
@@ -522,7 +537,7 @@ def createfacetedquery(query, langset, topicset, cityset):
 			url = url + 'city:(' + cities + ')'
 		else:
 			url = url[:-4]
-	url = url + '&indent=on&q=' + query + '&wt=json&rows=10000000'
+	url = url + '&indent=on&q=' + query + '&wt=json&rows=1000'
 	return url
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')
