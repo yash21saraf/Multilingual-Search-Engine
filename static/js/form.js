@@ -1279,7 +1279,7 @@ function createMapData(){
   for(i = 0 ; i < citycount[0].length ; i++){
     var temp;
       if(citycount[0][i] ==="paris") {
-        countrydata["United States"]=citycount[1][i];
+        countrydata["France"]=citycount[1][i];
       }else if(citycount[0][i] ==="nyc")
       {
         countrydata["United States"]=citycount[1][i];
