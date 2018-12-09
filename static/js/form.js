@@ -458,7 +458,7 @@ var sentimentsChart = {
 		text: "Tweets segregation based on Sentiments"
 	},
 	data: [{
-			type: "pie",
+			type: "doughnut",
 			startAngle: 45,
 			showInLegend: "true",
 			legendText: "{label}",
