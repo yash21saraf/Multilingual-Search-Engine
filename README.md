@@ -29,7 +29,7 @@ for some tweets. Approximately 2 Million tweets downloaded spread over a month.
   - Pie Charts - Pie charts to represent count based analysis for all tweets across different filters. 
   - Google Highcharts - Google Highcharts to represent region wise count on world map based on origin location. 
 
-***Please check the detailed version here in report*** -[Multilingual-Search-System - Report](https://github.com/mikip91/Multilingual-Search-System/tree/master/documents)
+***Please check the detailed version here in report*** -[Multilingual-Search-System - Report](https://github.com/yash21saraf/Multilingual-Search-System/tree/master/documents)
 
 ***Find the video for description for the same here*** -
 
